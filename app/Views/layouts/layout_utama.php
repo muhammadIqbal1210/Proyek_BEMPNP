@@ -35,19 +35,54 @@
                     <span class="text-xs text-gray-200">Politeknik Negeri Padang</span>
                 </div>
             </div>
-            <ul class="hidden md:flex space-x-6 font-semibold text-white">
-                <li><a href="<?= base_url() ?>" class="hover:text-orange-600">Home</a></li>
-                <!-- Navigasi Aktif -->
-                <li><a href="<?= base_url('pengumuman') ?>" class="text-orange-400 border-b-2 border-orange-400 pb-1">Pengumuman</a></li> 
-                <li><a href="#" class="hover:text-orange-600">Profil</a></li>
-                <li><a href="#" class="hover:text-orange-600">Layanan</a></li>
-                <li><a href="#" class="hover:text-orange-600">Berita</a></li>
-                <li><a href="#" class="hover:text-orange-600">Katalog</a></li>
-                <li><a href="#" class="hover:text-orange-600">Kontak</a></li>
-                <li><a href="<?= base_url('login') ?>" class="bg-orange-500 hover:bg-orange-400 text-white font-semibold px-6 pt-1 pb-2 rounded-full transition">Login</a></li>
-            </ul>
+            <ul class="hidden md:flex space-x-6 font-semibold text-white items-center">
+            <li>
+                <a href="<?= base_url('/') ?>" 
+                   class="<?= url_is('/') ? 'text-orange-400 border-b-2 border-orange-400' : 'hover:text-orange-400' ?> pb-1 transition-all duration-300">
+                   Home
+                </a>
+            </li>
+
+            <li>
+                <a href="<?= base_url('pengumuman') ?>" 
+                   class="<?= url_is('pengumuman*') ? 'text-orange-400 border-b-2 border-orange-400' : 'hover:text-orange-400' ?> pb-1 transition-all duration-300">
+                   Pengumuman
+                </a>
+            </li>
+
+            <li>
+                <a href="<?= base_url('profil') ?>" 
+                   class="<?= url_is('profil*') ? 'text-orange-400 border-b-2 border-orange-400' : 'hover:text-orange-400' ?> pb-1 transition-all duration-300">
+                   Profil
+                </a>
+            </li>
+
+            <li>
+                <a href="<?= base_url('berita') ?>" 
+                   class="<?= url_is('berita*') ? 'text-orange-400 border-b-2 border-orange-400' : 'hover:text-orange-400' ?> pb-1 transition-all duration-300">
+                   Berita
+                </a>
+            </li>
+
+            <li>
+                <a href="<?= base_url('layanan') ?>" 
+                   class="<?= url_is('layanan*') ? 'text-orange-400 border-b-2 border-orange-400' : 'hover:text-orange-400' ?> pb-1 transition-all duration-300">
+                   Layanan
+                </a>
+            </li>
+            <li><a href="#" class="hover:text-orange-400 pb-1 transition">Katalog</a></li>
+            <li><a href="#" class="hover:text-orange-400 pb-1 transition">Kontak</a></li>
+            
+            <li>
+                <a href="<?= base_url('login') ?>" 
+                   class="bg-orange-500 hover:bg-orange-400 text-white font-semibold px-6 pt-1 pb-2 rounded-full transition shadow-md">
+                   Login
+                </a>
+            </li>
+        </ul>
         </div>
     </nav>
+    <?= $this->renderSection('content') ?>
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-300 py-10 mt-10">
         <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 px-6">

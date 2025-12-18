@@ -12,10 +12,10 @@ $routes->get('login', 'Login::index');              // Menampilkan form login
 $routes->post('login/auth', 'Login::loginAuth');
 $routes->get('register', 'Register::index'); // Untuk menampilkan form
 $routes->post('register', 'Register::store');
-$routes->get('logout', 'Auth::logout');
-//Akses Pengumuman 
+$routes->get('logout', 'Auth::logout'); 
 $routes->get('pengumuman', 'Home::pengumuman');
 $routes->get('pengumuman/detail/(:num)', 'Home::detail/$1');
+$routes->get('layanan', 'Home::layanan');
 
 $routes->group('member', ['filter' => 'member'], function($routes) {
     $routes->get('dashboard', 'Member\Dashboard::index');
@@ -71,4 +71,5 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     $routes->post('katalog/store', 'Katalog::store');
     $routes->get('katalog/delete/(:num)', 'katalog::delete/$1');
     // ... routes admin lainnya
+    $routes->get('kanban', 'KanbanController::kanban');
 });

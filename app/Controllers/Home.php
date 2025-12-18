@@ -109,4 +109,11 @@ class Home extends BaseController
         // Asumsi: View untuk detail pengumuman berada di 'frontend/pengumuman/detail'
         return view('frontend/pengumuman/detail', $data);
     }
+    public function layanan()
+{
+    $data = [
+        'title' => 'Layanan Kami - BEM KM PNP'
+    ];
+    return view('frontend/layanan', $data);
+}
 }

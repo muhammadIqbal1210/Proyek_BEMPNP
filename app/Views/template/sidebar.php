@@ -93,7 +93,7 @@
         </div>
     </div>
     <div class="menu-item">
-        <a href="#">
+        <a href="/admin/kanban">
             <span class="menu-icon"><i class="fa-solid fa-check-to-slot"></i></span>
             <span>Kanban Board</span>
         </a>
