@@ -16,6 +16,8 @@ $routes->get('logout', 'Auth::logout');
 $routes->get('pengumuman', 'Home::pengumuman');
 $routes->get('pengumuman/detail/(:num)', 'Home::detail/$1');
 $routes->get('layanan', 'Home::layanan');
+$routes->get('layanan/advokasi', 'Home::advokasi');
+$routes->post('layanan/kirim_lapor', 'Home::kirim_lapor');
 
 $routes->group('member', ['filter' => 'member'], function($routes) {
     $routes->get('dashboard', 'Member\Dashboard::index');
@@ -38,38 +40,40 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     $routes->post('pengumuman/update/(:num)', 'Pengumuman::update/$1'); // Proses Update
     $routes->get('pengumuman/delete/(:num)', 'Pengumuman::delete/$1');
     //Route Beasiswa
-    $routes->get('beasiswa', 'Beasiswa::index'); // URL: /admin/pengumuman/index
+    $routes->get('beasiswa', 'Beasiswa::index'); 
     $routes->get('beasiswa/index', 'Beasiswa::index');
     $routes->post('beasiswa/store', 'Beasiswa::store');
     $routes->get('beasiswa/edit/(:num)', 'Beasiswa::edit/$1'); // Ambil data JSON
     $routes->post('beasiswa/update/(:num)', 'Beasiswa::update/$1'); // Proses Update
     $routes->get('beasiswa/delete/(:num)', 'Beasiswa::delete/$1');
     // Routes Lomba
-    $routes->get('lomba', 'Lomba::index'); // URL: /admin/pengumuman/index
+    $routes->get('lomba', 'Lomba::index'); 
     $routes->get('lomba/index', 'Lomba::index');
     $routes->post('lomba/store', 'Lomba::store');
     $routes->get('lomba/edit/(:num)', 'lomba::edit/$1'); // Ambil data JSON
     $routes->post('lomba/update/(:num)', 'lomba::update/$1'); // Proses Update
     $routes->get('lomba/delete/(:num)', 'lomba::delete/$1');
     //Event Route
-    $routes->get('event', 'Event::index'); // URL: /admin/pengumuman/index
+    $routes->get('event', 'Event::index'); 
     $routes->get('event/index', 'Event::index');
     $routes->post('event/store', 'Event::store');
     $routes->get('event/edit/(:num)', 'event::edit/$1'); // Ambil data JSON
     $routes->post('event/update/(:num)', 'event::update/$1'); // Proses Update
     $routes->get('event/delete/(:num)', 'event::delete/$1');
     //Route Berita
-    $routes->get('berita', 'Berita::index'); // URL: /admin/pengumuman/index
+    $routes->get('berita', 'Berita::index'); 
     $routes->get('berita/index', 'Berita::index');
     $routes->post('berita/store', 'Berita::store');
     $routes->get('berita/edit/(:num)', 'berita::edit/$1'); // Ambil data JSON
     $routes->post('berita/update/(:num)', 'berita::update/$1'); // Proses Update
     $routes->get('event/delete/(:num)', 'berita::delete/$1');
     // Route Katalog
-    $routes->get('katalog', 'Katalog::index'); // URL: /admin/pengumuman/index
+    $routes->get('katalog', 'Katalog::index');
     $routes->get('katalog/index', 'Katalog::index');
     $routes->post('katalog/store', 'Katalog::store');
     $routes->get('katalog/delete/(:num)', 'katalog::delete/$1');
-    // ... routes admin lainnya
+    // Route Kanban
     $routes->get('kanban', 'KanbanController::kanban');
+    //Route Laporan
+    $routes->get('laporan/index', 'Laporan::index');
 });

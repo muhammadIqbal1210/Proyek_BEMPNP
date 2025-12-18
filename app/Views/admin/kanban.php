@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanban Board Real-time</title>
+    <title>Kanban Pro - Persistent Storage</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -11,9 +11,9 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        'primary': '#4f46e5',
-                        'todo': '#f97316',
-                        'inprogress': '#0ea5e9',
+                        'primary': '#6366f1',
+                        'todo': '#f59e0b',
+                        'inprogress': '#3b82f6',
                         'done': '#10b981',
                     }
                 }
@@ -22,305 +22,201 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        .kanban-column::-webkit-scrollbar { width: 5px; }
-        .kanban-column::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .task-card { cursor: grab; transition: all 0.2s ease; }
-        .task-card:active { cursor: grabbing; transform: translateY(-2px); }
-        .drag-over { border: 2px dashed #4f46e5 !important; background-color: #eef2ff !important; }
+        .kanban-column { min-height: 400px; transition: all 0.3s ease; }
+        .drag-over { background-color: #f1f5f9 !important; border: 2px dashed #6366f1 !important; }
+        .task-card { cursor: grab; transition: transform 0.2s, box-shadow 0.2s; }
+        .task-card:active { cursor: grabbing; transform: scale(0.98); }
+        .task-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen font-sans text-slate-900">
 
-    <!-- Status Overlay -->
-    <div id="status-overlay" class="fixed inset-0 bg-white z-[60] flex items-center justify-center p-6 text-center transition-opacity duration-500">
-        <div class="max-w-sm">
-            <div id="status-spinner" class="animate-spin rounded-full h-10 w-10 border-t-2 border-primary mx-auto mb-4"></div>
-            <h2 id="status-title" class="text-lg font-bold">Menghubungkan...</h2>
-            <p id="status-message" class="text-slate-500 text-sm mt-2">Menyiapkan lingkungan kerja Anda.</p>
-        </div>
-    </div>
-
-    <div class="max-w-7xl mx-auto p-4 md:p-8">
-        <header class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Kanban <span class="text-primary">Proyek</span></h1>
-                <p id="mode-display" class="text-slate-400 text-xs mt-1 font-mono uppercase tracking-wider">Menghubungkan ke Cloud...</p>
-            </div>
-            <div class="flex gap-2">
-                <div id="connection-badge" class="bg-white shadow-sm border border-slate-200 px-4 py-2 rounded-xl flex items-center gap-2">
-                    <div id="status-dot" class="h-2 w-2 rounded-full bg-slate-300"></div>
-                    <span id="status-text" class="text-xs font-bold text-slate-600">Checking...</span>
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight">Kanban<span class="text-primary">Sync</span></span>
                 </div>
-            </div>
-        </header>
-
-        <div id="board" class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-            <!-- Kolom Persiapan -->
-            <div class="flex flex-col bg-slate-100 rounded-2xl p-4 min-h-[500px] border border-slate-200" 
-                 ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'todo')">
-                <div class="flex justify-between items-center mb-4 px-2">
-                    <h2 class="font-extrabold text-slate-700 flex items-center gap-2 text-sm uppercase">
-                        <span class="w-2 h-5 bg-todo rounded-full"></span> Persiapan
-                    </h2>
-                    <span id="count-todo" class="bg-white text-slate-500 text-[10px] px-2 py-0.5 rounded-full border border-slate-200 font-bold">0</span>
+                <div id="storage-status" class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-full border border-slate-200">
+                    <div id="status-dot" class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                    <span id="status-text" class="text-xs font-semibold text-slate-600">Inisialisasi...</span>
                 </div>
-                <div id="list-todo" class="space-y-3 flex-grow"></div>
-                <button onclick="openModal('todo')" class="mt-4 w-full py-3 bg-white border border-slate-200 rounded-xl text-slate-500 text-sm font-bold hover:border-primary hover:text-primary transition-all shadow-sm">
-                    + Tambah Kartu
-                </button>
-            </div>
-
-            <!-- Kolom Berjalan -->
-            <div class="flex flex-col bg-slate-100 rounded-2xl p-4 min-h-[500px] border border-slate-200"
-                 ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'inprogress')">
-                <div class="flex justify-between items-center mb-4 px-2">
-                    <h2 class="font-extrabold text-slate-700 flex items-center gap-2 text-sm uppercase">
-                        <span class="w-2 h-5 bg-inprogress rounded-full"></span> Berjalan
-                    </h2>
-                    <span id="count-inprogress" class="bg-white text-slate-500 text-[10px] px-2 py-0.5 rounded-full border border-slate-200 font-bold">0</span>
-                </div>
-                <div id="list-inprogress" class="space-y-3 flex-grow"></div>
-                <button onclick="openModal('inprogress')" class="mt-4 w-full py-3 bg-white border border-slate-200 rounded-xl text-slate-500 text-sm font-bold hover:border-primary hover:text-primary transition-all shadow-sm">
-                    + Tambah Kartu
-                </button>
-            </div>
-
-            <!-- Kolom Selesai -->
-            <div class="flex flex-col bg-slate-100 rounded-2xl p-4 min-h-[500px] border border-slate-200"
-                 ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'done')">
-                <div class="flex justify-between items-center mb-4 px-2">
-                    <h2 class="font-extrabold text-slate-700 flex items-center gap-2 text-sm uppercase">
-                        <span class="w-2 h-5 bg-done rounded-full"></span> Selesai
-                    </h2>
-                    <span id="count-done" class="bg-white text-slate-500 text-[10px] px-2 py-0.5 rounded-full border border-slate-200 font-bold">0</span>
-                </div>
-                <div id="list-done" class="space-y-3 flex-grow"></div>
-                <button onclick="openModal('done')" class="mt-4 w-full py-3 bg-white border border-slate-200 rounded-xl text-slate-500 text-sm font-bold hover:border-primary hover:text-primary transition-all shadow-sm">
-                    + Tambah Kartu
-                </button>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- Modal Dialog -->
-    <div id="modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8">
-            <h2 id="modal-title" class="text-xl font-black mb-6">Edit Kegiatan</h2>
-            <div class="space-y-4">
-                <input type="text" id="inp-title" placeholder="Judul Tugas" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
-                <textarea id="inp-desc" rows="3" placeholder="Keterangan tambahan..." class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"></textarea>
-                <input type="url" id="inp-img" placeholder="URL Gambar (Opsional)" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+    <main class="max-w-7xl mx-auto p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Kolom To Do -->
+            <div class="flex flex-col bg-slate-100 rounded-2xl p-4 min-h-[500px] border border-slate-200">
+                <div class="flex items-center justify-between mb-4 px-2">
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-todo"></span> To-Do
+                    </h3>
+                    <button onclick="openForm('todo')" class="p-2 hover:bg-green-200 rounded text-green-800">
+                        <i class="fas fa-plus me-1"></i> Tambah Tugas
+                    </button>
+                </div>
+                <div id="col-todo" class="kanban-column space-y-3 p-2 rounded-xl border-2 border-transparent" ondragover="event.preventDefault(); this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event, 'todo')"></div>
             </div>
-            <input type="hidden" id="active-id">
-            <input type="hidden" id="active-status">
-            <div class="flex gap-3 mt-8">
-                <button onclick="closeModal()" class="flex-1 py-4 text-slate-500 font-bold">Batal</button>
-                <button onclick="saveTask()" class="flex-1 py-4 bg-primary text-white rounded-2xl font-black shadow-lg shadow-primary/20">Simpan</button>
+
+            <!-- Kolom In Progress -->
+            <div class="flex flex-col bg-slate-100 rounded-2xl p-4 min-h-[500px] border border-slate-200">
+                <div class="flex items-center justify-between mb-4 px-2">
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-inprogress"></span> Sedang Dikerjakan
+                    </h3>
+                </div>
+                <div id="col-inprogress" class="kanban-column space-y-3 p-2 rounded-xl border-2 border-transparent" ondragover="event.preventDefault(); this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event, 'inprogress')"></div>
+            </div>
+
+            <!-- Kolom Done -->
+            <div class="flex flex-col bg-slate-100 rounded-2xl p-4 min-h-[500px] border border-slate-200">
+                <div class="flex items-center justify-between mb-4 px-2">
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-done"></span> Selesai
+                    </h3>
+                </div>
+                <div id="col-done" class="kanban-column space-y-3 p-2 rounded-xl border-2 border-transparent" ondragover="event.preventDefault(); this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event, 'done')"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Form -->
+    <div id="modal-form" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
+            <div class="p-6">
+                <h2 id="modal-title" class="text-xl font-bold mb-4">Tambah Tugas</h2>
+                <div class="space-y-4">
+                    <input type="text" id="task-title" placeholder="Judul Tugas" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-primary">
+                    <textarea id="task-desc" placeholder="Deskripsi (Opsional)" rows="3" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-primary"></textarea>
+                </div>
+            </div>
+            <div class="bg-slate-50 p-4 flex gap-3">
+                <button onclick="closeForm()" class="flex-1 py-2 font-semibold text-slate-600">Batal</button>
+                <button onclick="saveTask()" class="flex-1 py-2 bg-primary text-white rounded-lg font-bold">Simpan</button>
             </div>
         </div>
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, onSnapshot, setDoc, deleteDoc, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        let tasks = [];
+        let isCloudMode = false;
+        
+        // Data Handling
+        const STORAGE_KEY = 'kanban_tasks_local';
 
-        // Global state
-        let db, auth, currentUserId;
-        let isLocalMode = false;
-        let localTasks = [];
+        function init() {
+            // Coba ambil dari LocalStorage dulu sebagai fallback instan
+            const localData = localStorage.getItem(STORAGE_KEY);
+            if (localData) {
+                tasks = JSON.parse(localData);
+                renderBoard();
+            }
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kanban-default';
-        const publicPath = `artifacts/${appId}/public/data/tasks`;
-
-        async function startApp() {
-            try {
-                // Mencoba memparsing config
-                if (typeof __firebase_config === 'undefined') throw new Error("No Config");
-                
-                const firebaseConfig = JSON.parse(__firebase_config);
-                if (!firebaseConfig.projectId) throw new Error("Invalid Config");
-
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-
-                const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-                if (token) {
-                    await signInWithCustomToken(auth, token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        currentUserId = user.uid;
-                        setConnectionStatus(true, `Sesi: ${user.uid.substring(0,8)}...`);
-                        hideOverlay();
-                        initFirestore();
-                    }
-                });
-
-            } catch (err) {
-                console.warn("Firebase gagal dimuat, beralih ke mode lokal:", err.message);
-                switchToLocalMode();
+            // Cek apakah konfigurasi Firebase ada
+            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+            
+            if (firebaseConfig) {
+                setupCloud(firebaseConfig);
+            } else {
+                updateStatus('offline');
+                console.log("Menggunakan LocalStorage karena Cloud Config tidak ditemukan.");
             }
         }
 
-        function switchToLocalMode() {
-            isLocalMode = true;
-            currentUserId = 'local-user';
-            setConnectionStatus(false, "Mode Demo Lokal (Tanpa Cloud)");
-            hideOverlay();
-            renderTasks();
-        }
-
-        function setConnectionStatus(online, text) {
+        function updateStatus(mode) {
             const dot = document.getElementById('status-dot');
-            const badgeText = document.getElementById('status-text');
-            const modeDisplay = document.getElementById('mode-display');
-            
-            dot.className = `h-2 w-2 rounded-full ${online ? 'bg-green-500 animate-pulse' : 'bg-amber-500'}`;
-            badgeText.textContent = online ? "Terhubung Cloud" : "Lokal";
-            modeDisplay.textContent = text;
+            const text = document.getElementById('status-text');
+            if (mode === 'online') {
+                dot.className = "w-2 h-2 rounded-full bg-green-500";
+                text.textContent = "Cloud Tersinkron";
+                isCloudMode = true;
+            } else {
+                dot.className = "w-2 h-2 rounded-full bg-blue-500";
+                text.textContent = "Penyimpanan Lokal";
+                isCloudMode = false;
+            }
         }
 
-        function hideOverlay() {
-            const overlay = document.getElementById('status-overlay');
-            overlay.style.opacity = '0';
-            setTimeout(() => overlay.classList.add('hidden'), 500);
-        }
+        // Render UI
+        function renderBoard() {
+            const cols = { todo: 'col-todo', inprogress: 'col-inprogress', done: 'col-done' };
+            Object.values(cols).forEach(id => document.getElementById(id).innerHTML = '');
 
-        function initFirestore() {
-            const q = query(collection(db, publicPath), orderBy("updatedAt", "desc"));
-            onSnapshot(q, (snapshot) => {
-                localTasks = [];
-                snapshot.forEach(d => localTasks.push({ id: d.id, ...d.data() }));
-                renderTasks();
-            }, (err) => {
-                console.error("Firestore Listen Error:", err);
-                switchToLocalMode();
+            tasks.forEach(task => {
+                const container = document.getElementById(`col-${task.status}`);
+                if (!container) return;
+
+                const card = document.createElement('div');
+                card.className = 'task-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm';
+                card.draggable = true;
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-slate-800">${task.title}</h4>
+                        <button onclick="deleteTask('${task.id}')" class="text-slate-300 hover:text-red-500">
+                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
+                    <p class="text-xs text-slate-500">${task.description || ''}</p>
+                `;
+                card.ondragstart = (e) => e.dataTransfer.setData('taskId', task.id);
+                container.appendChild(card);
             });
+
+            // Simpan ke LocalStorage setiap ada perubahan
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
         }
 
-        function renderTasks() {
-            const groups = { todo: [], inprogress: [], done: [] };
-            localTasks.forEach(t => {
-                if (groups[t.status]) groups[t.status].push(t);
-            });
-
-            ['todo', 'inprogress', 'done'].forEach(status => {
-                const list = document.getElementById(`list-${status}`);
-                const count = document.getElementById(`count-${status}`);
-                list.innerHTML = '';
-                count.textContent = groups[status].length;
-
-                groups[status].forEach(task => {
-                    const card = document.createElement('div');
-                    card.className = 'task-card bg-white p-4 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md';
-                    card.draggable = true;
-                    card.dataset.id = task.id;
-                    
-                    card.ondragstart = (e) => {
-                        e.dataTransfer.setData('taskId', task.id);
-                        card.style.opacity = '0.5';
-                    };
-                    card.ondragend = () => card.style.opacity = '1';
-
-                    const imgHtml = task.imageUrl ? `<img src="${task.imageUrl}" class="w-full h-24 object-cover rounded-xl mb-3 bg-slate-100" onerror="this.style.display='none'">` : '';
-
-                    card.innerHTML = `
-                        ${imgHtml}
-                        <h3 class="font-bold text-slate-800 text-sm leading-tight">${task.title}</h3>
-                        ${task.description ? `<p class="text-xs text-slate-400 mt-1 line-clamp-2">${task.description}</p>` : ''}
-                        <div class="flex justify-end gap-3 mt-4 pt-3 border-t border-slate-50">
-                            <button onclick="window.openModal('${task.status}', ${JSON.stringify(task).replace(/"/g, '&quot;')})" class="text-[10px] font-black uppercase text-primary tracking-tighter">Edit</button>
-                            <button onclick="window.deleteTask('${task.id}')" class="text-[10px] font-black uppercase text-red-400 tracking-tighter">Hapus</button>
-                        </div>
-                    `;
-                    list.appendChild(card);
-                });
-            });
-        }
-
-        // Window exposed functions
-        window.openModal = (status, task = null) => {
-            document.getElementById('modal').classList.remove('hidden');
-            document.getElementById('active-status').value = status;
-            document.getElementById('active-id').value = task ? task.id : '';
-            document.getElementById('inp-title').value = task ? task.title : '';
-            document.getElementById('inp-desc').value = task ? task.description : '';
-            document.getElementById('inp-img').value = task ? task.imageUrl : '';
-            document.getElementById('modal-title').textContent = task ? 'Ubah Tugas' : 'Tugas Baru';
-        };
-
-        window.closeModal = () => document.getElementById('modal').classList.add('hidden');
-
-        window.saveTask = async () => {
-            const title = document.getElementById('inp-title').value.trim();
+        // Action Functions
+        window.saveTask = () => {
+            const title = document.getElementById('task-title').value;
+            const desc = document.getElementById('task-desc').value;
             if (!title) return;
 
-            const id = document.getElementById('active-id').value || 'id-' + Date.now();
-            const status = document.getElementById('active-status').value;
-            const data = {
-                id,
+            const newTask = {
+                id: Date.now().toString(),
                 title,
-                description: document.getElementById('inp-desc').value,
-                imageUrl: document.getElementById('inp-img').value,
-                status,
-                updatedAt: new Date().toISOString(),
-                userId: currentUserId
+                description: desc,
+                status: 'todo'
             };
 
-            if (isLocalMode) {
-                const idx = localTasks.findIndex(t => t.id === id);
-                if (idx > -1) localTasks[idx] = data;
-                else localTasks.unshift(data);
-                renderTasks();
-            } else {
-                await setDoc(doc(db, publicPath, id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
-            }
-            closeModal();
+            tasks.push(newTask);
+            renderBoard();
+            closeForm();
         };
 
-        window.deleteTask = async (id) => {
-            if (isLocalMode) {
-                localTasks = localTasks.filter(t => t.id !== id);
-                renderTasks();
-            } else {
-                await deleteDoc(doc(db, publicPath, id));
-            }
+        window.deleteTask = (id) => {
+            tasks = tasks.filter(t => t.id !== id);
+            renderBoard();
         };
 
-        window.handleDragOver = (e) => {
+        window.handleDrop = (e, newStatus) => {
             e.preventDefault();
-            e.currentTarget.classList.add('drag-over');
-        };
-
-        window.handleDragLeave = (e) => {
-            e.currentTarget.classList.remove('drag-over');
-        };
-
-        window.handleDrop = async (e, newStatus) => {
-            e.preventDefault();
-            e.currentTarget.classList.remove('drag-over');
             const id = e.dataTransfer.getData('taskId');
-            
-            if (isLocalMode) {
-                const task = localTasks.find(t => t.id === id);
-                if (task) {
-                    task.status = newStatus;
-                    renderTasks();
-                }
-            } else {
-                await updateDoc(doc(db, publicPath, id), { 
-                    status: newStatus,
-                    updatedAt: serverTimestamp() 
-                });
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.status = newStatus;
+                renderBoard();
             }
+            e.currentTarget.classList.remove('drag-over');
         };
 
-        startApp();
+        window.openForm = (status) => {
+            document.getElementById('modal-form').classList.remove('hidden');
+            document.getElementById('task-title').value = '';
+            document.getElementById('task-desc').value = '';
+        };
+
+        window.closeForm = () => {
+            document.getElementById('modal-form').classList.add('hidden');
+        };
+
+        // Inisialisasi saat window dimuat
+        window.onload = init;
     </script>
 </body>
 </html>

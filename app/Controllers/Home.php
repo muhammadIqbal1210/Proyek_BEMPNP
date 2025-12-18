@@ -2,6 +2,7 @@
 
 use App\Controllers\BaseController;
 use App\Models\PengumumanModel; // Menggunakan PengumumanModel
+use App\Models\LaporanModel;
 
 /**
  * Controller untuk mengelola tampilan halaman publik (Frontend)
@@ -110,10 +111,77 @@ class Home extends BaseController
         return view('frontend/pengumuman/detail', $data);
     }
     public function layanan()
+    {
+        $data = [
+            'title' => 'Layanan Kami - BEM KM PNP'
+        ];
+        return view('frontend/layanan', $data);
+    }
+    public function advokasi()
+    {
+        return view('frontend/lapor');
+    }
+    public function kirim_lapor()
 {
-    $data = [
-        'title' => 'Layanan Kami - BEM KM PNP'
+    // 1. Definisikan validasi untuk multiple files
+    $validationRules = [
+        'nama' => 'required',
+        'isi'  => 'required',
+        'lampiran' => [
+            'rules' => 'uploaded[lampiran]|max_size[lampiran,2048]|is_image[lampiran]|mime_in[lampiran,image/jpg,image/jpeg,image/png]',
+            'errors' => [
+                'uploaded' => 'Pilih setidaknya satu file.',
+                'max_size' => 'Salah satu ukuran file melebihi 2MB.',
+                'is_image' => 'Salah satu file bukan merupakan gambar.',
+                'mime_in'  => 'Format file harus JPG, JPEG, atau PNG.'
+            ]
+        ]
     ];
-    return view('frontend/layanan', $data);
-}
+
+    if (!$this->validate($validationRules)) {
+        return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+    }
+
+    // 2. Tangani Upload Banyak File
+    $files = $this->request->getFiles();
+    $daftarNamaFile = [];
+
+    // Pastikan 'lampiran' ada di dalam array files
+    if (isset($files['lampiran'])) {
+        foreach ($files['lampiran'] as $fileLampiran) {
+            // Cek apakah file valid (ini mencegah error isValid() on null)
+            if ($fileLampiran->isValid() && !$fileLampiran->hasMoved()) {
+                // Generate nama random agar tidak duplikat
+                $namaFileBaru = $fileLampiran->getRandomName();
+                // Pindahkan ke folder public/uploads/laporan
+                $fileLampiran->move(FCPATH . 'uploads/laporan', $namaFileBaru);
+                
+                // Tambahkan nama file ke array hasil upload
+                $daftarNamaFile[] = $namaFileBaru;
+            }
+        }
+    }
+
+    // 3. Simpan ke Database
+    // Kita menggabungkan nama-nama file menjadi satu string yang dipisahkan koma
+    // Contoh: "123456.jpg,789012.png" agar bisa masuk ke kolom string/text di DB
+    $namaFileUntukDB = implode(',', $daftarNamaFile);
+
+    $model = new LaporanModel();
+    $data = [
+        'nama'     => $this->request->getPost('nama'),
+        'nim'      => $this->request->getPost('nim'),
+        'kategori' => $this->request->getPost('kategori'),
+        'kontak'   => $this->request->getPost('kontak'),
+        'isi'      => $this->request->getPost('isi'),
+        'lampiran' => $namaFileUntukDB, 
+        'status'   => 'Masuk'
+    ];
+
+    if ($model->insert($data)) {
+        return redirect()->to('/layanan/advokasi')->with('success', 'Laporan dan semua file berhasil dikirim!');
+    }
+
+    return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
+    }
 }

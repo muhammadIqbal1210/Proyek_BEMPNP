@@ -12,13 +12,24 @@
 <section class="max-w-7xl mx-auto px-6 py-2">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
-                <i class="fas fa-shield-alt"></i>
+        <a href="<?= base_url('layanan/advokasi') ?>" class="block group">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
+                <!-- Icon dengan efek warna saat kartu di-hover -->
+                <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                
+                <h3 class="font-bold text-xl text-gray-800 mb-3">Advokasi Mahasiswa</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Bantuan dan pendampingan terkait masalah akademik maupun non-akademik.
+                </p>
+                
+                <!-- Tambahan indikator visual kecil di bawah (opsional) -->
+                <div class="mt-6 text-blue-600 font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                    Buka Layanan <i class="fas fa-arrow-right ml-1"></i>
+                </div>
             </div>
-            <h3 class="font-bold text-xl text-gray-800 mb-3">Advokasi Mahasiswa</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Bantuan dan pendampingan terkait masalah akademik maupun non-akademik.</p>
-        </div>
+        </a>
 
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
             <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">

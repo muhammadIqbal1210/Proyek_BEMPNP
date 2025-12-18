@@ -99,7 +99,7 @@
         </a>
     </div>
     <div class="menu-item">
-        <a href="#">
+        <a href="/admin/laporan/index">
             <span class="menu-icon"><i class="fa-regular fa-file-lines"></i></span>
             <span>Laporan</span>
         </a>
