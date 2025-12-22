@@ -60,6 +60,7 @@
                             <th>No</th>
                             <th>Nama Event</th>
                             <th>Deskripsi</th>
+                            <th>Deadline</th>
                             <th>Link Informasi</th>
                             <th>File</th>
                             <th>Aksi</th>
@@ -86,11 +87,10 @@
                                         <?php endif; ?>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <?php if (!empty($katalog['foto_utama'])): ?>
-                                            <!-- Menggunakan 'foto_utama' yang merupakan alias dari kolom 'filename' hasil JOIN -->
-                                            <img src="<?= esc($file_base_url . $katalog['foto_utama']) ?>" 
-                                                alt="Foto Utama" 
-                                                class="w-16 h-16 object-cover rounded-md border border-gray-200">
+                                        <?php if (!empty($event['file'])): ?>
+                                            <img src="<?= esc($file_base_url . $event['file']) ?>" 
+                                                alt="Info Gambar" 
+                                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
                                         <?php else: ?>
                                             <span class="text-red-500">No Foto</span>
                                         <?php endif; ?>

@@ -21,6 +21,10 @@ $routes->post('layanan/kirim_lapor', 'Home::kirim_lapor');
 $routes->get('katalog', 'Home::katalog');
 $routes->get('beasiswa', 'Home::beasiswa');
 $routes->get('beasiswa/detail/(:num)', 'Home::detailbeasiswa/$1');
+$routes->get('lomba', 'Home::lomba');
+$routes->get('lomba/detail/(:num)', 'Home::detaillomba/$1');
+$routes->get('event', 'Home::event');
+$routes->get('lomba/detail/(:num)', 'Home::detaillomba/$1');
 
 $routes->group('member', ['filter' => 'member'], function($routes) {
     $routes->get('dashboard', 'Member\Dashboard::index');

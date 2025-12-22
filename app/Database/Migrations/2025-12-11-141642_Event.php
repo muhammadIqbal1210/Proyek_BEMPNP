@@ -27,6 +27,11 @@ class Event extends Migration
                 'constraint' => '255',
                 'null'       => true,
             ],
+
+            'waktu' => [
+                'type' => 'DATE',
+                'null' => false,
+            ],
             'file' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,

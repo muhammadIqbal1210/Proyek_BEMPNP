@@ -5,6 +5,8 @@ use App\Models\PengumumanModel;
 use App\Models\LaporanModel;
 use App\Models\KatalogModel;
 use App\Models\BeasiswaModel;
+use App\Models\LombaModel;
+use App\Models\EventModel;
 
 /**
  * Controller untuk mengelola tampilan halaman publik (Frontend)
@@ -14,6 +16,8 @@ class Home extends BaseController
 {
     protected $pengumumanModel;
     protected $beasiswaModel;
+    protected $lombaModel;
+    protected $eventModel;
 
     /**
      * Konstruktor untuk inisialisasi Model.
@@ -24,6 +28,7 @@ class Home extends BaseController
         $this->pengumumanModel = new PengumumanModel();
         helper(['url']); // Memuat helper URL untuk base_url()
         $this->beasiswaModel   = new BeasiswaModel();
+        $this->lombaModel   = new LombaModel();
     }
     
     /**
@@ -257,4 +262,72 @@ class Home extends BaseController
         // Asumsi: View untuk detail pengumuman berada di 'frontend/pengumuman/detail'
         return view('frontend/beasiswa/detail', $data);
     }
+    public function lomba()
+    {
+        $model = new LombaModel();
+        $keyword = $this->request->getVar('keyword');
+        
+        if ($keyword) {
+            $lombaObj = $model->like('nama_lomba', $keyword)->orLike('deskripsi', $keyword);
+        } else {
+            $lombaObj = $model;
+        }
+
+        $data = [
+            'title'             => 'Informasi Lomba',
+            'lomba_list'        => $lombaObj->paginate(12, 'lomba'),
+            'pager'             => $model->pager,
+            'keyword'           => $keyword,
+            'poster_base_url'   => base_url('uploads/lomba/') // Folder khusus gambar beasiswa
+        ];
+
+        return view('frontend/lomba/list', $data);
+    }
+    public function detaillomba($id = null): string
+    {
+        if (!$id) {
+             // Lempar exception jika ID tidak valid
+             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Lomba tidak ditemukan.');
+        }
+
+        $lomba = $this->lombaModel->find($id);
+
+        if (!$lomba) {
+            // Jika tidak ditemukan atau statusnya bukan 'aktif', lempar 404
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Beasiswa yang Anda cari tidak tersedia atau sudah dihapus.');
+        }
+        
+        $poster_base_url = base_url('uploads/lomba/');
+
+        $data = [
+            'title'           => $lomba['nama_lomba'],
+            'lomba'           => $lomba,
+            'poster_base_url' => $poster_base_url,
+        ];
+
+        // Asumsi: View untuk detail pengumuman berada di 'frontend/pengumuman/detail'
+        return view('frontend/lomba/detail', $data);
+    }
+    public function event()
+    {
+        $model = new eventModel();
+        $keyword = $this->request->getVar('keyword');
+        
+        if ($keyword) {
+            $eventObj = $model->like('nama_event', $keyword)->orLike('deskripsi', $keyword);
+        } else {
+            $eventObj = $model;
+        }
+
+        $data = [
+            'title'             => 'Informasi Event',
+            'event_list'        => $eventObj->paginate(12, 'event'),
+            'pager'             => $model->pager,
+            'keyword'           => $keyword,
+            'file_base_url'   => base_url('uploads/event/') // Folder khusus gambar beasiswa
+        ];
+
+        return view('frontend/event/list', $data);
+    }
+
 }

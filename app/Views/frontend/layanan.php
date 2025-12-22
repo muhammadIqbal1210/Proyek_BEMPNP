@@ -50,21 +50,24 @@
             </div>
         </a>
 
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="w-16 h-16 bg-purple-50 text-purple-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
-                <i class="fas fa-briefcase"></i>
+        <a href="<?= base_url('/lomba') ?>" class="block group">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
+                <!-- Icon dengan efek warna saat kartu di-hover -->
+                <div class="w-16 h-16 bg-yellow-50 text-yellow-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-yellow-600 group-hover:text-white transition-all duration-300">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                
+                <h3 class="font-bold text-xl text-gray-800 mb-3">Informasi Lomba</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Kumpulan info kompetisi akademik dan non-akademik berbagai tingkat.
+                </p>
+                
+                <!-- Tambahan indikator visual kecil di bawah -->
+                <div class="mt-6 text-yellow-600 font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                    Buka Layanan <i class="fas fa-arrow-right ml-1"></i>
+                </div>
             </div>
-            <h3 class="font-bold text-xl text-gray-800 mb-3">Informasi Magang</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Informasi seputar lowongan magang dan persiapan karir mahasiswa.</p>
-        </div>
-
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="w-16 h-16 bg-yellow-50 text-yellow-600 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
-                <i class="fas fa-trophy"></i>
-            </div>
-            <h3 class="font-bold text-xl text-gray-800 mb-3">Informasi Lomba</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Kumpulan info kompetisi akademik dan non-akademik tingkat nasional.</p>
-        </div>
+        </a>
 
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
             <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
@@ -94,8 +97,8 @@
             <div class="w-16 h-16 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
                 <i class="fas fa-handshake"></i>
             </div>
-            <h3 class="font-bold text-xl text-gray-800 mb-3">Mitra Internal</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Ruang kolaborasi bagi ormawa di lingkungan Politeknik Negeri Padang.</p>
+            <h3 class="font-bold text-xl text-gray-800 mb-3">Mitra Internal & Eksternal</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Ruang kolaborasi bagi ormawa di lingkungan Politeknik Negeri Padang dan Kampus Luar.</p>
         </div>
 
     </div>
