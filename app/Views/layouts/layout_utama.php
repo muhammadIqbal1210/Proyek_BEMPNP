@@ -70,7 +70,12 @@
                    Layanan
                 </a>
             </li>
-            <li><a href="#" class="hover:text-orange-400 pb-1 transition">Katalog</a></li>
+            <li>
+                <a href="<?= base_url('katalog') ?>" 
+                   class="<?= url_is('katalog*') ? 'text-orange-400 border-b-2 border-orange-400' : 'hover:text-orange-400' ?> pb-1 transition-all duration-300">
+                   Katalog
+                </a>
+            </li>
             <li><a href="#" class="hover:text-orange-400 pb-1 transition">Kontak</a></li>
             
             <li>

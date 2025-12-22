@@ -29,6 +29,14 @@
                         <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" 
                             placeholder="Jelaskan deskripsi dan persyratan beasiswa ini."><?= set_value('deskripsi') ?></textarea>
                     </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="tanggal_buka" class="form-label">Tanggal Buka <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="tanggal_buka" name="tanggal_buka" required value="<?= old('tanggal_buka') ?>">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="tanggal_tutup" class="form-label">Tanggal Tutup <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="tanggal_tutup" name="tanggal_tutup" required value="<?= old('tanggal_tutup') ?>">
+                    </div>
 
                     <div class="row">
                         <!-- Status Beasiswa -->

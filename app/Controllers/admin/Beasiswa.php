@@ -96,6 +96,8 @@ class Beasiswa extends BaseController
         $data = [
             'nama_beasiswa'             => $this->request->getPost('nama_beasiswa'),
             'deskripsi'                 => $this->request->getPost('deskripsi'),
+            'tanggal_buka'              => $this->request->getPost('tanggal_buka'),
+            'tanggal_tutup'             => $this->request->getPost('tanggal_tutup'),
             'status_beasiswa'           => $this->request->getPost('status_beasiswa'),
             'link_informasi'            => $this->request->getPost('link_informasi'),
             'poster'                    => $filePath, // Simpan nama file
@@ -171,6 +173,8 @@ class Beasiswa extends BaseController
             'id'                      => $id, // Penting: sertakan ID untuk update
             'nama_beasiswa'           => $this->request->getPost('nama_beasiswa'),
             'deskripsi'               => $this->request->getPost('deskripsi'),
+            'tanggal_buka'            => $this->request->getPost('tanggal_buka'),
+            'tanggal_tutup'           => $this->request->getPost('tanggal_tutup'),
             'status_beasiswa'         => $this->request->getPost('status_beasiswa'),
             'link_informasi'          => $this->request->getPost('link_informasi'),
             'poster'                  => $filePath,

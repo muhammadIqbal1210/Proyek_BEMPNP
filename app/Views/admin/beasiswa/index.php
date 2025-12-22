@@ -68,6 +68,8 @@
                             <th>No</th>
                             <th>Nama Beasiswa</th>
                             <th>Deskripsi</th>
+                            <th>Tanggal Buka</th>
+                            <th>Tanggal Tutup</th>
                             <th>Link Informasi</th>
                             <th>Poster</th>
                             <th>Status</th>
@@ -87,6 +89,8 @@
                                     <td><?= $no++ ?></td>
                                     <td><?= esc($beasiswa['nama_beasiswa']) ?></td>
                                     <td><?= esc($beasiswa['deskripsi']) ?></td>
+                                    <td><?= date('d/m/Y', strtotime($beasiswa['tanggal_buka'])) ?></td>
+                                    <td><?= date('d/m/Y', strtotime($beasiswa['tanggal_tutup'])) ?></td>
                                     <td>
                                         <?php if (!empty($beasiswa['link_informasi'])): ?>
                                             <a href="<?= esc($beasiswa['link_informasi']) ?>" target="_blank" class="text-primary" title="Kunjungi Link"><i class="fas fa-external-link-alt"></i></a>

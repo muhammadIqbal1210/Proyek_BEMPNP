@@ -24,6 +24,14 @@
                     <textarea class="form-control" id="edit_deskripsi" name="deskripsi" rows="3" 
                             placeholder="Jelaskan deskripsi dan persyratan beasiswa ini."><?= set_value('deskripsi') ?></textarea>
                 </div>
+                <div class="mb-3">
+                    <label for="edit_tanggal_buka" class="form-label">Tanggal Buka</label>
+                    <input type="date" class="form-control" id="edit_tanggal_buka" name="tanggal_buka" required>
+                </div>
+                <div class="mb-3">
+                    <label for="edit_tanggal_tutup" class="form-label">Tanggal Tutup</label>
+                    <input type="date" class="form-control" id="edit_tanggal_tutup" name="tanggal_tutup" required>
+                </div>
 
                 <div class="mb-3">
                     <label for="edit_status_beasiswa" class="form-label">Status</label>
@@ -65,14 +73,11 @@
 
 <!-- ======================================================= -->
 <!-- SCRIPT UNTUK AJAX AMBIL DATA DAN ISI MODAL -->
-<!-- Pastikan library Bootstrap JS dan jQuery (jika digunakan) sudah dimuat -->
 <!-- ======================================================= -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // PERBAIKAN: Menggunakan ID modal yang benar: 'editBeasiswaModal'
         const editModal = document.getElementById('editBeasiswaModal');
         const editForm = document.getElementById('editForm');
-        // Base URL diambil dari PHP (assuming base_url() helper works here)
         const baseUrl = '<?= base_url('admin/beasiswa') ?>';
 
         if (!editModal) {
@@ -118,7 +123,8 @@
                     document.getElementById('edit_id').value = data.id;
                     document.getElementById('edit_nama_beasiswa').value = data.nama_beasiswa;
                     document.getElementById('edit_deskripsi').value = data.deskripsi;
-                    // Pastikan value status sesuai dengan option value ('buka', 'tutup', 'segera')
+                    document.getElementById('edit_tanggal_buka').value = data.tanggal_buka;
+                    document.getElementById('edit_tanggal_tutup').value = data.tanggal_tutup;
                     document.getElementById('edit_status_beasiswa').value = data.status_beasiswa.toLowerCase(); 
                     document.getElementById('edit_link_informasi').value = data.link_informasi;
 

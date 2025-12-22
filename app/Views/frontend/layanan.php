@@ -31,13 +31,24 @@
             </div>
         </a>
 
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
-                <i class="fas fa-graduation-cap"></i>
+        <a href="<?= base_url('/beasiswa') ?>" class="block group">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
+                <!-- Icon dengan efek warna saat kartu di-hover -->
+                <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                
+                <h3 class="font-bold text-xl text-gray-800 mb-3">Informasi Beasiswa</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Update terbaru mengenai peluang beasiswa internal maupun eksternal.
+                </p>
+                
+                <!-- Tambahan indikator visual kecil di bawah (opsional) -->
+                <div class="mt-6 text-green-600 font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                    Buka Layanan <i class="fas fa-arrow-right ml-1"></i>
+                </div>
             </div>
-            <h3 class="font-bold text-xl text-gray-800 mb-3">Informasi Beasiswa</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Update terbaru mengenai peluang beasiswa internal maupun eksternal.</p>
-        </div>
+        </a>
 
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
             <div class="w-16 h-16 bg-purple-50 text-purple-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">

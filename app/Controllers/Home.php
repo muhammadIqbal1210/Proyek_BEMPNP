@@ -1,8 +1,10 @@
 <?php namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\PengumumanModel; // Menggunakan PengumumanModel
+use App\Models\PengumumanModel; 
 use App\Models\LaporanModel;
+use App\Models\KatalogModel;
+use App\Models\BeasiswaModel;
 
 /**
  * Controller untuk mengelola tampilan halaman publik (Frontend)
@@ -11,6 +13,7 @@ use App\Models\LaporanModel;
 class Home extends BaseController
 {
     protected $pengumumanModel;
+    protected $beasiswaModel;
 
     /**
      * Konstruktor untuk inisialisasi Model.
@@ -20,6 +23,7 @@ class Home extends BaseController
         // Inisialisasi model Pengumuman
         $this->pengumumanModel = new PengumumanModel();
         helper(['url']); // Memuat helper URL untuk base_url()
+        $this->beasiswaModel   = new BeasiswaModel();
     }
     
     /**
@@ -82,7 +86,7 @@ class Home extends BaseController
      * Menampilkan detail dari satu pengumuman berdasarkan ID.
      * Diasumsikan route-nya mengarah ke /pengumuman/detail/{id}
      */
-    public function detail($id = null): string
+    public function detailpengumuman($id = null): string
     {
         if (!$id) {
              // Lempar exception jika ID tidak valid
@@ -183,5 +187,74 @@ class Home extends BaseController
     }
 
     return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
+    }
+    public function katalog()
+    {
+        $model = new KatalogModel();
+        
+        // Mengambil keyword dari pencarian jika ada
+        $keyword = $this->request->getVar('keyword');
+        
+        if ($keyword) {
+            $katalogObj = $model->like('nama_barang', $keyword)->orLike('deskripsi', $keyword);
+        } else {
+            $katalogObj = $model;
+        }
+
+        $data = [
+            'title'            => 'Katalog Produk Kami',
+            'katalog_list'     => $katalogObj->paginate(12, 'katalog'),
+            'pager'            => $model->pager,
+            'keyword'          => $keyword,
+            'produk_base_url'  => base_url('uploads/katalog/') // Sesuaikan folder upload Anda
+        ];
+
+        return view('frontend/katalog/list', $data);
+    }
+    public function beasiswa()
+    {
+        $model = new BeasiswaModel();
+        $keyword = $this->request->getVar('keyword');
+        
+        if ($keyword) {
+            $beasiswaObj = $model->like('nama_beasiswa', $keyword)->orLike('deskripsi', $keyword);
+        } else {
+            $beasiswaObj = $model;
+        }
+
+        $data = [
+            'title'             => 'Data Beasiswa Mahasiswa',
+            'beasiswa_list'      => $beasiswaObj->paginate(12, 'beasiswa'),
+            'pager'             => $model->pager,
+            'keyword'           => $keyword,
+            'beasiswa_base_url' => base_url('uploads/beasiswa/') // Folder khusus gambar beasiswa
+        ];
+
+        return view('frontend/beasiswa/list', $data);
+    }
+    public function detailbeasiswa($id = null): string
+    {
+        if (!$id) {
+             // Lempar exception jika ID tidak valid
+             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Pengumuman tidak ditemukan.');
+        }
+
+        $beasiswa = $this->beasiswaModel->find($id);
+
+        if (!$beasiswa) {
+            // Jika tidak ditemukan atau statusnya bukan 'aktif', lempar 404
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Beasiswa yang Anda cari tidak tersedia atau sudah dihapus.');
+        }
+        
+        $beasiswa_base_url = base_url('uploads/beasiswa/');
+
+        $data = [
+            'title'             => $beasiswa['nama_beasiswa'],
+            'beasiswa'          => $beasiswa,
+            'beasiswa_base_url' => $beasiswa_base_url,
+        ];
+
+        // Asumsi: View untuk detail pengumuman berada di 'frontend/pengumuman/detail'
+        return view('frontend/beasiswa/detail', $data);
     }
 }

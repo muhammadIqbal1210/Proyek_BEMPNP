@@ -24,6 +24,14 @@ class Beasiswa extends Migration
                 'type' => 'TEXT',
                 'comment'    => 'Deskripsi Lengkap',
             ],
+            'tanggal_buka' => [
+                'type' => 'DATE',
+                'null' => false,
+            ],
+            'tanggal_tutup' => [
+                'type' => 'DATE',
+                'null' => false,
+            ],
             'status_beasiswa' => [
                 'type' => 'ENUM',
                 'constraint' => ['Buka','Tutup','Segera'], // Disesuaikan dengan pilihan di Modal

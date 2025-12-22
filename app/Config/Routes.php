@@ -14,10 +14,13 @@ $routes->get('register', 'Register::index'); // Untuk menampilkan form
 $routes->post('register', 'Register::store');
 $routes->get('logout', 'Auth::logout'); 
 $routes->get('pengumuman', 'Home::pengumuman');
-$routes->get('pengumuman/detail/(:num)', 'Home::detail/$1');
+$routes->get('pengumuman/detail/(:num)', 'Home::detailpengumuman/$1');
 $routes->get('layanan', 'Home::layanan');
 $routes->get('layanan/advokasi', 'Home::advokasi');
 $routes->post('layanan/kirim_lapor', 'Home::kirim_lapor');
+$routes->get('katalog', 'Home::katalog');
+$routes->get('beasiswa', 'Home::beasiswa');
+$routes->get('beasiswa/detail/(:num)', 'Home::detailbeasiswa/$1');
 
 $routes->group('member', ['filter' => 'member'], function($routes) {
     $routes->get('dashboard', 'Member\Dashboard::index');

@@ -21,7 +21,9 @@ class BeasiswaModel extends Model
     // Bidang yang diizinkan untuk diisi (fillable fields)
     protected $allowedFields = [
         'nama_beasiswa', 
-        'deskripsi',  
+        'deskripsi', 
+        'tanggal_buka',
+        'tanggal_tutup', 
         'status_beasiswa', 
         'link_informasi', 
         'poster'
