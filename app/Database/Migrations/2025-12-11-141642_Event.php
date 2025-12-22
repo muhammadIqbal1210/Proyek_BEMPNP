@@ -27,10 +27,14 @@ class Event extends Migration
                 'constraint' => '255',
                 'null'       => true,
             ],
-
             'waktu' => [
                 'type' => 'DATE',
                 'null' => false,
+            ],
+            'biaya' => [
+                'type' => 'ENUM',
+                'constraint' => ['berbayar','gratis'], 
+                'default' => 'gratis',
             ],
             'file' => [
                 'type' => 'VARCHAR',

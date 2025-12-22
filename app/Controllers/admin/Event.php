@@ -87,6 +87,8 @@ class Event extends BaseController
         $data = [
             'nama_event'           => $this->request->getPost('nama_event'),
             'deskripsi'            => $this->request->getPost('deskripsi'),
+            'waktu'                => $this->request->getPost('waktu'),
+            'biaya'                => $this->request->getPost('biaya'),
             'link_informasi'       => $this->request->getPost('link_informasi'),
             'file'                 => $filePath, // Simpan nama file
         ];
@@ -160,6 +162,8 @@ class Event extends BaseController
         $data = [
             'id'                  => $id, // Penting: sertakan ID untuk update
             'nama_event'          => $this->request->getPost('nama_event'),
+            'waktu'               => $this->request->getPost('waktu'),
+            'biaya'               => $this->request->getPost('biaya'),
             'deskripsi'           => $this->request->getPost('deskripsi'),
             'link_informasi'      => $this->request->getPost('link_informasi'),
             'file'                => $filePath,

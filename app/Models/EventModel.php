@@ -17,6 +17,7 @@ class EventModel extends Model
         'deskripsi',
         'link_informasi',
         'waktu',
+        'biaya',
         'file'
     ];
 

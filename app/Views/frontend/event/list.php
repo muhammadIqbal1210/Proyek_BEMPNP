@@ -54,7 +54,7 @@
                 <hr class="my-8 border-gray-100">
 
                 <!-- Help Box -->
-                <div class="bg-gradient-to-br from-green-600 to-indigo-700 p-6 rounded-2xl text-white">
+                <div class="bg-green-600 p-6 rounded-2xl text-white">
                     <p class="text-xs font-medium opacity-80 mb-2">Ingin mempromosikan event?</p>
                     <p class="text-sm font-bold mb-4">Ajukan publikasi event organisasimu di sini!</p>
                     <a href="#" class="block w-full py-2.5 bg-white text-green-700 text-center rounded-xl text-xs font-bold hover:bg-green-50 transition">
@@ -70,9 +70,8 @@
                 <div class="grid md:grid-cols-2 gap-8">
                     <?php foreach ($event_list as $event): ?>
                         <?php 
-                            // Logika penentuan status (Bisa disesuaikan dengan kolom tanggal di DB Anda)
-                            $deadline = isset($event['deadline']) ? strtotime($event['deadline']) : null;
-                            $is_active = $deadline ? ($deadline >= time()) : true;
+                            $waktu = isset($event['waktu']) ? strtotime($event['waktu']) : null;
+                            $is_active = $waktu ? ($waktu >= time()) : true;
                         ?>
                         <div class="group bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-green-900/10 transition-all duration-500 overflow-hidden flex flex-col">
                             
@@ -136,8 +135,8 @@
                                             <i class="far fa-calendar-check text-xs"></i>
                                         </div>
                                         <div>
-                                            <p class="text-[10px] text-gray-400 font-bold uppercase leading-none mb-1 text-red-500">Deadline</p>
-                                            <p class="text-xs font-bold text-gray-700"><?= isset($event['deadline']) ? date('d M Y', strtotime($event['deadline'])) : 'TBA' ?></p>
+                                            <p class="text-[10px] text-gray-400 font-bold uppercase leading-none mb-1 text-red-500">Tanggal Kegiatan</p>
+                                            <p class="text-xs font-bold text-gray-700"><?= isset($event['waktu']) ? date('d M Y', strtotime($event['waktu'])) : 'TBA' ?></p>
                                         </div>
                                     </div>
                                     

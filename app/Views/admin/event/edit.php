@@ -24,8 +24,19 @@
                             placeholder="Jelaskan deskripsi  event ini."><?= set_value('deskripsi') ?></textarea>
                 </div>
                 <div class="mb-3">
+                    <label for="edit_waktu" class="form-label">Waktu Kegiatan</label>
+                    <input type="date" class="form-control" id="edit_waktu" name="waktu" required>
+                </div>
+                <div class="mb-3">
                     <label for="edit_link_informasi" class="form-label">Link Informasi</label>
                     <input type="url" class="form-control" id="edit_link_informasi" name="link_informasi" required>
+                </div>
+                <div class="mb-3">
+                    <label for="edit_status" class="form-label">Biaya</label>
+                    <select class="form-control" id="edit_biaya" name="biaya" required>
+                        <option value="berbayar">Berbayar</option>
+                        <option value="gratis">Gratis</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
@@ -108,6 +119,8 @@
                     document.getElementById('edit_id').value = data.id;
                     document.getElementById('edit_nama_event').value = data.nama_event;
                     document.getElementById('edit_deskripsi').value = data.deskripsi; 
+                    document.getElementById('edit_waktu').value = data.waktu; 
+                    document.getElementById('edit_biaya').value = data.biaya; 
                     document.getElementById('edit_link_informasi').value = data.link_informasi;
 
                     // 5. Penanganan File Pendukung

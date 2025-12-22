@@ -60,8 +60,9 @@
                             <th>No</th>
                             <th>Nama Event</th>
                             <th>Deskripsi</th>
-                            <th>Deadline</th>
+                            <th>Waktu Kegiatan</th>
                             <th>Link Informasi</th>
+                            <th>Biaya</th>
                             <th>File</th>
                             <th>Aksi</th>
                         </tr>
@@ -79,12 +80,23 @@
                                     <td><?= $no++ ?></td>
                                     <td><?= esc($event['nama_event']) ?></td>
                                     <td><?= esc($event['deskripsi']) ?></td>
+                                    <td><?= date('d/m/Y', strtotime($event['waktu'])) ?></td>
                                     <td>
                                         <?php if (!empty($event['link_informasi'])): ?>
                                             <a href="<?= esc($event['link_informasi']) ?>" target="_blank" class="text-primary" title="Kunjungi Link"><i class="fas fa-external-link-alt"></i></a>
                                         <?php else: ?>
                                             <span class="text-muted">N/A</span>
                                         <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                            $eventClass = 'secondary';
+                                            if ($event['biaya'] == 'berbayar') $eventClass = 'success';
+                                            if ($event['biaya'] == 'gratis') $eventClass = 'warning';
+                                        ?>
+                                        <span class="badge bg-<?= $eventClass ?>">
+                                            <?= ucfirst($event['biaya']) ?>
+                                        </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         <?php if (!empty($event['file'])): ?>
@@ -96,7 +108,7 @@
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <!-- Aksi: Edit (Mengarah ke halaman edit) -->
+                                        <!-- Aksi: Edit  -->
                                         <button class="btn btn-sm btn-outline-warning btn-edit" 
                                             title="Edit" 
                                             data-id="<?= $event['id'] ?>" 

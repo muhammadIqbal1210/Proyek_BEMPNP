@@ -25,7 +25,17 @@
                         <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" 
                             placeholder="Jelaskan deskripsi event ini."><?= set_value('deskripsi') ?></textarea>
                     </div>
-
+                    <div class="col-md-6 mb-3">
+                        <label for="waktu" class="form-label">Waktu Kegiatan <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="waktu" name="waktu" required value="<?= old('waktu') ?>">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="biaya" class="form-label">Biaya <span class="text-danger">*</span></label>
+                        <select class="form-select" id="biaya" name="biaya" required>
+                            <option value="berbayar" <?= old('biaya') == 'berbayar' ? 'selected' : '' ?>>Berbayar</option>
+                            <option value="gratis" <?= old('biaya') == 'gratis' ? 'selected' : '' ?>>Gratis</option>
+                        </select>
+                    </div>
                     <div class="row">
                         <!-- Link Informasi -->
                         <div class="col-md-6 mb-3">

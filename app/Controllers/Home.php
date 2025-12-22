@@ -24,11 +24,12 @@ class Home extends BaseController
      */
     public function __construct()
     {
+        helper(['url']); // Memuat helper URL untuk base_url()
         // Inisialisasi model Pengumuman
         $this->pengumumanModel = new PengumumanModel();
-        helper(['url']); // Memuat helper URL untuk base_url()
         $this->beasiswaModel   = new BeasiswaModel();
         $this->lombaModel   = new LombaModel();
+        $this->eventModel   = new EventModel();
     }
     
     /**
@@ -328,6 +329,31 @@ class Home extends BaseController
         ];
 
         return view('frontend/event/list', $data);
+    }
+    public function detailevent($id = null): string
+    {
+        if (!$id) {
+             // Lempar exception jika ID tidak valid
+             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Lomba tidak ditemukan.');
+        }
+
+        $event = $this->eventModel->find($id);
+
+        if (!$event) {
+            // Jika tidak ditemukan atau statusnya bukan 'aktif', lempar 404
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Event yang Anda cari tidak tersedia atau sudah dihapus.');
+        }
+        
+        $file_base_url = base_url('uploads/event/');
+
+        $data = [
+            'title'           => $event['nama_event'],
+            'event'           => $event,
+            'file_base_url'   => $file_base_url,
+        ];
+
+        // Asumsi: View untuk detail pengumuman berada di 'frontend/pengumuman/detail'
+        return view('frontend/event/detail', $data);
     }
 
 }

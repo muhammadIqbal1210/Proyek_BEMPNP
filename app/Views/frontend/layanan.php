@@ -68,14 +68,24 @@
                 </div>
             </div>
         </a>
-
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
-                <i class="fas fa-calendar-alt"></i>
+        <a href="<?= base_url('/event') ?>" class="block group">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
+                <!-- Icon dengan efek warna saat kartu di-hover -->
+                <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                
+                <h3 class="font-bold text-xl text-gray-800 mb-3">Informasi Lomba</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Kumpulan info kompetisi akademik dan non-akademik berbagai tingkat.
+                </p>
+                
+                <!-- Tambahan indikator visual kecil di bawah -->
+                <div class="mt-6 text-red-600 font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                    Buka Layanan <i class="fas fa-arrow-right ml-1"></i>
+                </div>
             </div>
-            <h3 class="font-bold text-xl text-gray-800 mb-3">Agenda Kegiatan</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Jadwal lengkap semua acara dan kegiatan dari BEM KM PNP.</p>
-        </div>
+        </a>
 
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
             <div class="w-16 h-16 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
