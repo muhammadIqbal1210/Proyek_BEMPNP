@@ -1,153 +1,133 @@
 <div class="container-fluid">
     <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             <?= session()->getFlashdata('success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
-    <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger" role="alert">
-            <?= session()->getFlashdata('error') ?>
-        </div>
-    <?php endif; ?>
+
     <?php if (session()->getFlashdata('errors')): ?>
-        <div class="alert alert-danger" role="alert">
-            <h4 class="alert-heading">Gagal Menyimpan!</h4>
-            <ul>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading small fw-bold">Gagal Menyimpan!</h4>
+            <ul class="mb-0 small">
                 <?php foreach (session()->getFlashdata('errors') as $error): ?>
                     <li><?= esc($error) ?></li>
                 <?php endforeach ?>
             </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
 
-    <ol class="breadcrumb" style="background: none; padding: 0;">
-        <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Berita</li>
+    <ol class="breadcrumb mb-4" style="background: none; padding: 0;">
+        <li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard') ?>">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Manajemen Berita</li>
     </ol>
     
     <div class="card shadow-sm mb-4">
         <div class="card-body">
-            <button type="button" class="btn btn-sm btn-success" 
-                    data-bs-toggle="modal" data-bs-target="#createBeritaModal">
-                <i class="fas fa-plus me-1"></i> Tambah Berita
-            </button>
-            <hr>
-            
-            <form method="GET" action="<?= base_url('admin/berita') ?>">
-                <div class="row align-items-center">
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="keyword" 
-                                placeholder="Cari Berita..." aria-label="Search"
-                                value="<?= esc(isset($filters['keyword']) ? $filters['keyword'] : '') ?>">
-                            <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
-                        </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-sm btn-success" 
+                        data-bs-toggle="modal" data-bs-target="#createBeritaModal">
+                    <i class="fas fa-plus me-1"></i> Tambah Berita Baru
+                </button>
+                
+                <form method="GET" action="<?= base_url('admin/berita') ?>" class="d-flex">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" name="keyword" 
+                               placeholder="Cari judul..." 
+                               value="<?= esc($filters['keyword'] ?? '') ?>">
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                        <?php if(!empty($filters['keyword'])): ?>
+                            <a href="<?= base_url('admin/berita') ?>" class="btn btn-secondary"><i class="fas fa-redo"></i></a>
+                        <?php endif; ?>
                     </div>
-                    <div class="col-md-5 text-end">                        
-                        <a href="<?= base_url('admin/berita') ?>" class="btn btn-sm btn-secondary"><i class="fas fa-redo me-1"></i> Reset Filter</a>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 
     <div class="card shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+                <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>No</th>
-                            <th>Nama Berita</th>
-                            <th>Deskripsi</th>
-                            <th>Link Informasi</th>
-                            <th>File</th>
-                            <th>Aksi</th>
+                            <th width="50">No</th>
+                            <th>Judul Berita</th>
+                            <th>Slug Berita</th>
+                            <th>Tanggal</th>
+                            <th>Gambar</th>
+                            <th>Author</th>
+                            <th width="120" class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (!empty($berita_list)): ?>
                             <?php 
-                            // Hitung nomor awal untuk pagination
-                            $perPage = @$pager->getPerPage() ?: 10;
-                            $currentPage = @$pager->getCurrentPage() ?: 1;
+                            $perPage = 10; 
+                            $currentPage = (int)($pager->getCurrentPage() ?? 1);
                             $no = 1 + (($currentPage - 1) * $perPage); 
                             ?>
                             <?php foreach ($berita_list as $berita): ?>
                                 <tr>
                                     <td><?= $no++ ?></td>
-                                    <td><?= esc($berita['nama_berita']) ?></td>
-                                    <td><?= esc($berita['deskripsi']) ?></td>
+                                    <td class="fw-bold"><?= esc($berita['judulberita']) ?></td>
+                                    <td><small class="text-muted"><?= esc($berita['slugberita']) ?></small></td>
+                                    <td><?= date('d/m/Y', strtotime($berita['tanggalberita'])) ?></td>
                                     <td>
-                                        <?php if (!empty($berita['link_informasi'])): ?>
-                                            <a href="<?= esc($berita['link_informasi']) ?>" target="_blank" class="text-primary" title="Kunjungi Link"><i class="fas fa-external-link-alt"></i></a>
-                                        <?php else: ?>
-                                            <span class="text-muted">N/A</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php if (!empty($berita['file'])): ?>
+                                        <?php if (!empty($berita['gambarberita'])): ?>
                                             <img 
-                                                src="<?= esc($file_base_url . $berita['file']) ?>" 
-                                                alt="File <?= esc($berita['nama_berita']) ?>" 
-                                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
-                                                onerror="this.onerror=null; this.src='https://placehold.co/50x50/E5E7EB/4B5563?text=N%2FA'"
+                                                src="<?= base_url('uploads/berita/' . $berita['gambarberita']) ?>" 
+                                                alt="Gambar Berita" 
+                                                style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;"
+                                                onerror="this.onerror=null; this.src='https://placehold.co/60x40?text=No+Img'"
                                             />
                                         <?php else: ?>
-                                            <span class="text-muted">Tidak Ada</span>
+                                            <span class="badge bg-light text-dark">No Image</span>
                                         <?php endif; ?>
                                     </td>
-                                    <td>
-                                        <!-- Aksi: Edit (Mengarah ke halaman edit) -->
-                                        <button class="btn btn-sm btn-outline-warning btn-edit" 
-                                            title="Edit" 
-                                            data-id="<?= $berita['id'] ?>" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#editBeritaModal">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <!-- Aksi: Hapus -->
-                                        <a href="<?= base_url('admin/berita/delete/' . $berita['id']) ?>" 
-                                            onclick="return confirm('Anda yakin ingin menghapus berita ini? Tindakan ini tidak dapat dibatalkan.');" 
-                                            class="btn btn-sm btn-outline-danger" title="Hapus">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                    <td><span class="badge bg-info text-dark"><?= esc($berita['author']) ?></span></td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <button class="btn btn-sm btn-outline-warning btn-edit" 
+                                                title="Edit Berita" 
+                                                data-id="<?= $berita['id'] ?>" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#editBeritaModal">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <a href="<?= base_url('admin/berita/delete/' . $berita['id']) ?>" 
+                                                onclick="return confirm('Hapus berita ini?');" 
+                                                class="btn btn-sm btn-outline-danger" title="Hapus">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="9" class="text-center text-muted">Belum ada data berita yang tersedia.</td>
+                                <td colspan="7" class="text-center py-4 text-muted">
+                                    <i class="fas fa-folder-open d-block mb-2 fa-2x"></i>
+                                    Belum ada data berita.
+                                </td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="card-footer d-flex justify-content-between align-items-center">
-            <!-- Paging dan informasi jumlah data -->
-            <span class="text-muted small">
-                <?php if (!empty($berita_list)): ?>
-                    Menampilkan <?= count($berita_list) ?> Berita
-                <?php else: ?>
-                    Data kosong
-                <?php endif; ?>
-            </span>
-            <nav aria-label="Page navigation">
-                <!-- Placeholder untuk pagination -->
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+        <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+            <p class="mb-0 small text-muted">
+                Menampilkan <strong><?= count($berita_list) ?></strong> data berita.
+            </p>
+            <div>
+                <?= $pager->links('default', 'default_full') ?>
+            </div>
         </div>
     </div>
     
-    <!-- Memanggil View Modal Create (Wajib ada) -->
-    <?php echo view('admin/berita/create'); ?>
-
+    <!-- Modal Section -->
+    <?= view('admin/berita/create') ?>
     <?= $this->include('admin/berita/edit') ?>
-    <?= $this->include('admin/pengumuman/detail') ?> 
-
 </div>

@@ -7,6 +7,7 @@ use App\Models\KatalogModel;
 use App\Models\BeasiswaModel;
 use App\Models\LombaModel;
 use App\Models\EventModel;
+use App\Models\BeritaModel;
 
 /**
  * Controller untuk mengelola tampilan halaman publik (Frontend)
@@ -18,6 +19,8 @@ class Home extends BaseController
     protected $beasiswaModel;
     protected $lombaModel;
     protected $eventModel;
+    protected $beritaModel;
+    
 
     /**
      * Konstruktor untuk inisialisasi Model.
@@ -30,8 +33,8 @@ class Home extends BaseController
         $this->beasiswaModel   = new BeasiswaModel();
         $this->lombaModel   = new LombaModel();
         $this->eventModel   = new EventModel();
+        $this->beritaModel   = new BeritaModel();
     }
-    
     /**
      * Method default untuk halaman utama (Homepage).
      * Dapat digunakan untuk menampilkan 3 pengumuman terbaru sebagai cuplikan.
@@ -355,5 +358,39 @@ class Home extends BaseController
         // Asumsi: View untuk detail pengumuman berada di 'frontend/pengumuman/detail'
         return view('frontend/event/detail', $data);
     }
+    public function berita()
+    {
+        $model = new beritaModel();
+        $data = [
+            'title' => 'Daftar Berita',
+            'semua_berita' => $this->beritaModel->orderBy('created_at', 'DESC')->findAll()
+        ];
 
+        return view('frontend/berita/list', $data);
+    }
+    public function detailberita($id)
+    {
+        // 1. Ambil data berita yang dipilih
+        $berita = $this->beritaModel->find($id);
+
+        // Jika berita tidak ada, tampilkan error 404
+        if (!$berita) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Maaf, berita tidak ditemukan.");
+        }
+
+        // 2. Ambil berita lainnya untuk sidebar (misal 5 berita terbaru selain yang sedang dibaca)
+        $berita_lainnya = $this->beritaModel
+            ->where('id !=', $id)
+            ->orderBy('tanggalberita', 'DESC')
+            ->findAll(5);
+
+        $data = [
+            'title'          => $berita['judulberita'],
+            'detail'         => $berita,
+            'berita_lainnya' => $berita_lainnya
+        ];
+
+        // Memanggil file detail_berita.php
+        return view('frontend/berita/detail', $data);
+    }
 }

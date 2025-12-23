@@ -6,28 +6,24 @@ use CodeIgniter\Model;
 
 class BeritaModel extends Model
 {
-    protected $table            = 'beritas';
+    protected $table            = 'berita';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
+    protected $useSoftDeletes   = false; // Set true jika ingin menggunakan fitur hapus sementara
+    
+    // Field yang diizinkan untuk diisi (Mass Assignment)
     protected $allowedFields    = [
-        'judul',
-        'slug',
-        'penulis',
-        'isi',
-        'gambar',
+        'judulberita', 
+        'slugberita', 
+        'isiberita', 
+        'gambarberita', 
+        'tanggalberita', 
+        'author'
     ];
 
-    protected bool $allowEmptyInserts = false;
-    protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
-
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -35,36 +31,29 @@ class BeritaModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'judul'   => 'required|min_length[5]|max_length[255]',
-        'isi'     => 'required|min_length[50]',
-        'gambar'    => 'required',
+        'judulberita'   => 'required|min_length[5]|max_length[255]',
+        'isiberita'     => 'required',
+        'author'        => 'required',
     ];
+
     protected $validationMessages   = [
-        'judul' => [
-            'required' => 'Judul berita wajib diisi.',
-            'min_length' => 'Judul minimal 5 karakter.',
+        'judulberita' => [
+            'required' => 'Judul berita harus diisi.',
+            'min_length' => 'Judul berita minimal 5 karakter.'
         ],
-        'isi' => [
-            'required' => 'Isi berita wajib diisi.',
-            'min_length' => 'Isi berita minimal 50 karakter.',
-        ], 
-        'gambar_save' => [
-            'uploaded'    => 'File  wajib diunggah.',
-            'is_image'    => 'File yang diunggah harus berupa gambar (jpg, jpeg, png, atau gif).',
-            'max_size'    => 'Ukuran file  terlalu besar. Maksimal 5MB.'
+        'isiberita' => [
+            'required' => 'Isi berita tidak boleh kosong.'
         ]
     ];
-    protected $skipValidation       = false;
-    protected $cleanValidationRules = true;
 
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+    /**
+     * Fungsi untuk mencari berita berdasarkan keyword (untuk fitur pencarian di View)
+     */
+    public function search($keyword)
+    {
+        return $this->table($this->table)
+                    ->like('judulberita', $keyword)
+                    ->orLike('isiberita', $keyword)
+                    ->orLike('author', $keyword);
+    }
 }

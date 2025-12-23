@@ -75,9 +75,9 @@
                     <i class="fas fa-calendar-alt"></i>
                 </div>
                 
-                <h3 class="font-bold text-xl text-gray-800 mb-3">Informasi Lomba</h3>
+                <h3 class="font-bold text-xl text-gray-800 mb-3">Agenda Mahasiswa</h3>
                 <p class="text-gray-500 text-sm leading-relaxed">
-                    Kumpulan info kompetisi akademik dan non-akademik berbagai tingkat.
+                    Kumpulan agenda dan kegiatan yang bisa di ikuti mahasiswa.
                 </p>
                 
                 <!-- Tambahan indikator visual kecil di bawah -->

@@ -15,31 +15,29 @@ class Berita extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'judul' => [
+            'judulberita' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '255',
             ],
-            'slug' => [
+            'slugberita' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '255',
                 'unique'     => true,
             ],
-            'penulis' => [
-                'type'       => 'VARCHAR',
-                'constraint' => '100',
-            ],
-            'isi' => [
+            'isiberita' => [
                 'type' => 'TEXT',
             ],
-            'gambar' => [
+            'gambarberita' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '255',
-                'null'       => true, // Gambar bersifat opsional
+                'null'       => true,
             ],
-            'status' => [
-                'type'       => 'ENUM',
-                'constraint' => ['draft', 'published'],
-                'default'    => 'draft',
+            'tanggalberita' => [
+                'type' => 'DATE',
+            ],
+            'author' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -54,12 +52,13 @@ class Berita extends Migration
                 'null' => true,
             ],
         ]);
-        $this->forge->addKey('id', true); // Primary key
-        $this->forge->createTable('beritas');
+
+        $this->forge->addKey('id', true);
+        $this->forge->createTable('berita');
     }
 
     public function down()
     {
-        $this->forge->dropTable('beritas');
+        $this->forge->dropTable('berita');
     }
 }

@@ -25,6 +25,8 @@ $routes->get('lomba', 'Home::lomba');
 $routes->get('lomba/detail/(:num)', 'Home::detaillomba/$1');
 $routes->get('event', 'Home::event');
 $routes->get('event/detail/(:num)', 'Home::detailevent/$1');
+$routes->get('berita', 'Home::berita');
+$routes->get('berita/detail/(:num)', 'Home::detailberita/$1');
 
 $routes->group('member', ['filter' => 'member'], function($routes) {
     $routes->get('dashboard', 'Member\Dashboard::index');
