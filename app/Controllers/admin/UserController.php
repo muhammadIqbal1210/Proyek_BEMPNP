@@ -54,6 +54,7 @@ class UserController extends BaseController
                 'role' => $role,
             ],
         ];
+        
         return view('template/wrapper', $data); 
     }
     public function store()

@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --primary: #4e73df;
+        --success: #1cc88a;
         --success: #1cc88a;
         --info: #36b9cc;
         --warning: #f6c23e;
@@ -19,10 +19,10 @@
         color: #5a5c69;
     }
 
-    .breadcrumb-item a { color: var(--primary); text-decoration: none; }
+    .breadcrumb-item a { color: var(--success); text-decoration: none; }
 
     .header-gradient {
-        background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+        background: linear-gradient(135deg, #22b75dff 0%, #17b179ff 100%);
         color: white;
         padding: 1.5rem;
         border-radius: 12px;
@@ -91,11 +91,11 @@
     <div class="row">
         <!-- Users Card -->
         <div class="col-md-3 mb-4">
-            <div class="card stat-card border-primary h-100 py-2">
+            <div class="card stat-card border-success h-100 py-2">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Users</div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Users</div>
                             <div class="h4 mb-0 font-weight-bold text-gray-800">105</div>
                             <div class="mt-2 text-success text-xs">
                                 <i class="fas fa-arrow-up"></i> 5% dari bulan lalu
@@ -171,7 +171,7 @@
         <div class="col-xl-8 col-lg-7 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-white">
-                    <h6 class="m-0 font-weight-bold text-primary">Grafik Pertumbuhan User (Total: 105)</h6>
+                    <h6 class="m-0 font-weight-bold text-success">Grafik Pertumbuhan User (Total: 105)</h6>
                     <div class="dropdown">
                         <button class="btn btn-sm btn-light border dropdown-toggle" type="button">Filter</button>
                     </div>
@@ -187,14 +187,14 @@
         <div class="col-xl-4 col-lg-5 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 bg-white">
-                    <h6 class="m-0 font-weight-bold text-primary">Komposisi User</h6>
+                    <h6 class="m-0 font-weight-bold text-success">Komposisi User</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-pie pt-4 pb-2" style="height: 230px;">
                         <canvas id="rolesPieChart"></canvas>
                     </div>
                     <div class="mt-4 text-center small">
-                        <span class="mr-2"><i class="fas fa-circle text-primary"></i> Mahasiswa</span>
+                        <span class="mr-2"><i class="fas fa-circle text-success"></i> Mahasiswa</span>
                         <span class="mr-2"><i class="fas fa-circle text-success"></i> Admin</span>
                         <span class="mr-2"><i class="fas fa-circle text-info"></i> Reviewer</span>
                     </div>
@@ -208,8 +208,8 @@
         <div class="col-12">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-primary">Pengajuan Beasiswa Terbaru</h6>
-                    <button class="btn btn-primary btn-sm rounded-pill px-3">Lihat Semua</button>
+                    <h6 class="m-0 font-weight-bold text-success">Pengajuan Beasiswa Terbaru</h6>
+                    <button class="btn btn-success btn-sm rounded-pill px-3">Lihat Semua</button>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">

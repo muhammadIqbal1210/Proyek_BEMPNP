@@ -206,7 +206,6 @@
         margin-bottom: 0.5rem;
     }
     .article-body img {
-        border-radius: 1.25rem;
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
     /* Line clamp for long titles in sidebar */

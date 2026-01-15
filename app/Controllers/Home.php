@@ -41,11 +41,10 @@ class Home extends BaseController
      */
     public function index(): string
     {
-        // Ambil 3 pengumuman terbaru yang berstatus 'aktif'
         $latestAnnouncements = $this->pengumumanModel
             ->where('status', 'aktif')
             ->orderBy('tanggal_publikasi', 'DESC')
-            ->limit(3)
+            ->limit(2)
             ->findAll();
 
         $data = [
@@ -56,7 +55,7 @@ class Home extends BaseController
         ];
 
         // Asumsi: View untuk homepage berada di 'frontend/homepage'
-        return view('welcome_message'); 
+        return view('welcome_message',$data); 
     }
 
     /**
@@ -66,7 +65,7 @@ class Home extends BaseController
     public function pengumuman(): string
     {
         // 1. Konfigurasi Pagination
-        $perPage = 10;
+        $perPage = 9;
         
         // 2. Bangun Query: Filter hanya 'aktif' dan urutkan berdasarkan tanggal
         $query = $this->pengumumanModel

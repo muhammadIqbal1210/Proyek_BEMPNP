@@ -10,8 +10,8 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('login', 'Login::index');              // Menampilkan form login
 $routes->post('login/auth', 'Login::loginAuth');
-$routes->get('register', 'Register::index'); // Untuk menampilkan form
-$routes->post('register', 'Register::store');
+// $routes->get('register', 'Register::index'); // Untuk menampilkan form
+// $routes->post('register', 'Register::store');
 $routes->get('logout', 'Auth::logout'); 
 $routes->get('pengumuman', 'Home::pengumuman');
 $routes->get('pengumuman/detail/(:num)', 'Home::detailpengumuman/$1');
@@ -29,7 +29,8 @@ $routes->get('berita', 'Home::berita');
 $routes->get('berita/detail/(:num)', 'Home::detailberita/$1');
 
 $routes->group('member', ['filter' => 'member'], function($routes) {
-    $routes->get('dashboard', 'Member\Dashboard::index');
+    $routes->get('dashboard', 'Admin\Dashboard::index');
+    $routes->get('kanban', 'KanbanController::kanban');
 });
 
 $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Admin'], function($routes) {
@@ -75,11 +76,13 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     $routes->post('berita/store', 'Berita::store');
     $routes->get('berita/edit/(:num)', 'berita::edit/$1'); // Ambil data JSON
     $routes->post('berita/update/(:num)', 'berita::update/$1'); // Proses Update
-    $routes->get('event/delete/(:num)', 'berita::delete/$1');
+    $routes->get('berita/delete/(:num)', 'berita::delete/$1');
     // Route Katalog
     $routes->get('katalog', 'Katalog::index');
     $routes->get('katalog/index', 'Katalog::index');
     $routes->post('katalog/store', 'Katalog::store');
+    $routes->get('katalog/edit/(:num)', 'katalog::edit/$1');
+    $routes->post('katalog/update/(:num)', 'katalog::update/$1');
     $routes->get('katalog/delete/(:num)', 'katalog::delete/$1');
     // Route Kanban
     $routes->get('kanban', 'KanbanController::kanban');

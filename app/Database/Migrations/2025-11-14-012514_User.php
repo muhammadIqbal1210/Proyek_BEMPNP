@@ -30,7 +30,7 @@ class User extends Migration
             ],
             'role' => [
                 'type'       => 'ENUM',
-                'constraint' => ['guest', 'member', 'admin'],
+                'constraint' => ['superadmin', 'member', 'admin'],
                 'default'    => 'member',
             ],
             'created_at' => [

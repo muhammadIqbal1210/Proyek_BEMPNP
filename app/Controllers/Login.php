@@ -1,78 +1,90 @@
-<?php namespace App\Controllers;
+<?php 
+
+namespace App\Controllers;
 
 use App\Models\UserModel;
 use CodeIgniter\Controller;
 
 class Login extends BaseController
 {
-    // Method 1: index() - Menampilkan Form Login (GET /login)
     public function index(): string
     {
         helper(['form']);
-        $data['validation'] = \Config\Services::validation(); 
-        
-        // Menampilkan view login
-        return view('login', $data);
+        // Pastikan view dipanggil sesuai nama file Anda (misal: login.php)
+        return view('login');
     }
 
-    // Method 2: loginAuth() - Memproses Otentikasi (POST /login/auth)
     public function loginAuth()
     {
         $session = session();
         helper(['form']);
         $model = new UserModel();
         
-        // 1. Definisikan Aturan Validasi untuk Login
+        // 1. Definisikan Aturan Validasi
         $rules = [
-            'email'    => 'required|valid_email',
-            'password' => 'required|min_length[8]',
+            'email'    => [
+                'rules'  => 'required|valid_email',
+                'errors' => [
+                    'required'    => 'Email harus diisi.',
+                    'valid_email' => 'Format email tidak valid.'
+                ]
+            ],
+            'password' => [
+                'rules'  => 'required|min_length[8]',
+                'errors' => [
+                    'required'   => 'Kata sandi harus diisi.',
+                    'min_length' => 'Kata sandi minimal 8 karakter.'
+                ]
+            ],
         ];
 
         // 2. Jalankan Validasi
         if (!$this->validate($rules)) {
-            // Jika validasi form gagal, kembali ke form login dengan error
-            return redirect()->to('/login')->withInput()->with('validation', $this->validator);
+            // PERBAIKAN: Gunakan ->with('errors', ...) agar bisa di-looping di View
+            return redirect()->to('/login')
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
         }
         
-        // 3. Ambil Input
         $email = $this->request->getVar('email');
         $password = $this->request->getVar('password');
 
-        // 4. Cari User berdasarkan Email
-        // Gunakan where() dan first() untuk mencari baris pertama
         $user = $model->where('email', $email)->first();
 
         if ($user) {
-            // 5. Verifikasi Password
             $verifyPass = password_verify($password, $user['password']);
             
             if ($verifyPass) {
-                // 6. Login Berhasil: Set Session Data
                 $sesData = [
-                    'id_user'       => $user['id'],
-                    'username'      => $user['username'],
-                    'email'         => $user['email'],
-                    'role'          => $user['role'], // Ambil role dari database
-                    'isLoggedIn'    => TRUE
+                    'id_user'    => $user['id'],
+                    'username'   => $user['username'],
+                    'email'      => $user['email'],
+                    'role'       => $user['role'],
+                    'isLoggedIn' => TRUE
                 ];
                 $session->set($sesData);
                 
-                // 7. Redirect Berdasarkan Role
-                if ($user['role'] === 'admin') {
-                    return redirect()->to('/admin/dashboard'); // Redirect Admin
-                } else {
-                    return redirect()->to('/member/dashboard'); // Redirect Member/User Biasa
-                }
+                return ($user['role'] === 'admin') 
+                    ? redirect()->to('/admin/dashboard') 
+                    : redirect()->to('/member/dashboard');
 
             } else {
                 // Password Salah
-                $session->setFlashdata('error', 'Kata sandi salah.');
-                return redirect()->to('/login')->withInput();
+                return redirect()->to('/login')
+                    ->withInput()
+                    ->with('error', 'Kata sandi yang Anda masukkan salah.');
             }
         } else {
             // Email Tidak Ditemukan
-            $session->setFlashdata('error', 'Email belum terdaftar.');
-            return redirect()->to('/login')->withInput();
+            return redirect()->to('/login')
+                ->withInput()
+                ->with('error', 'Akun dengan email tersebut tidak ditemukan.');
         }
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->to('/login')->with('success', 'Anda telah berhasil keluar.');
     }
 }

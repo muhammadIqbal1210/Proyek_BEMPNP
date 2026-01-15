@@ -25,7 +25,7 @@ class Berita extends Migration
                 'unique'     => true,
             ],
             'isiberita' => [
-                'type' => 'TEXT',
+                'type' => 'LONGTEXT',
             ],
             'gambarberita' => [
                 'type'       => 'VARCHAR',

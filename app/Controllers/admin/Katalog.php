@@ -89,18 +89,75 @@ class Katalog extends BaseController
     }
 
     /**
-     * Memperbarui data Katalog (POST request dari modal Edit).
+     * Mengambil data untuk Modal Edit (AJAX/JSON).
+     */
+    public function edit($id = null)
+    {
+        $katalog = $this->katalogModel->find($id);
+
+        if (!$katalog) {
+            return $this->response->setStatusCode(404)->setJSON(['error' => 'Katalog tidak ditemukan.']);
+        }
+        
+        return $this->response->setJSON($katalog);
+    }
+
+    /**
+     * Memperbarui data Katalog (Update).
      */
     public function update($id = null)
     {
-        if (!$id || !$this->katalogModel->find($id)) {
-             return redirect()->to(base_url('admin/katalog'))->with('error', 'Katalog tidak ditemukan.');
-        }
-        
-        // Logika validasi dan update data katalog
-        // ... (Mirip seperti store, namun menggunakan $this->katalogModel->update($id, $data)) ...
+        // 1. Ambil data lama
+        $old_data = $this->katalogModel->find($id);
 
-        return redirect()->to(base_url('admin/katalog'))->with('success', 'Katalog berhasil diperbarui.');
+        if (!$old_data) {
+            return redirect()->to(base_url('admin/katalog'))->with('error', 'Katalog tidak ditemukan.');
+        }
+
+        // 2. Validasi Input
+        if (!$this->validate($this->katalogModel->getValidationRules())) {
+            return redirect()->to(base_url('admin/katalog'))->with('errors', $this->validator->getErrors());
+        }
+
+        $filePath = $old_data['foto_produk']; // Pertahankan file lama sebagai default
+        $fotoProduk = $this->request->getFile('foto_produk');
+        $remove_foto = $this->request->getPost('remove_foto'); // Checkbox hapus foto
+        $uploadPath = FCPATH . 'uploads/katalog/';
+
+        // 3. Handle File Upload atau Penghapusan
+        if ($fotoProduk && $fotoProduk->isValid() && !$fotoProduk->hasMoved()) {
+            // Hapus file lama jika ada file baru
+            if ($filePath && file_exists($uploadPath . $filePath)) {
+                unlink($uploadPath . $filePath);
+            }
+            
+            $newName = $fotoProduk->getName();
+            $fotoProduk->move($uploadPath, $newName);
+            $filePath = $newName;
+
+        } elseif ($remove_foto && $old_data['foto_produk']) {
+            // Hapus file jika checkbox 'remove_foto' dicentang
+            if (file_exists($uploadPath . $old_data['foto_produk'])) {
+                unlink($uploadPath . $old_data['foto_produk']);
+            }
+            $filePath = null;
+        }
+
+        // 4. Siapkan Data Update
+        $data = [
+            'id'          => $id,
+            'nama_barang' => $this->request->getPost('nama_barang'),
+            'deskripsi'   => $this->request->getPost('deskripsi'),
+            'harga'       => $this->request->getPost('harga'),
+            'link_jual'   => $this->request->getPost('link_jual'),
+            'foto_produk' => $filePath,
+        ];
+
+        if ($this->katalogModel->save($data)) {
+            return redirect()->to(base_url('admin/katalog'))->with('success', 'Katalog berhasil diperbarui.');
+        } else {
+            return redirect()->to(base_url('admin/katalog'))->with('error', 'Terjadi kesalahan saat memperbarui data.');
+        }
     }
 
     /**
