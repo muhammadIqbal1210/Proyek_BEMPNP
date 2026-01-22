@@ -21,62 +21,96 @@
         </div>
     </div>
 </section>
+<!-- AGENDA TERDEKAT SECTION -->
+<section id="update" class="py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Header Section -->
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                AGENDA <span class="text-green-600">TERDEKAT</span>
+            </h2>
+            <div class="w-16 h-1.5 bg-green-600 mx-auto mt-4 rounded-full"></div>
+        </div>
 
-<section id="profil" class="py-20 px-6 max-w-4xl mx-auto text-center">
-    <span class="text-orange-600 font-bold tracking-widest uppercase text-sm">Tentang Kami</span>
-    <h2 class="text-3xl md:text-4xl font-bold mb-8 text-gray-800">Suara Mahasiswa, Karya Nyata</h2>
-    <p class="text-lg leading-relaxed text-gray-600 italic">
-        "Badan Eksekutif Mahasiswa Politeknik Negeri Padang merupakan lembaga eksekutif tertinggi mahasiswa
-        yang berperan sebagai jembatan antara mahasiswa dan pihak kampus, serta wadah pengembangan kepemimpinan dan
-        advokasi mahasiswa."
-    </p>
-</section>
+        <!-- Calendar Container -->
+        <div class="bg-white p-6 sm:p-10 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 group" data-aos="fade-up" data-aos-delay="200">
+            <div class="relative overflow-hidden">
+                <!-- Wrapper for Marquee Effect -->
+                <div class="flex animate-marquee whitespace-nowrap hover:[animation-play-state:paused] cursor-pointer">
+                    
+                    <?php if (!empty($upcoming_events)): ?>
+                        <!-- Generate Events Twice for Seamless Loop -->
+                        <?php for ($i = 0; $i < 3; $i++): ?>
+                            <div class="flex items-center space-x-12 px-6">
+                                <?php foreach ($upcoming_events as $event): 
+                                    $tgl = strtotime($event['waktu']);
+                                    
+                                ?>
+                                    <div class="flex items-center space-x-5 min-w-[300px] py-4 px-6 rounded-2xl hover:bg-green-50 transition-colors duration-300">
+                                        <!-- Date Badge -->
+                                        <div class="flex-shrink-0 text-center bg-gradient-to-br from-green-600 to-green-400 text-white rounded-xl p-3 w-16 sm:w-20 shadow-lg shadow-green-200">
+                                            <p class="text-2xl sm:text-3xl font-black leading-none"><?= date('d', $tgl) ?></p>
+                                            <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider mt-1"><?= date('M', $tgl) ?></p>
+                                        </div>
+                                        
+                                        <!-- Event Details -->
+                                        <div class="whitespace-normal">
+                                            <h4 class="font-bold text-gray-900 text-lg leading-tight hover:text-orange-600 transition-colors line-clamp-1">
+                                                <?= esc($event['nama_event']) ?>
+                                            </h4>
+                                            <div class="flex flex-col mt-1">
+                                                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center">
+                                                </span>
+                                                <span class="text-xs font-medium text-orange-600/70 mt-0.5">
+                                                    <?= esc($event['biaya'] == 'gratis' ? 'Free Admission' : 'Berbayar') ?>
+                                                </span>
+                                            </div>
+                                        </div>
 
-<section class="py-20 bg-white border-y border-gray-100">
-    <div class="max-w-6xl mx-auto text-center px-6">
-        <h2 class="text-3xl font-bold mb-12 text-gray-800">Program Kerja Unggulan</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div
-                class="group p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-green-700 transition duration-500">
-                <div
-                    class="w-14 h-14 bg-green-100 text-green-700 rounded-lg flex items-center justify-center mb-6 group-hover:bg-white/20 group-hover:text-white transition">
-                    <i class="fas fa-users text-2xl"></i>
+                                        <!-- Action Link (Optional hidden icon) -->
+                                        <?php if (!empty($event['link_informasi'])): ?>
+                                            <a href="<?= esc($event['link_informasi']) ?>" class="flex-shrink-0 text-gray-300 hover:text-orange-500 transition-colors">
+                                                <i class="fas fa-external-link-alt text-sm"></i>
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endfor; ?>
+                    <?php else: ?>
+                        <!-- Empty State -->
+                        <div class="w-full text-center py-10">
+                            <p class="text-gray-400 font-medium italic">Belum ada agenda terdekat saat ini.</p>
+                        </div>
+                    <?php endif; ?>
+
                 </div>
-                <h3 class="font-bold text-xl mb-3 text-gray-800 group-hover:text-white">Kegiatan Sosial</h3>
-                <p class="text-gray-600 group-hover:text-green-50 group-hover:opacity-90">Program bakti sosial yang
-                    melibatkan mahasiswa untuk membantu masyarakat sekitar kampus.</p>
             </div>
-            <div
-                class="group p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-green-700 transition duration-500">
-                <div
-                    class="w-14 h-14 bg-green-100 text-green-700 rounded-lg flex items-center justify-center mb-6 group-hover:bg-white/20 group-hover:text-white transition">
-                    <i class="fas fa-leaf text-2xl"></i>
-                </div>
-                <h3 class="font-bold text-xl mb-3 text-gray-800 group-hover:text-white">Gerakan Hijau</h3>
-                <p class="text-gray-600 group-hover:text-green-50 group-hover:opacity-90">Inisiatif pelestarian
-                    lingkungan dengan menanam pohon dan kampanye bebas sampah plastik.</p>
-            </div>
-            <div
-                class="group p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-green-700 transition duration-500">
-                <div
-                    class="w-14 h-14 bg-green-100 text-green-700 rounded-lg flex items-center justify-center mb-6 group-hover:bg-white/20 group-hover:text-white transition">
-                    <i class="fas fa-lightbulb text-2xl"></i>
-                </div>
-                <h3 class="font-bold text-xl mb-3 text-gray-800 group-hover:text-white">Pekan Kreativitas</h3>
-                <p class="text-gray-600 group-hover:text-green-50 group-hover:opacity-90">Ajang kompetisi dan inovasi
-                    bagi mahasiswa dalam berbagai bidang keilmuan dan seni.</p>
-            </div>
+        </div>
+
+        <!-- View All Link -->
+        <div class="mt-10 text-center" data-aos="fade-up" data-aos-delay="400">
+            <a href="<?= base_url('event') ?>" class="inline-flex items-center space-x-2 text-sm font-bold text-gray-500 hover:text-orange-600 transition-all uppercase tracking-[0.2em]">
+                <span>Lihat Kalender Lengkap</span>
+                <i class="fas fa-arrow-right text-[10px]"></i>
+            </a>
         </div>
     </div>
 </section>
 
+
 <section class="py-20 bg-gray-50">
     <div class="max-w-6xl mx-auto px-6">
         <!-- Judul Section -->
+         <div class="text-center mb-6" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                PENGUMUMAN <span class="text-green-600">TERBARU</span>
+            </h2>
+            <div class="w-16 h-1.5 bg-green-600 mx-auto mt-4 rounded-full"></div>
+        </div>
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
             <div class="text-left">
-                <h2 class="text-3xl font-bold text-gray-800 tracking-tight">Pengumuman Terbaru</h2>
-                <div class="h-1.5 w-16 bg-green-600 mt-3 rounded-full"></div>
                 <p class="text-gray-500 mt-4 max-w-md">Informasi resmi, kebijakan kampus, dan agenda kegiatan organisasi
                     terbaru.</p>
             </div>
@@ -190,4 +224,19 @@
         </div>
     </div>
 </section>
+<style>
+    @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+        display: flex;
+        width: max-content;
+        animation: marquee 30s linear infinite;
+    }
+    /* Mencegah teks terpotong saat hover */
+    .whitespace-normal {
+        white-space: normal;
+    }
+</style>
 <?php $this->endSection() ?>

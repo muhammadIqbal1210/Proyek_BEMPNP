@@ -39,23 +39,35 @@ class Home extends BaseController
      * Method default untuk halaman utama (Homepage).
      * Dapat digunakan untuk menampilkan 3 pengumuman terbaru sebagai cuplikan.
      */
-    public function index(): string
+   public function index()
     {
-        $latestAnnouncements = $this->pengumumanModel
+        // Model Initialization
+        $pengumumanModel = new \App\Models\pengumumanModel();
+        $eventModel = new \App\Models\eventModel();
+
+        // 1. Ambil Pengumuman Terbaru
+        $latestAnnouncements = $pengumumanModel
             ->where('status', 'aktif')
             ->orderBy('tanggal_publikasi', 'DESC')
             ->limit(2)
             ->findAll();
 
+        // 2. Ambil Event Terdekat (Waktu >= hari ini)
+        $upcomingEvents = $eventModel
+            ->where('waktu >=', date('d/m/Y'))
+            ->orderBy('waktu', 'ASC') // ASC agar yang paling dekat muncul duluan
+            ->limit(5)
+            ->findAll();
+
         $data = [
-            'title' => 'Home Page',
+            'title'                => 'Home Page',
             'latest_announcements' => $latestAnnouncements,
-            'file_base_url' => base_url('uploads/pengumuman/'),
-            // Data lain untuk homepage
+            'upcoming_events'      => $upcomingEvents,
+            'url_pengumuman'       => base_url('uploads/pengumuman/'),
+            'url_event'            => base_url('uploads/event/'),
         ];
 
-        // Asumsi: View untuk homepage berada di 'frontend/homepage'
-        return view('welcome_message',$data); 
+        return view('welcome_message', $data);
     }
 
     /**
@@ -121,6 +133,20 @@ class Home extends BaseController
 
         // Asumsi: View untuk detail pengumuman berada di 'frontend/pengumuman/detail'
         return view('frontend/pengumuman/detail', $data);
+    }
+    public function profil()
+    {
+        $data = [
+            'title' => 'Profil Organisasi - BEM KM PNP'
+        ];
+        return view('frontend/profil', $data);
+    }
+    public function kontak()
+    {
+        $data = [
+            'title' => 'Kontak Kami - BEM KM PNP'
+        ];
+        return view('frontend/kontak', $data);
     }
     public function layanan()
     {

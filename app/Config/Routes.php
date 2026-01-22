@@ -16,6 +16,8 @@ $routes->get('logout', 'Auth::logout');
 $routes->get('pengumuman', 'Home::pengumuman');
 $routes->get('pengumuman/detail/(:num)', 'Home::detailpengumuman/$1');
 $routes->get('layanan', 'Home::layanan');
+$routes->get('profil', 'Home::profil');
+$routes->get('kontak', 'Home::kontak');
 $routes->get('layanan/advokasi', 'Home::advokasi');
 $routes->post('layanan/kirim_lapor', 'Home::kirim_lapor');
 $routes->get('katalog', 'Home::katalog');
@@ -88,4 +90,16 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     $routes->get('kanban', 'KanbanController::kanban');
     //Route Laporan
     $routes->get('laporan/index', 'Laporan::index');
+    // Route Pengurus
+    $routes->get('pengurus', 'Pengurus::index');
+    $routes->post('pengurus/store', 'Pengurus::store');
+    $routes->get('pengurus/edit/(:num)', 'Pengurus::edit/$1'); // Ambil data JSON
+    $routes->post('pengurus/update/(:num)', 'Pengurus::update/$1'); // Proses Update
+    $routes->get('pengurus/delete/(:num)', 'Pengurus::delete/$1');
+    // Route Profil Organisasi
+    $routes->get('profil', 'Profilorganisasi::index');
+    $routes->post('profil/store', 'Profilorganisasi::store');
+    $routes->get('profil/edit/(:num)', 'Profilorganisasi::edit/$1');
+    $routes->post('profil/update/(:num)', 'Profilorganisasi::update/$1');
+    $routes->get('profil/delete/(:num)', 'Profilorganisasi::delete/$1');
 });

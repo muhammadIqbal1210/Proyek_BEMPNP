@@ -76,7 +76,12 @@
                    Katalog
                 </a>
             </li>
-            <li><a href="#" class="hover:text-orange-400 pb-1 transition">Kontak</a></li>
+            <li>
+                <a href="<?= base_url('kontak') ?>" 
+                   class="<?= url_is('kontak*') ? 'text-orange-400 border-b-2 border-orange-400' : 'hover:text-orange-400' ?> pb-1 transition-all duration-300">
+                   Kontak
+                </a>
+            </li>
             
             <li>
                 <a href="<?= base_url('login') ?>" 
@@ -101,8 +106,8 @@
                 <ul>
                     <li><a href="<?= base_url() ?>" class="hover:text-orange-400">Home</a></li>
                     <li><a href="<?= base_url('pengumuman') ?>" class="hover:text-orange-400">Pengumuman</a></li>
-                    <li><a href="#" class="hover:text-orange-400">Berita</a></li>
-                    <li><a href="#" class="hover:text-orange-400">Kontak</a></li>
+                    <li><a href="<?= base_url('berita') ?>" class="hover:text-orange-400">Berita</a></li>
+                    <li><a href="<?= base_url('kontak') ?>" class="hover:text-orange-400">Kontak</a></li>
                 </ul>
             </div>
             <div>

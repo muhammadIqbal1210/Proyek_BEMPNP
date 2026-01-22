@@ -260,6 +260,14 @@
             </a>
         </div>
         <?php endif; ?>
+        <?php if ($role == 'admin') : ?>
+        <div class="menu-item">
+            <a href="/admin/pengurus" class="nav-link">
+                <span class="menu-icon"><i class="fa-solid fa-users-gear"></i></span>
+                <span>Pengelolaan Pengurus</span>
+            </a>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
 
