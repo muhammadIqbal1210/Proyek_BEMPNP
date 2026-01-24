@@ -28,11 +28,11 @@
                     </div>
 
                     <!-- Content (Left Aligned) -->
-                    <div class="text-left mb-6">
-                        <h3 class="text-xl font-bold text-slate-800 mb-3 leading-tight">
+                    <div class="text-left mb-4">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2 leading-tight">
                             <?= esc($k['nama']) ?>
                         </h3>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                        <p class="text-gray-500 text-sm leading-relaxed mb-4">
                             <?= esc($k['deskripsi']) ?>
                         </p>
                     </div>
