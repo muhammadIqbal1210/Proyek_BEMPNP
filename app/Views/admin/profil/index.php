@@ -1,13 +1,16 @@
-<div>
-    <?php if (session()->getFlashdata('errors')) : ?>
-    <div class="alert alert-danger">
-        <ul>
-            <?php foreach (session()->getFlashdata('errors') as $error) : ?>
-            <li><?= $error ?></li>
-            <?php endforeach ?>
-        </ul>
-    </div>
-    <?php endif ?>
+<div class="modal-body">
+    <!-- Tambahkan Block Error Ini -->
+    <?php if (session()->has('errors')) : ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="mb-0">
+                <?php foreach (session('errors') as $error) : ?>
+                    <li><?= esc($error) ?></li>
+                <?php endforeach ?>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+    
     <ol class="breadcrumb" style="background: none; padding: 0;">
         <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page">Profil Organisasi</li>
@@ -37,6 +40,7 @@
                                 class="fas fa-redo me-1"></i> Reset Filter</a>
                     </div>
                 </div>
+            </form>
         </div>
     </div>
 
@@ -47,18 +51,38 @@
             <div class="card shadow-sm border-0 overflow-hidden">
                 <div class="row g-0">
                     <!-- Bagian Kiri: Video / Visual -->
-                    <div class="col-md-4 bg-dark d-flex align-items-center justify-content-center"
-                        style="min-height: 250px;">
+                    <!-- Bagian Kiri: Video / Visual -->
+                    <div class="col-md-4 bg-dark d-flex align-items-center justify-content-center" style="min-height: 250px;">
                         <?php 
-                                // Logika sederhana mengubah link youtube biasa ke embed
-                                $video_url = $profil['videoprofil'];
-                                if (strpos($video_url, 'watch?v=') !== false) {
-                                    $video_url = str_replace('watch?v=', 'embed/', $video_url);
+                            $url = $profil['videoprofil'];
+                            $video_id = '';
+
+                            // 1. Cek apakah ada URL
+                            if (!empty($url)) {
+                                // 2. Gunakan Regex untuk mengambil ID Video (bisa handle youtu.be, youtube.com/watch, dll)
+                                // Pola ini mencari 11 karakter ID unik Youtube
+                                if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match)) {
+                                    $video_id = $match[1];
                                 }
-                            ?>
-                        <div class="ratio ratio-16x9">
-                            <iframe src="<?= esc($video_url) ?>" title="Video Profil" allowfullscreen></iframe>
-                        </div>
+                            }
+                        ?>
+
+                        <?php if (!empty($video_id)) : ?>
+                            <!-- Jika ID Video Ditemukan, Tampilkan Iframe -->
+                            <div class="ratio ratio-16x9">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/<?= esc($video_id) ?>" 
+                                    title="Video Profil" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        <?php else : ?>
+                            <!-- Jika Link Kosong atau Salah, Tampilkan Placeholder Gambar/Ikon -->
+                            <div class="text-center text-white opacity-50">
+                                <i class="fab fa-youtube fa-4x mb-2"></i>
+                                <p class="small mb-0">Video tidak tersedia</p>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Bagian Kanan: Informasi -->
@@ -151,3 +175,13 @@
         <?= $this->include('admin/profil/edit') ?>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Cek apakah ada flashdata error dari server (Anda bisa mendeteksinya lewat adanya elemen alert-danger)
+    var hasErrors = document.querySelector('.alert-danger');
+    if (hasErrors) {
+        var myModal = new bootstrap.Modal(document.getElementById('createProfilModal'));
+        myModal.show();
+    }
+});
+</script>
