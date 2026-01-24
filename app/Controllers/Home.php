@@ -8,7 +8,8 @@ use App\Models\BeasiswaModel;
 use App\Models\LombaModel;
 use App\Models\EventModel;
 use App\Models\BeritaModel;
-
+use App\Models\ProfilorganisasiModel;
+use App\Models\pengurusModel;
 /**
  * Controller untuk mengelola tampilan halaman publik (Frontend)
  * yang menampilkan data Pengumuman yang aktif.
@@ -20,6 +21,8 @@ class Home extends BaseController
     protected $lombaModel;
     protected $eventModel;
     protected $beritaModel;
+    protected $profilorganisasiModel;
+    protected $pengurusModel;
     
 
     /**
@@ -136,10 +139,69 @@ class Home extends BaseController
     }
     public function profil()
     {
+        $profilModel = new \App\Models\ProfilorganisasiModel();
+        $pengurusModel = new \App\Models\pengurusModel();
+
+        // Ambil semua data profil (biasanya hanya ada 1 data aktif)
+        $profil_list = $profilModel->findAll();
+
+        // Ambil data spesifik dari tabel pengurus berdasarkan string jabatan
+        // Gunakan .first() untuk mengambil satu baris data saja
+        $presma = $pengurusModel->where('jabatan', 'Presiden Mahasiswa')->first();
+        $wapresma = $pengurusModel->where('jabatan', 'Wakil Presiden Mahasiswa')->first();
+        $sesneg = $pengurusModel->where('jabatan', 'Sekretaris Negara')->first();
+        $menkopp = $pengurusModel->where('jabatan', 'Menteri Koordinator Pelayanan dan Pengabdian')->first();
+        $menkoper = $pengurusModel->where('jabatan', 'Menteri Koordinator Pergerakan')->first();
+
         $data = [
-            'title' => 'Profil Organisasi - BEM KM PNP'
+            'title'       => 'Profil Organisasi - BEM KM PNP',
+            'profil_list' => $profil_list,
+            'presma'      => $presma,
+            'wapresma'    => $wapresma,
+            'sesneg'      => $sesneg,
+            'menkopp'     => $menkopp,
+            'menkoper'    => $menkoper,
+            'content'     => 'frontend/profil',
         ];
+
         return view('frontend/profil', $data);
+    }
+    public function struktur()
+    {
+        $pengurusModel = new \App\Models\pengurusModel();
+        $profilModel = new \App\Models\ProfilorganisasiModel();
+
+        $kementerian = $this->request->getGet('kementerian');
+        $keyword     = $this->request->getGet('search');
+        // Mengambil filter dari URL (jika ada)
+        $query = $pengurusModel;
+
+        if (!empty($kementerian)) {
+            $query = $query->where('kementerian', $kementerian);
+        }
+
+        if (!empty($keyword)) {
+            $query = $query->groupStart()
+                        ->like('nama', $keyword)
+                        ->orLike('jabatan', $keyword)
+                    ->groupEnd();
+        }
+
+        $pengurus_list = $query->orderBy('id', 'ASC')->findAll();
+        $kementerian = $this->request->getGet('kementerian');
+
+        // Gunakan first() agar mendapatkan satu baris data saja (Array tunggal)
+        $profil = $profilModel->first();
+
+        $data = [
+            'title'         => 'Struktur - BEM KM PNP',
+            'pengurus'      => $pengurus_list, // Nama variabel disamakan dengan View
+            'profil'        => $profil,        
+            'filters'       => ['kementerian' => $kementerian],
+            'content'       => 'frontend/struktur',
+        ];
+
+        return view('frontend/struktur', $data); 
     }
     public function kontak()
     {
