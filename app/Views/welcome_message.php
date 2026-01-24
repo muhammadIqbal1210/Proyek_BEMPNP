@@ -10,7 +10,7 @@
         <p class="text-lg md:text-xl mb-8 max-w-2xl text-orange-400">Politeknik Negeri Padang</p>
 
         <div class="flex gap-4">
-            <a href="#profil"
+            <a href="<?= base_url('profil') ?>"
                 class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3 rounded-full shadow-lg transform hover:-translate-y-1 transition duration-300">
                 Pelajari Selengkapnya
             </a>
@@ -98,8 +98,87 @@
         </div>
     </div>
 </section>
+<!-- SAMBUTAN PIMPINAN SECTION -->
+<section class="max-w-10xl mx-auto px-6 mx-auto bg-white pt-24 pb-20">
+    <div class="text-center mb-16">
+        <h2 class="text-4xl font-extrabold text-gray-800">Sambutan Pimpinan</h2>
+        <p class="text-gray-600 mt-4 max-w-2xl mx-auto text-l">
+            Sambutan dari Presiden dan Wakil Presiden Mahasiswa BEM KM Politeknik Negeri Padang
+            <?= esc($profil_list['periode']) ?>
+    </div>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+        <div
+            class="bg-white p-10 rounded-[2rem] text-center flex flex-col items-center">
+            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md">
+                <img src="<?= base_url('uploads/pengurus/' . ($presma['foto'] ?? 'default.jpg')) ?>"
+                    alt="Presiden Mahasiswa" class="w-full h-full object-cover">
+            </div>
 
+            <h3 class="text-xl font-bold text-gray-800 mb-1">
+                <?= esc($presma['nama'] ?? 'Nama Tidak Set') ?>
+            </h3>
+            <p class="text-green-700 font-bold mb-4 text-sm">
+                Presiden Mahasiswa BEM KM PNP <?= esc($profil_list['periode'] ?? '') ?>
+            </p>
+
+            <p class="text-gray-600 italic leading-relaxed text-sm max-w-xs">
+                "<?= esc($profil_list['s_pres'] ?? 'Mari bersama-sama mewujudkan harmoni...') ?>"
+            </p>
+        </div>
+
+        <div
+            class="bg-white p-10 rounded-[2rem] text-center flex flex-col items-center">
+            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md">
+                <img src="<?= base_url('uploads/pengurus/' . ($wapresma['foto'] ?? 'default.jpg')) ?>"
+                    alt="Wakil Presiden Mahasiswa" class="w-full h-full object-cover">
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-1">
+                <?= esc($wapresma['nama'] ?? 'Nama Tidak Set') ?>
+            </h3>
+            <p class="text-orange-700 font-bold mb-4 text-sm">
+                Wakil Presiden Mahasiswa BEM KM PNP <?= esc($profil_list['periode'] ?? '') ?>
+            </p>
+
+            <p class="text-gray-600 italic leading-relaxed text-sm max-w-xs">
+                "<?= esc($profil_list['s_wapres'] ?? 'Sinergi dan integritas adalah kunci utama...') ?>"
+            </p>
+        </div>
+    </div>
+</section>
+<!-- Video profil-->
+ <section class="max-w-4xl mx-auto px-6 mb-20 pt-24 pb-20">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-extrabold text-gray-800">Video Profil <?= esc($profil_list['nama_kabinet']) ?></h2>
+        <p class="text-gray-600 mt-4 max-w-2xl mx-auto text-l">
+            Saksikan video profil resmi BEM KM Politeknik Negeri Padang
+            <?= esc($profil_list['periode']) ?>
+        </p>
+    </div>
+    <div class="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative group">
+        <?php 
+                $url = $profil_list['videoprofil'];
+                $video_id = '';
+                if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match)) {
+                    $video_id = $match[1];
+                }
+            ?>
+        <div class="aspect-video w-full">
+            <?php if (!empty($video_id)) : ?>
+            <iframe class="w-full h-full" src="https://www.youtube.com/embed/<?= esc($video_id) ?>" frameborder="0"
+                allowfullscreen></iframe>
+            <?php else : ?>
+            <div class="flex flex-col items-center justify-center h-full text-white p-10">
+                <i class="fab fa-youtube text-6xl text-red-600 mb-4"></i>
+                <p class="text-gray-400 italic">Video profil <?= esc($profil_list['nama_kabinet']) ?> belum tersedia.</p>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+
+<!-- PENGUMUMAN TERBARU SECTION -->
 <section class="py-20 bg-gray-50">
     <div class="max-w-6xl mx-auto px-6">
         <!-- Judul Section -->
