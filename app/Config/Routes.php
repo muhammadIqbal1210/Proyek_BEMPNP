@@ -103,4 +103,10 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     $routes->get('profil/edit/(:num)', 'Profilorganisasi::edit/$1');
     $routes->post('profil/update/(:num)', 'Profilorganisasi::update/$1');
     $routes->get('profil/delete/(:num)', 'Profilorganisasi::delete/$1');
+    // Route Kontak
+    $routes->get('kontak', 'Kontak::index');
+    $routes->post('kontak/store', 'Kontak::store');
+    $routes->get('kontak/edit/(:num)', 'Kontak::edit/$1');
+    $routes->post('kontak/update/(:num)', 'Kontak::update/$1');
+    $routes->get('kontak/delete/(:num)', 'Kontak::delete/$1');
 });
