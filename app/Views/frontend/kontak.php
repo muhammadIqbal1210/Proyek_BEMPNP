@@ -1,116 +1,93 @@
-<?= $this->extend('layouts/layout_utama') ?> 
+<!-- File: app/Views/public/kontak.php -->
+<?= $this->extend('layouts/layout_utama') ?>
 
 <?php $this->section('content') ?>
-<header class="pt-16 pb-12 mb-5 ">
+
+<!-- Header Section -->
+<header class="pt-24 pb-12 bg-white mb-12">
     <div class="max-w-6xl mx-auto px-6 text-center">
-        <h1 class="text-4xl font-extrabold text-black mb-2 pb-2 border-b-4 border-orange-400 inline-block ">Pusat Layanan</h1>
-        <p class="text-black-200 text-lg">Kontak Penting BEM KM PNP
-            Politeknik Negeri Padang.</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-black mb-4">Kontak Penting</h1>
+        <div class="h-1.5 w-24 bg-orange-500 mx-auto rounded-full mb-6"></div>
+        <p class="text-gray-500 text-lg max-w-2xl mx-auto">
+            Hubungi Kontak Penting BEM KM Politeknik Negeri Padang untuk berbagai keperluan informasi dan layanan mahasiswa.
+        </p>
     </div>
 </header>
 
-<section class="max-w-7xl mx-auto px-6 py-2">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        
-        <a href="<?= base_url('layanan/advokasi') ?>" class="block group">
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
-                <!-- Icon dengan efek warna saat kartu di-hover -->
-                <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                
-                <h3 class="font-bold text-xl text-gray-800 mb-3">Advokasi Mahasiswa</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">
-                    Bantuan dan pendampingan terkait masalah akademik maupun non-akademik.
-                </p>
-                
-                <!-- Tambahan indikator visual kecil di bawah (opsional) -->
-                <div class="mt-6 text-blue-600 font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                    Buka Layanan <i class="fas fa-arrow-right ml-1"></i>
-                </div>
-            </div>
-        </a>
+<main class="max-w-6xl mx-auto px-6 pb-24">
+    <?php if (!empty($kontak_list)): ?>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+            <?php foreach ($kontak_list as $k): ?>
+                <div class="bg-white p-10 rounded-[1.5rem] shadow-sm border border-gray-100 flex flex-col hover:shadow-md transition-all duration-300 min-h-full">
+                    
+                    <!-- Top Icon -->
+                    <div class="mb-8 text-green-600">
+                        <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
+                            <i class="fa-solid fa-phone text-xl"></i>
+                        </div>
+                    </div>
 
-        <a href="<?= base_url('/beasiswa') ?>" class="block group">
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
-                <!-- Icon dengan efek warna saat kartu di-hover -->
-                <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                
-                <h3 class="font-bold text-xl text-gray-800 mb-3">Informasi Beasiswa</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">
-                    Update terbaru mengenai peluang beasiswa internal maupun eksternal.
-                </p>
-                
-                <!-- Tambahan indikator visual kecil di bawah (opsional) -->
-                <div class="mt-6 text-green-600 font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                    Buka Layanan <i class="fas fa-arrow-right ml-1"></i>
-                </div>
-            </div>
-        </a>
+                    <!-- Content (Left Aligned) -->
+                    <div class="text-left mb-6">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3 leading-tight">
+                            <?= esc($k['nama']) ?>
+                        </h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                            <?= esc($k['deskripsi']) ?>
+                        </p>
+                    </div>
 
-        <a href="<?= base_url('/lomba') ?>" class="block group">
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
-                <!-- Icon dengan efek warna saat kartu di-hover -->
-                <div class="w-16 h-16 bg-yellow-50 text-yellow-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-yellow-600 group-hover:text-white transition-all duration-300">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                
-                <h3 class="font-bold text-xl text-gray-800 mb-3">Informasi Lomba</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">
-                    Kumpulan info kompetisi akademik dan non-akademik berbagai tingkat.
-                </p>
-                
-                <!-- Tambahan indikator visual kecil di bawah -->
-                <div class="mt-6 text-yellow-600 font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                    Buka Layanan <i class="fas fa-arrow-right ml-1"></i>
-                </div>
-            </div>
-        </a>
-        <a href="<?= base_url('/event') ?>" class="block group">
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
-                <!-- Icon dengan efek warna saat kartu di-hover -->
-                <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
-                
-                <h3 class="font-bold text-xl text-gray-800 mb-3">Agenda Mahasiswa</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">
-                    Kumpulan agenda dan kegiatan yang bisa di ikuti mahasiswa.
-                </p>
-                
-                <!-- Tambahan indikator visual kecil di bawah -->
-                <div class="mt-6 text-red-600 font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                    Buka Layanan <i class="fas fa-arrow-right ml-1"></i>
-                </div>
-            </div>
-        </a>
+                    <!-- Action Links (Directly below description) -->
+                    <div class="space-y-4">
+                        <!-- Instagram -->
+                        <?php if (!empty($k['instagram'])): ?>
+                        <a href="<?= esc($k['instagram']) ?>" target="_blank" class="flex items-center group">
+                            <i class="fa-brands fa-instagram text-slate-700 w-6 group-hover:text-pink-600 transition-colors"></i>
+                            <span class="text-sm font-medium text-slate-700 group-hover:text-pink-600 ml-2">
+                                <?= esc($k['subjek_ig'] ?: 'Instagram') ?>
+                            </span>
+                        </a>
+                        <?php endif; ?>
 
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="w-16 h-16 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
-                <i class="fas fa-folder-open"></i>
-            </div>
-            <h3 class="font-bold text-xl text-gray-800 mb-3">Pusat Unduhan</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Temukan dokumen penting, template surat, dan berkas lainnya.</p>
+                        <!-- WhatsApp -->
+                        <?php if (!empty($k['whatsApp'])): ?>
+                        <a href="https://wa.me/<?= preg_replace('/[^0-9]/', '', $k['whatsApp']) ?>" target="_blank" class="flex items-center group">
+                            <i class="fa-brands fa-whatsapp text-slate-700 w-6 group-hover:text-green-600 transition-colors"></i>
+                            <span class="text-sm font-medium text-slate-700 group-hover:text-green-600 ml-2">
+                                <?= esc($k['subjek_wa'] ?: 'WhatsApp Admin') ?>
+                            </span>
+                        </a>
+                        <?php endif; ?>
+
+                        <!-- Email -->
+                        <?php if (!empty($k['email'])): ?>
+                        <a href="mailto:<?= esc($k['email']) ?>" class="flex items-center group">
+                            <i class="fa-regular fa-envelope text-slate-700 w-6 group-hover:text-blue-600 transition-colors"></i>
+                            <span class="text-sm font-medium text-slate-700 group-hover:text-blue-600 ml-2">
+                                <?= esc($k['subjek_email'] ?: esc($k['email'])) ?>
+                            </span>
+                        </a>
+                        <?php endif; ?>
+
+                        <!-- Website / Link -->
+                        <?php if (!empty($k['website'])): ?>
+                        <a href="<?= esc($k['website']) ?>" target="_blank" class="flex items-center group">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-slate-700 w-6 group-hover:text-green-700 transition-colors text-xs"></i>
+                            <span class="text-sm font-medium text-slate-700 group-hover:text-green-700 ml-2">
+                                <?= esc($k['subjek_website'] ?: 'Kunjungi Laman') ?>
+                            </span>
+                        </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
-
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="w-16 h-16 bg-gray-100 text-gray-600 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
-                <i class="fas fa-id-card"></i>
-            </div>
-            <h3 class="font-bold text-xl text-gray-800 mb-3">Kontak Penting</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Hubungi kami melalui narahubung kementerian terkait.</p>
+    <?php else: ?>
+        <div class="text-center py-24 bg-white rounded-[2.5rem] border border-dashed border-gray-200">
+            <i class="fa-solid fa-comment-slash text-5xl text-gray-200 mb-4"></i>
+            <p class="text-gray-500 font-medium">Data layanan belum tersedia.</p>
         </div>
+    <?php endif; ?>
+</main>
 
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="w-16 h-16 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
-                <i class="fas fa-handshake"></i>
-            </div>
-            <h3 class="font-bold text-xl text-gray-800 mb-3">Mitra Internal & Eksternal</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">Ruang kolaborasi bagi ormawa di lingkungan Politeknik Negeri Padang dan Kampus Luar.</p>
-        </div>
-
-    </div>
-</section>
 <?php $this->endSection() ?>
