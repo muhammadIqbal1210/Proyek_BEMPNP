@@ -38,6 +38,7 @@
                                     </ul>
                                 </div>
                             </div>
+                            <span class="badge bg-info text-dark"><?= esc($k['kategori']) ?></span>
                             <p class="text-muted small"><?= esc($k['deskripsi']) ?></p>
                             <hr class="my-2 opacity-25">
                             

@@ -11,16 +11,26 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Nama Kontak</label>
-                            <input type="text" name="nama" class="form-control" placeholder="Contoh: Admin Akademik" required>
+                            <input type="text" name="nama" class="form-control" placeholder="Contoh: Admin Akademik"
+                                required>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
+                            <label for="kategori" class="form-label fw-bold">Kategori <span class="text-danger">*</span></label>
+                            <select class="form-select" id="kategori" name="kategori" required>
+                                <option value="" disabled selected>Pilih Kategori</option>
+                                <option value="bem" <?= set_select('kategori', 'bem') ?>>BEM</option>
+                                <option value="universitas" <?= set_select('kategori', 'universitas') ?>>Universitas</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
                             <label class="form-label">Deskripsi Singkat</label>
-                            <input type="text" name="deskripsi" class="form-control" placeholder="Contoh: Bagian Pelayanan Mahasiswa">
+                            <input type="text" name="deskripsi" class="form-control"
+                                placeholder="Contoh: Bagian Pelayanan Mahasiswa">
                         </div>
                     </div>
 
                     <h6 class="fw-bold border-bottom pb-2 mb-3">Sosial Media & Link Kustom</h6>
-                    
+
                     <!-- WhatsApp -->
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -40,7 +50,8 @@
                         </div>
                         <div class="col-md-6">
                             <label class="small text-muted">Label Tampilan Email</label>
-                            <input type="text" name="subjek_email" class="form-control" placeholder="Contoh: Email Admin">
+                            <input type="text" name="subjek_email" class="form-control"
+                                placeholder="Contoh: Email Admin">
                         </div>
                     </div>
 
@@ -48,11 +59,13 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="small text-muted">Link Instagram</label>
-                            <input type="url" name="instagram" class="form-control" placeholder="https://instagram.com/pnp">
+                            <input type="url" name="instagram" class="form-control"
+                                placeholder="https://instagram.com/pnp">
                         </div>
                         <div class="col-md-6">
                             <label class="small text-muted">Label Tampilan Instagram</label>
-                            <input type="text" name="subjek_ig" class="form-control" placeholder="Contoh: Instagram Admin">
+                            <input type="text" name="subjek_ig" class="form-control"
+                                placeholder="Contoh: Instagram Admin">
                         </div>
                     </div>
 
@@ -64,7 +77,8 @@
                         </div>
                         <div class="col-md-6">
                             <label class="small text-muted">Label Tampilan Website</label>
-                            <input type="text" name="subjek_website" class="form-control" placeholder="Contoh: Website Resmi">
+                            <input type="text" name="subjek_website" class="form-control"
+                                placeholder="Contoh: Website Resmi">
                         </div>
                     </div>
                 </div>

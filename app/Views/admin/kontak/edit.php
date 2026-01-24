@@ -2,27 +2,35 @@
 <div class="modal fade" id="editKontakModal<?= $k['id'] ?>" tabindex="-1" aria-labelledby="editKontakModalLabel<?= $k['id'] ?>" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-warning text-white">
+            <div class="modal-header bg-warning text-dark">
                 <h5 class="modal-title" id="editKontakModalLabel<?= $k['id'] ?>"><i class="fas fa-edit me-2"></i>Edit Kontak: <?= esc($k['nama']) ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="<?= base_url('admin/kontak/update/' . $k['id']) ?>" method="POST">
                 <?= csrf_field() ?>
                 <div class="modal-body">
-                    <div class="row">
+                    <div class="row mb-3">
                         <!-- Informasi Utama -->
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Nama Kontak / Departemen</label>
                             <input type="text" name="nama" class="form-control" value="<?= esc($k['nama']) ?>" placeholder="Contoh: Advokasi & Kesejahteraan Mahasiswa" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_kategori" class="form-label fw-bold">Kategori <span class="text-danger">*</span></label>
+                            <select class="form-select" id="edit_kategori" name="kategori" required>
+                                <option value="" disabled selected>Pilih Kategori</option>
+                                <option value="bem" <?= set_select('kategori', 'bem') ?>>BEM</option>
+                                <option value="universitas" <?= set_select('kategori', 'universitas') ?>>Universitas</option>
+                            </select>
                         </div>
                         <div class="col-md-12 mb-4">
                             <label class="form-label fw-bold">Deskripsi Singkat</label>
                             <textarea name="deskripsi" class="form-control" rows="2" placeholder="Jelaskan fungsi kontak ini..."><?= esc($k['deskripsi']) ?></textarea>
                         </div>
-
-                        <hr>
+                    </div>
+                
                         <h6 class="fw-bold mb-3 text-primary">Detail Media Sosial & Subjek Link</h6>
-
+                        <div class="row mb-3">
                         <!-- WhatsApp Section -->
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Nomor WhatsApp</label>

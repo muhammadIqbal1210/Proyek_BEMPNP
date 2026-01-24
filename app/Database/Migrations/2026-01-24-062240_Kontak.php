@@ -19,6 +19,11 @@ class Kontak extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'kategori' => [
+                'type' => 'ENUM',
+                'constraint' => ['bem','universitas'], 
+                'default' => 'bem',
+            ],
             'deskripsi' => [
                 'type' => 'TEXT',
             ],

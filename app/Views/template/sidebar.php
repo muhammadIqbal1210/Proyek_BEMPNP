@@ -31,9 +31,9 @@
     /* PERBAIKAN UTAMA: Sidebar sebagai container scroll tunggal */
     .sidebar {
         width: 260px;
-        height: 100vh;
+        height: 90vh;
         position: fixed; /* Sidebar tetap di kiri */
-        top: 0;
+        top: 2;
         left: 0;
         background: var(--sidebar-bg);
         border-right: 1px solid #e2e8f0;
@@ -47,7 +47,7 @@
         font-weight: 700;
         color: #94a3b8;
         letter-spacing: 0.1em;
-        padding: 1.5rem 1rem 1rem;
+        padding: 1rem 1rem;
         text-transform: uppercase;
         flex-shrink: 0; /* Header tidak ikut menyusut */
     }

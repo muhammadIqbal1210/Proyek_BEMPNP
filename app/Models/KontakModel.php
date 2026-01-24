@@ -11,7 +11,7 @@ class KontakModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $allowedFields    = [
-        'nama', 'deskripsi', 
+        'nama', 'kategori', 'deskripsi', 
         'whatsApp', 'subjek_wa', 
         'instagram', 'subjek_ig', 
         'email', 'subjek_email', 

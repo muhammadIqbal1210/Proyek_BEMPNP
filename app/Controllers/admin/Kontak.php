@@ -8,6 +8,7 @@ use App\Models\KontakModel;
 class Kontak extends BaseController
 {
     protected $kontakModel;
+    protected $helpers = ['form', 'url'];
 
     public function __construct()
     {
@@ -37,6 +38,7 @@ class Kontak extends BaseController
 
         $this->kontakModel->save([
             'nama'           => $this->request->getPost('nama'),
+            'kategori'       => $this->request->getPost('kategori'),
             'deskripsi'      => $this->request->getPost('deskripsi'),
             'whatsApp'       => $this->request->getPost('whatsApp'),
             'subjek_wa'      => $this->request->getPost('subjek_wa'),
@@ -55,6 +57,7 @@ class Kontak extends BaseController
     {
         $this->kontakModel->update($id, [
             'nama'           => $this->request->getPost('nama'),
+            'kategori'       => $this->request->getPost('kategori'),
             'deskripsi'      => $this->request->getPost('deskripsi'),
             'whatsApp'       => $this->request->getPost('whatsApp'),
             'subjek_wa'      => $this->request->getPost('subjek_wa'),
