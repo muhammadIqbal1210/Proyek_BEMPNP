@@ -17,6 +17,7 @@ $routes->get('pengumuman', 'Home::pengumuman');
 $routes->get('pengumuman/detail/(:num)', 'Home::detailpengumuman/$1');
 $routes->get('layanan', 'Home::layanan');
 $routes->get('profil', 'Home::profil');
+$routes->get('struktur', 'Home::struktur');
 $routes->get('kontak', 'Home::kontak');
 $routes->get('layanan/advokasi', 'Home::advokasi');
 $routes->post('layanan/kirim_lapor', 'Home::kirim_lapor');
