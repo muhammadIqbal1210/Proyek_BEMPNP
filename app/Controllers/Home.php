@@ -10,6 +10,7 @@ use App\Models\EventModel;
 use App\Models\BeritaModel;
 use App\Models\ProfilorganisasiModel;
 use App\Models\pengurusModel;
+use App\Models\KontakModel;
 /**
  * Controller untuk mengelola tampilan halaman publik (Frontend)
  * yang menampilkan data Pengumuman yang aktif.
@@ -23,6 +24,7 @@ class Home extends BaseController
     protected $beritaModel;
     protected $profilorganisasiModel;
     protected $pengurusModel;
+    protected $kontakModel;
     
 
     /**
@@ -47,6 +49,13 @@ class Home extends BaseController
         // Model Initialization
         $pengumumanModel = new \App\Models\pengumumanModel();
         $eventModel = new \App\Models\eventModel();
+        $profilModel = new \App\Models\ProfilorganisasiModel();
+        $pengurusModel = new \App\Models\pengurusModel();
+
+        $profil_list = $profilModel->first();
+
+        $presma = $pengurusModel->where('jabatan', 'Presiden Mahasiswa')->first();
+        $wapresma = $pengurusModel->where('jabatan', 'Wakil Presiden Mahasiswa')->first();
 
         // 1. Ambil Pengumuman Terbaru
         $latestAnnouncements = $pengumumanModel
@@ -61,9 +70,12 @@ class Home extends BaseController
             ->orderBy('waktu', 'ASC') // ASC agar yang paling dekat muncul duluan
             ->limit(5)
             ->findAll();
-
+        
         $data = [
             'title'                => 'Home Page',
+            'profil_list'          => $profil_list,
+            'presma'               => $presma,
+            'wapresma'             => $wapresma,
             'latest_announcements' => $latestAnnouncements,
             'upcoming_events'      => $upcomingEvents,
             'url_pengumuman'       => base_url('uploads/pengumuman/'),
@@ -205,8 +217,12 @@ class Home extends BaseController
     }
     public function kontak()
     {
+        $kontakModel = new \App\Models\KontakModel();
+
+        $kontak_list = $kontakModel->findAll();
         $data = [
-            'title' => 'Kontak Kami - BEM KM PNP'
+            'title' => 'Kontak Kami - BEM KM PNP',
+            'kontak_list' => $kontak_list,
         ];
         return view('frontend/kontak', $data);
     }
