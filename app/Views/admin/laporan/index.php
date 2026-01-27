@@ -97,7 +97,7 @@
                                         <button class="btn btn-sm btn-outline-info" title="Detail" data-bs-toggle="modal" data-bs-target="#detailModal<?= $lp['id'] ?>">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <a href="<?= base_url('admin/advokasi/delete/' . $lp['id']) ?>" 
+                                        <a href="<?= base_url('admin/laporan/delete/' . $lp['id']) ?>" 
                                            onclick="return confirm('Hapus laporan ini?');" 
                                            class="btn btn-sm btn-outline-danger">
                                             <i class="fas fa-trash"></i>
