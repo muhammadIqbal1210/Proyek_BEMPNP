@@ -91,6 +91,7 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     $routes->get('kanban', 'KanbanController::kanban');
     //Route Laporan
     $routes->get('laporan/index', 'Laporan::index');
+    $routes->get('laporan/delete/(:num)', 'Laporan::delete/$1');
     // Route Pengurus
     $routes->get('pengurus', 'Pengurus::index');
     $routes->post('pengurus/store', 'Pengurus::store');
