@@ -9,7 +9,7 @@ class LaporanModel extends Model
     protected $table            = 'laporans';
     protected $primaryKey       = 'id';
     protected $allowedFields    = ['nama', 'nim', 'kategori', 'kontak', 'isi', 'lampiran', 'status', 'created_at'];
-    protected $useTimestamps    = false;
+    protected $useTimestamps    = true;
 
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
