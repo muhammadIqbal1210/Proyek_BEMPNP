@@ -39,8 +39,8 @@
 
                         <!-- Link Jual -->
                         <div class="col-md-6 mb-3">
-                            <label for="edit_link_jual" class="form-label">Link Penjual (WhatsApp)</label>
-                            <input type="url" class="form-control" id="edit_link_jual" name="link_jual">
+                            <label for="edit_link_jual" class="form-label">Nomor Penjual (WhatsApp)</label>
+                            <input type="text" class="form-control" id="edit_link_jual" name="link_jual">
                         </div>
                     </div>
 

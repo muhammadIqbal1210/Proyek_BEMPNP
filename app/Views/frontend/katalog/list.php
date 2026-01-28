@@ -165,7 +165,7 @@
                         <a id="modalBuyLink" href="#" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-bold text-lg shadow-lg shadow-green-100 transition-all transform hover:-translate-y-1">
                             <i class="fab fa-whatsapp text-xl"></i> Pesan Melalui WhatsApp
                         </a>
-                        <p class="text-center text-[10px] text-gray-400">Pemesanan akan diarahkan langsung ke admin BEM KM PNP.</p>
+                        <p class="text-center text-[10px] text-gray-400">Pemesanan akan diarahkan langsung ke admin BEM KM PNP/Penjual</p>
                     </div>
                 </div>
             </div>
@@ -183,40 +183,55 @@
     const baseStorage = "<?= $produk_base_url ?>";
 
     function showProductDetail(product) {
-        // Set Data
+        // 1. Set Data Tekstual
         mTitle.innerText = product.nama_barang;
         mDesc.innerText = product.deskripsi || "Tidak ada deskripsi detail untuk produk ini.";
         
-        // Format Currency
-        mPrice.innerText = new Intl.NumberFormat('id-ID', {
+        // 2. Format Harga ke Rupiah
+        const formattedPrice = new Intl.NumberFormat('id-ID', {
             style: 'currency',
             currency: 'IDR',
             minimumFractionDigits: 0
         }).format(product.harga || 0);
+        mPrice.innerText = formattedPrice;
 
-        // Set Image
+        // 3. Set Gambar
         mImage.src = product.foto_produk ? baseStorage + product.foto_produk : 'https://via.placeholder.com/600x600?text=No+Image';
         mImage.alt = product.nama_barang;
 
-        // Set WhatsApp Link
-        if (product.link_jual) {
-            mBuyLink.href = product.link_jual;
+        // 4. LOGIKA LINK WHATSAPP DARI DATABASE
+        let rawPhone = product.link_jual || ""; 
+        
+        if (rawPhone) {
+            // Bersihkan nomor: hapus spasi, dash, dan pastikan diawali 62
+            // Mengubah 0812... menjadi 62812...
+            let cleanPhone = rawPhone.replace(/\D/g, ''); // hanya ambil angka
+            if (cleanPhone.startsWith('0')) {
+                cleanPhone = '62' + cleanPhone.substring(1);
+            } else if (cleanPhone.startsWith('8')) {
+                cleanPhone = '62' + cleanPhone;
+            }
+
+            const message = `Halo Admin, saya tertarik dengan produk yang anda jual di website BEM KM PNP dengan rincian: \n*Nama Barang:* ${product.nama_barang}\n*Harga:* ${formattedPrice}\n\nApakah produk ini masih tersedia?`;
+            const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+            
+            mBuyLink.href = waUrl;
             mBuyLink.style.display = 'flex';
         } else {
+            // Jika admin tidak mengisi nomor di database, sembunyikan tombol atau arahkan ke nomor default
             mBuyLink.style.display = 'none';
         }
 
-        // Show Modal
+        // 5. Tampilkan Modal
         modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Stop background scroll
+        document.body.style.overflow = 'hidden'; 
     }
 
     function closeProductDetail() {
         modal.classList.add('hidden');
-        document.body.style.overflow = 'auto'; // Re-enable scroll
+        document.body.style.overflow = 'auto';
     }
 
-    // Close on ESC
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeProductDetail();
     });

@@ -46,9 +46,9 @@
 
                     <!-- Link Informasi/Detail (URL) -->
                     <div class="mb-3">
-                        <label for="link_jual" class="form-label">Link Penjual (WhatsApp)</label>
-                        <input type="url" class="form-control" id="link_jual" name="link_jual" 
-                            value="<?= set_value('link_jual') ?>" placeholder="Contoh: https://link-ke-produk-detail.com">
+                        <label for="link_jual" class="form-label">Nomor Penjual (WhatsApp)</label>
+                        <input type="number" class="form-control" id="link_jual" name="link_jual" 
+                            value="<?= set_value('link_jual') ?>" placeholder="Contoh: 081234567890">
                     </div>
                     <div class="mb-3">
                         <label for="foto_produk" class="form-label">Masukkan 1 Foto Produk</label>
