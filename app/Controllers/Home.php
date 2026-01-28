@@ -25,6 +25,7 @@ class Home extends BaseController
     protected $profilorganisasiModel;
     protected $pengurusModel;
     protected $kontakModel;
+    protected $katalogmodel;
     
 
     /**
@@ -39,6 +40,10 @@ class Home extends BaseController
         $this->lombaModel   = new LombaModel();
         $this->eventModel   = new EventModel();
         $this->beritaModel   = new BeritaModel();
+        $this->katalogmodel   = new KatalogModel();
+        $this->profilorganisasiModel   = new ProfilorganisasiModel();
+        $this->pengurusModel   = new pengurusModel();
+        $this->kontakModel   = new KontakModel();
     }
     /**
      * Method default untuk halaman utama (Homepage).
@@ -51,7 +56,8 @@ class Home extends BaseController
         $eventModel = new \App\Models\eventModel();
         $profilModel = new \App\Models\ProfilorganisasiModel();
         $pengurusModel = new \App\Models\pengurusModel();
-
+        $beritaModel = new \App\Models\BeritaModel(); 
+        $katalogModel = new \App\Models\KatalogModel(); 
         $profil_list = $profilModel->first();
 
         $presma = $pengurusModel->where('jabatan', 'Presiden Mahasiswa')->first();
@@ -64,11 +70,22 @@ class Home extends BaseController
             ->limit(2)
             ->findAll();
 
-        // 2. Ambil Event Terdekat (Waktu >= hari ini)
+        // 2. Ambil Event Terdekat
         $upcomingEvents = $eventModel
-            ->where('waktu >=', date('d/m/Y'))
-            ->orderBy('waktu', 'ASC') // ASC agar yang paling dekat muncul duluan
+            ->where('waktu >=', date('Y-m-d')) // Gunakan format Y-m-d jika di database tipe DATE
+            ->orderBy('waktu', 'ASC')
             ->limit(5)
+            ->findAll();
+
+        // 3. Ambil Berita Terbaru
+        $latestNews = $beritaModel
+            ->orderBy('created_at', 'DESC')
+            ->limit(3)
+            ->findAll();
+
+        // 4. Ambil Katalog Produk/Layanan
+        $katalogList = $katalogModel
+            ->limit(4)
             ->findAll();
         
         $data = [
@@ -78,10 +95,13 @@ class Home extends BaseController
             'wapresma'             => $wapresma,
             'latest_announcements' => $latestAnnouncements,
             'upcoming_events'      => $upcomingEvents,
+            'latest_news'          => $latestNews,
+            'katalog_list'         => $katalogList,
             'url_pengumuman'       => base_url('uploads/pengumuman/'),
             'url_event'            => base_url('uploads/event/'),
+            'url_berita'           => base_url('uploads/berita/'),  // URL untuk gambar berita
+            'url_katalog'          => base_url('uploads/katalog/'), // URL untuk gambar katalog
         ];
-
         return view('welcome_message', $data);
     }
 

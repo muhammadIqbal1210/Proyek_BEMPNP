@@ -7,6 +7,8 @@
     <title><?= $title ?? 'Pengumuman Resmi - BEM KM PNP' ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
     body {
         font-family: 'Inter', sans-serif;
@@ -212,6 +214,14 @@
             © 2025 BEM POLITEKNIK NEGERI PADANG. All Rights Reserved.
         </div>
     </footer>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+    </script>
 </body>
 
 </html>

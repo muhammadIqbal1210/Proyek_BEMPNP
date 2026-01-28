@@ -5,11 +5,11 @@
     style="background-image: url('<?= base_url('home.jpg') ?>');">
     <div
         class="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center text-center text-white px-6">
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-2 tracking-tight">Badan Eksekutif Mahasiswa</h1>
-        <p class="text-2xl md:text-3xl font-bold mb-1 max-w-2xl ">Keluarga Mahasiswa</p>
-        <p class="text-lg md:text-xl mb-8 max-w-2xl text-orange-400">Politeknik Negeri Padang</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2 tracking-tight" data-aos="fade-down">Badan Eksekutif Mahasiswa</h1>
+        <p class="text-2xl md:text-3xl font-bold mb-1 max-w-2xl" data-aos="fade-down" data-aos-delay="200">Keluarga Mahasiswa</p>
+        <p class="text-lg md:text-xl mb-8 max-w-2xl text-orange-400" data-aos="fade-down" data-aos-delay="400">Politeknik Negeri Padang</p>
 
-        <div class="flex gap-4">
+        <div class="flex gap-4" data-aos="fade-up" data-aos-delay="600">
             <a href="<?= base_url('profil') ?>"
                 class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3 rounded-full shadow-lg transform hover:-translate-y-1 transition duration-300">
                 Pelajari Selengkapnya
@@ -22,67 +22,74 @@
     </div>
 </section>
 <!-- AGENDA TERDEKAT SECTION -->
-<section id="update" class="py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+<section id="agenda" class="py-10 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
     <div class="max-w-7xl mx-auto">
-        
+
         <!-- Header Section -->
         <div class="text-center mb-12" data-aos="fade-up">
-            <h2 class="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
-                AGENDA <span class="text-green-600">TERDEKAT</span>
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900 tracking-tight" data-aos="fade-down">
+                Agenda <span class="text-green-600">Terdekat</span>
             </h2>
-            <div class="w-16 h-1.5 bg-green-600 mx-auto mt-4 rounded-full"></div>
+            <div class="w-16 h-1.5 bg-green-600 mx-auto mt-4 rounded-full" data-aos="fade-up" data-aos-delay="200"></div>
         </div>
 
         <!-- Calendar Container -->
-        <div class="bg-white p-6 sm:p-10 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 group" data-aos="fade-up" data-aos-delay="200">
+        <div class="bg-white p-6 sm:p-10 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 group"
+            data-aos="fade-up" data-aos-delay="400">
             <div class="relative overflow-hidden">
                 <!-- Wrapper for Marquee Effect -->
                 <div class="flex animate-marquee whitespace-nowrap hover:[animation-play-state:paused] cursor-pointer">
-                    
+
                     <?php if (!empty($upcoming_events)): ?>
-                        <!-- Generate Events Twice for Seamless Loop -->
-                        <?php for ($i = 0; $i < 3; $i++): ?>
-                            <div class="flex items-center space-x-12 px-6">
-                                <?php foreach ($upcoming_events as $event): 
+                    <!-- Generate Events Twice for Seamless Loop -->
+                    <?php for ($i = 0; $i < 3; $i++): ?>
+                    <div class="flex items-center space-x-12 px-6">
+                        <?php foreach ($upcoming_events as $event): 
                                     $tgl = strtotime($event['waktu']);
                                     
                                 ?>
-                                    <div class="flex items-center space-x-5 min-w-[300px] py-4 px-6 rounded-2xl hover:bg-green-50 transition-colors duration-300">
-                                        <!-- Date Badge -->
-                                        <div class="flex-shrink-0 text-center bg-gradient-to-br from-green-600 to-green-400 text-white rounded-xl p-3 w-16 sm:w-20 shadow-lg shadow-green-200">
-                                            <p class="text-2xl sm:text-3xl font-black leading-none"><?= date('d', $tgl) ?></p>
-                                            <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider mt-1"><?= date('M', $tgl) ?></p>
-                                        </div>
-                                        
-                                        <!-- Event Details -->
-                                        <div class="whitespace-normal">
-                                            <h4 class="font-bold text-gray-900 text-lg leading-tight hover:text-orange-600 transition-colors line-clamp-1">
-                                                <?= esc($event['nama_event']) ?>
-                                            </h4>
-                                            <div class="flex flex-col mt-1">
-                                                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center">
-                                                </span>
-                                                <span class="text-xs font-medium text-orange-600/70 mt-0.5">
-                                                    <?= esc($event['biaya'] == 'gratis' ? 'Free Admission' : 'Berbayar') ?>
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Action Link (Optional hidden icon) -->
-                                        <?php if (!empty($event['link_informasi'])): ?>
-                                            <a href="<?= esc($event['link_informasi']) ?>" class="flex-shrink-0 text-gray-300 hover:text-orange-500 transition-colors">
-                                                <i class="fas fa-external-link-alt text-sm"></i>
-                                            </a>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endforeach; ?>
+                        <div
+                            class="flex items-center space-x-5 min-w-[300px] py-4 px-6 rounded-2xl hover:bg-green-50 transition-colors duration-300">
+                            <!-- Date Badge -->
+                            <div
+                                class="flex-shrink-0 text-center bg-gradient-to-br from-green-600 to-green-400 text-white rounded-xl p-3 w-16 sm:w-20 shadow-lg shadow-green-200">
+                                <p class="text-2xl sm:text-3xl font-black leading-none"><?= date('d', $tgl) ?></p>
+                                <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider mt-1">
+                                    <?= date('M', $tgl) ?></p>
                             </div>
-                        <?php endfor; ?>
-                    <?php else: ?>
-                        <!-- Empty State -->
-                        <div class="w-full text-center py-10">
-                            <p class="text-gray-400 font-medium italic">Belum ada agenda terdekat saat ini.</p>
+
+                            <!-- Event Details -->
+                            <div class="whitespace-normal">
+                                <h4
+                                    class="font-bold text-gray-900 text-lg leading-tight hover:text-orange-600 transition-colors line-clamp-1">
+                                    <?= esc($event['nama_event']) ?>
+                                </h4>
+                                <div class="flex flex-col mt-1">
+                                    <span
+                                        class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center">
+                                    </span>
+                                    <span class="text-xs font-medium text-orange-600/70 mt-0.5">
+                                        <?= esc($event['biaya'] == 'gratis' ? 'Free Admission' : 'Berbayar') ?>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Action Link (Optional hidden icon) -->
+                            <?php if (!empty($event['link_informasi'])): ?>
+                            <a href="<?= esc($event['link_informasi']) ?>"
+                                class="flex-shrink-0 text-gray-300 hover:text-orange-500 transition-colors">
+                                <i class="fas fa-external-link-alt text-sm"></i>
+                            </a>
+                            <?php endif; ?>
                         </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endfor; ?>
+                    <?php else: ?>
+                    <!-- Empty State -->
+                    <div class="w-full text-center py-10">
+                        <p class="text-gray-400 font-medium italic">Belum ada agenda terdekat saat ini.</p>
+                    </div>
                     <?php endif; ?>
 
                 </div>
@@ -90,8 +97,9 @@
         </div>
 
         <!-- View All Link -->
-        <div class="mt-10 text-center" data-aos="fade-up" data-aos-delay="400">
-            <a href="<?= base_url('event') ?>" class="inline-flex items-center space-x-2 text-sm font-bold text-gray-500 hover:text-orange-600 transition-all uppercase tracking-[0.2em]">
+        <div class="mt-10 text-center" data-aos="fade-up" data-aos-delay="600">
+            <a href="<?= base_url('event') ?>"
+                class="inline-flex items-center space-x-2 text-sm font-bold text-gray-500 hover:text-orange-600 transition-all uppercase tracking-[0.2em]">
                 <span>Lihat Kalender Lengkap</span>
                 <i class="fas fa-arrow-right text-[10px]"></i>
             </a>
@@ -99,7 +107,7 @@
     </div>
 </section>
 <!-- SAMBUTAN PIMPINAN SECTION -->
-<section class="max-w-10xl mx-auto px-6 mx-auto bg-white pt-24 pb-20">
+<section class="max-w-10xl mx-auto px-4 mx-auto bg-white pt-12 pb-12">
     <div class="text-center mb-16">
         <h2 class="text-4xl font-extrabold text-gray-800">Sambutan Pimpinan</h2>
         <p class="text-gray-600 mt-4 max-w-2xl mx-auto text-l">
@@ -108,47 +116,45 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
-        <div
-            class="bg-white p-10 rounded-[2rem] text-center flex flex-col items-center">
-            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md">
+        <div class="bg-white p-10 rounded-[2rem] text-center flex flex-col items-center" data-aos="fade-right">
+            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md" data-aos="zoom-in" data-aos-delay="200">
                 <img src="<?= base_url('uploads/pengurus/' . ($presma['foto'] ?? 'default.jpg')) ?>"
                     alt="Presiden Mahasiswa" class="w-full h-full object-cover">
             </div>
 
-            <h3 class="text-xl font-bold text-gray-800 mb-1">
+            <h3 class="text-xl font-bold text-gray-800 mb-1" data-aos="fade-up" data-aos-delay="300">
                 <?= esc($presma['nama'] ?? 'Nama Tidak Set') ?>
             </h3>
-            <p class="text-green-700 font-bold mb-4 text-sm">
+            <p class="text-green-700 font-bold mb-4 text-sm" data-aos="fade-up" data-aos-delay="400">
                 Presiden Mahasiswa BEM KM PNP <?= esc($profil_list['periode'] ?? '') ?>
             </p>
 
-            <p class="text-gray-600 italic leading-relaxed text-sm max-w-xs">
+            <p class="text-gray-600 italic leading-relaxed text-sm max-w-xs" data-aos="fade-up" data-aos-delay="500">
                 "<?= esc($profil_list['s_pres'] ?? 'Mari bersama-sama mewujudkan harmoni...') ?>"
             </p>
         </div>
 
-        <div
-            class="bg-white p-10 rounded-[2rem] text-center flex flex-col items-center">
-            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md">
+        <div class="bg-white p-10 rounded-[2rem] text-center flex flex-col items-center" data-aos="fade-left">
+            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md" data-aos="zoom-in" data-aos-delay="200">
                 <img src="<?= base_url('uploads/pengurus/' . ($wapresma['foto'] ?? 'default.jpg')) ?>"
                     alt="Wakil Presiden Mahasiswa" class="w-full h-full object-cover">
             </div>
 
-            <h3 class="text-xl font-bold text-gray-800 mb-1">
+            <h3 class="text-xl font-bold text-gray-800 mb-1" data-aos="fade-up" data-aos-delay="300">
                 <?= esc($wapresma['nama'] ?? 'Nama Tidak Set') ?>
             </h3>
-            <p class="text-orange-700 font-bold mb-4 text-sm">
+            <p class="text-orange-700 font-bold mb-4 text-sm" data-aos="fade-up" data-aos-delay="400">
                 Wakil Presiden Mahasiswa BEM KM PNP <?= esc($profil_list['periode'] ?? '') ?>
             </p>
 
-            <p class="text-gray-600 italic leading-relaxed text-sm max-w-xs">
+            <p class="text-gray-600 italic leading-relaxed text-sm max-w-xs" data-aos="fade-up" data-aos-delay="500">
                 "<?= esc($profil_list['s_wapres'] ?? 'Sinergi dan integritas adalah kunci utama...') ?>"
             </p>
         </div>
     </div>
 </section>
 <!-- Video profil-->
- <section class="max-w-4xl mx-auto px-6 mb-20 pt-24 pb-20">
+<section class="max-w-4xl mx-auto px-6 mb-20 pt-16 pb-16">
     <div class="text-center mb-12">
         <h2 class="text-4xl font-extrabold text-gray-800">Video Profil <?= esc($profil_list['nama_kabinet']) ?></h2>
         <p class="text-gray-600 mt-4 max-w-2xl mx-auto text-l">
@@ -171,7 +177,8 @@
             <?php else : ?>
             <div class="flex flex-col items-center justify-center h-full text-white p-10">
                 <i class="fab fa-youtube text-6xl text-red-600 mb-4"></i>
-                <p class="text-gray-400 italic">Video profil <?= esc($profil_list['nama_kabinet']) ?> belum tersedia.</p>
+                <p class="text-gray-400 italic">Video profil <?= esc($profil_list['nama_kabinet']) ?> belum tersedia.
+                </p>
             </div>
             <?php endif; ?>
         </div>
@@ -182,13 +189,13 @@
 <section class="py-20 bg-gray-50">
     <div class="max-w-6xl mx-auto px-6">
         <!-- Judul Section -->
-         <div class="text-center mb-6" data-aos="fade-up">
-            <h2 class="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
-                PENGUMUMAN <span class="text-green-600">TERBARU</span>
+        <div class="text-center mb-6" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900 tracking-tight" data-aos="fade-down">
+                Pengumuman <span class="text-green-600">Terbaru</span>
             </h2>
-            <div class="w-16 h-1.5 bg-green-600 mx-auto mt-4 rounded-full"></div>
+            <div class="w-16 h-1.5 bg-green-600 mx-auto mt-4 rounded-full" data-aos="fade-up" data-aos-delay="200"></div>
         </div>
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12" data-aos="fade-up" data-aos-delay="400">
             <div class="text-left">
                 <p class="text-gray-500 mt-4 max-w-md">Informasi resmi, kebijakan kampus, dan agenda kegiatan organisasi
                     terbaru.</p>
@@ -203,7 +210,7 @@
             </a>
         </div>
         <div class="grid md:grid-cols- lg:grid-cols-2 gap-8">
-            <?php if (!empty($latest_announcements)): foreach ($latest_announcements as $pengumuman): ?>
+            <?php if (!empty($latest_announcements)): $index = 0; foreach ($latest_announcements as $pengumuman): ?>
             <div
                 class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transform hover:scale-[1.01] transition duration-300 flex flex-col h-full">
 
@@ -295,7 +302,7 @@
                     </div>
                 </div>
             </div>
-            <?php endforeach; else: ?>
+            <?php $index++; endforeach; else: ?>
             <div class="col-span-full py-10 text-center text-gray-400 border-2 border-dashed rounded-xl">
                 Belum ada pengumuman terbaru.
             </div>
@@ -303,19 +310,223 @@
         </div>
     </div>
 </section>
+
+<!-- PUSAT LAYANAN SECTION -->
+
+<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                Pusat Layanan Mahasiswa
+            </h2>
+            <div class="w-16 h-1.5 bg-green-600 mx-auto mt-4 rounded-full"></div>
+            <p class="text-gray-500 mt-6 max-w-2xl mx-auto">Akses cepat berbagai layanan administrasi dan advokasi
+                mahasiswa dalam satu pintu.</p>
+        </div>
+
+        <!-- Grid Container -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Layanan 1: Advokasi -->
+            <a href="<?= base_url('advokasi') ?>"
+                class="group p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-orange-600 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                <div
+                    class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
+                    <i class="fas fa-hands-helping text-2xl text-orange-600 group-hover:text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 group-hover:text-white mb-2">Advokasi</h3>
+                <p class="text-sm text-gray-500 group-hover:text-white/80 leading-relaxed">Sampaikan aspirasi dan
+                    kendala akademik Anda kepada kami.</p>
+            </a>
+
+            <!-- Layanan 2: Surat Menyurat -->
+            <a href="#"
+                class="group p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-green-600 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="400">
+                <div
+                    class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
+                    <i class="fas fa-envelope-open-text text-2xl text-green-600 group-hover:text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 group-hover:text-white mb-2">Administrasi</h3>
+                <p class="text-sm text-gray-500 group-hover:text-white/80 leading-relaxed">Pengurusan surat rekomendasi
+                    dan legalisir organisasi.</p>
+            </a>
+
+            <!-- Layanan 3: Beasiswa -->
+            <a href="#"
+                class="group p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-blue-600 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="600">
+                <div
+                    class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
+                    <i class="fas fa-graduation-cap text-2xl text-blue-600 group-hover:text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 group-hover:text-white mb-2">Info Beasiswa</h3>
+                <p class="text-sm text-gray-500 group-hover:text-white/80 leading-relaxed">Informasi bantuan biaya
+                    pendidikan dan prestasi terbaru.</p>
+            </a>
+            <!-- Layanan 4: Peminjaman Ruangan -->
+            <a href="#"
+                class="group p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-purple-600 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="800">
+                <div
+                    class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
+                    <i class="fas fa-building text-2xl text-purple-600 group-hover:text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 group-hover:text-white mb-2">Fasilitas</h3>
+                <p class="text-sm text-gray-500 group-hover:text-white/80 leading-relaxed">Prosedur peminjaman alat dan
+                    fasilitas sekretariat BEM.</p>
+            </a>
+        </div> <!-- Penutup Grid -->
+        <!-- Link Selengkapnya -->
+        <div class="flex justify-center mt-12">
+            <a href="<?= base_url('layanan') ?>"
+                class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-4 rounded-full shadow-lg transform hover:-translate-y-1 transition duration-300 flex items-center justify-center w-max text-sm">
+                Lihat Semua Layanan
+            </a>
+        </div>
+    </div>
+</section>
+<!-- BERITA TERBARU SECTION -->
+<section class="py-24 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                    Berita Terkini
+                </h2>
+                <div class="w-16 h-1.5 bg-green-600 mx-auto mt-4 rounded-full"></div>
+                <p class="text-gray-500 mt-4">Dapatkan informasi terbaru seputar kegiatan, program, dan inisiatif BEM KM
+                    Politeknik Negeri Padang.</p>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <?php if (!empty($latest_news)): $newsIndex = 0; foreach ($latest_news as $news): ?>
+            <article
+                class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 group" data-aos="fade-up" data-aos-delay="<?= $newsIndex * 200 + 200 ?>">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="<?= base_url('uploads/berita/' . ($news['gambarberita'] ?? 'default.jpg')) ?>"
+                        class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute top-4 left-4">
+                        <span
+                            class="bg-green-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest">
+                            <?= esc($news['kategori'] ?? 'Update') ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <div class="flex items-center text-xs text-gray-400 mb-4 font-medium">
+                        <i class="far fa-calendar-alt mr-2"></i> <?= date('d M Y', strtotime($news['created_at'])) ?>
+                    </div>
+                    <h3
+                        class="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors line-clamp-2 leading-snug">
+                        <?= esc($news['judulberita']) ?>
+                    </h3>
+                    <p class="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-6">
+                        <?= strip_tags($news['isiberita']) ?>
+                    </p>
+                    <a href="<?= base_url('berita/detail/' . $news['id']) ?>"
+                        class="text-sm font-black text-gray-900 group-hover:text-orange-600 flex items-center transition-colors">
+                        BACA SELENGKAPNYA <div
+                            class="w-8 h-[2px] bg-gray-200 ml-3 group-hover:bg-orange-600 transition-colors"></div>
+                    </a>
+                </div>
+            </article>
+            <?php $newsIndex++; endforeach; else: ?>
+            <p class="col-span-3 text-center text-gray-400 italic">Belum ada berita terbaru.</p>
+            <?php endif; ?>
+        </div>
+        <div class="flex justify-center mt-12">
+            <a href="<?= base_url('berita') ?>"
+                class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-4 rounded-full shadow-lg transform hover:-translate-y-1 transition duration-300 flex items-center justify-center w-max text-sm">
+                Baca Berita Lainnya
+            </a>
+        </div>
+    </div>
+</section>
+<!-- KATALOG / MERCHANDISE SECTION -->
+<section class="py-24 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-[3rem] p-8 md:p-16 relative shadow-2xl">
+            <!-- Dekorasi Background -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-green-600/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+                <div data-aos="fade-right">
+                    <span class="text-orange-500 font-black tracking-[0.3em] text-xs uppercase">BEM KM PNP Store</span>
+                    <h2 class="text-4xl md:text-5xl font-black text-white mt-4 leading-tight">
+                        Katalog <span class="text-green-500">Mahasiswa</span> Resmi
+                    </h2>
+                    <p class="text-gray-400 mt-6 text-lg leading-relaxed">
+                        Dari Mahasiswa untuk mahasiswa. Produk dari mahasiswa yang bisa di beli dan dijual disini, silahkan dukung dengan beli produk produk yang tersedia.
+                    </p>
+                    <div class="mt-10 flex flex-wrap gap-4">
+                        <a href="<?= base_url('katalog') ?>"
+                            class="bg-white text-gray-900 font-black px-10 py-4 rounded-full hover:bg-orange-500 hover:text-white transition-all duration-300 shadow-lg shadow-white/5">
+                            Buka Katalog Lengkap
+                        </a>
+                    </div>
+                </div>
+                <!-- Preview Produk dari Database -->
+                <div class="grid grid-cols-2 gap-4" data-aos="fade-left">
+                    <?php if (!empty($katalog_list)): ?>
+                    <?php
+                        foreach ($katalog_list as $index => $item):
+                        $rotateClass = ($index % 2 == 0) ? 'hover:-rotate-2' : 'hover:rotate-2';
+                        $translateClass = ($index == 1 || $index == 3) ? 'translate-y-6' : '';
+                        $delay = $index * 100 + 200;
+                        ?>
+                    <div
+                        class="bg-white/5 backdrop-blur-md p-4 rounded-3xl border border-white/10 transition-all duration-500 <?= $rotateClass ?> <?= $translateClass ?> group relative" data-aos="zoom-in" data-aos-delay="<?= $delay ?>">
+                        <div class="relative h-40 w-full overflow-hidden rounded-2xl mb-4">
+
+                            <img src="<?= $url_katalog . ($item['foto_produk'] ?? 'default_merch.jpg') ?>"
+                                alt="<?= esc($item['nama_barang']) ?>"
+                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <h4 class="text-white font-bold text-sm truncate"><?= esc($item['nama_barang']) ?></h4>
+                        <p class="text-orange-500 text-xs font-black mt-1">
+                            Rp <?= number_format($item['harga'], 0, ',', '.') ?>
+                        </p>
+                        <!-- Link detail -->
+                        <a href="<?= base_url('katalog/detail/' . $item['id']) ?>" class="absolute inset-0 z-10"></a>
+                    </div>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <!-- Tampilan jika database kosong -->
+                    <div class="col-span-2 py-10 text-center border border-white/10 rounded-3xl">
+                        <i class="fas fa-shopping-bag text-white/20 text-4xl mb-3"></i>
+                        <p class="text-gray-500 text-xs">Produk belum tersedia di database.</p>
+                    </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <style>
-    @keyframes marquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
     }
-    .animate-marquee {
-        display: flex;
-        width: max-content;
-        animation: marquee 30s linear infinite;
+
+    100% {
+        transform: translateX(-50%);
     }
-    /* Mencegah teks terpotong saat hover */
-    .whitespace-normal {
-        white-space: normal;
-    }
+}
+
+.animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 30s linear infinite;
+}
+
+/* Mencegah teks terpotong saat hover */
+.whitespace-normal {
+    white-space: normal;
+}
 </style>
 <?php $this->endSection() ?>
