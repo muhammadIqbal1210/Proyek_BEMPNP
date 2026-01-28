@@ -5,7 +5,7 @@
 <!-- Header Berita -->
 <section class="bg-gray-100 border-b border-gray-200 pt-32 pb-12">
     <div class="max-w-7xl mx-auto px-6">
-        <nav class="flex mb-4 text-sm text-gray-500" aria-label="Breadcrumb">
+        <nav class="flex mb-4 text-sm text-gray-500" aria-label="Breadcrumb" data-aos="fade-down">
             <ol class="flex items-center space-x-2">
                 <li><a href="<?= base_url('/') ?>" class="hover:text-green-700">Beranda</a></li>
                 <li class="flex items-center space-x-2">
@@ -14,10 +14,10 @@
                 </li>
             </ol>
         </nav>
-        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight" data-aos="fade-down" data-aos-delay="200">
             Berita <span class="text-green-700">Terkini</span>
         </h1>
-        <div class="w-20 h-1.5 bg-yellow-400 mt-4"></div>
+        <div class="w-20 h-1.5 bg-yellow-400 mt-4" data-aos="fade-up" data-aos-delay="400"></div>
     </div>
 </section>
 
@@ -29,8 +29,8 @@
         <div class="w-full lg:w-2/3">
             <?php if (!empty($semua_berita)): ?>
                 <div class="flex flex-col gap-10">
-                    <?php foreach ($semua_berita as $b): ?>
-                        <article class="flex flex-col md:flex-row gap-6 group">
+                    <?php $articleIndex = 0; foreach ($semua_berita as $b): ?>
+                        <article class="flex flex-col md:flex-row gap-6 group" data-aos="fade-up" data-aos-delay="<?= 600 + ($articleIndex * 200) ?>">
                             <!-- Thumbnail -->
                             <div class="w-full md:w-2/5 shrink-0 overflow-hidden rounded-xl shadow-sm">
                                 <a href="<?= base_url('berita/detail/' . $b['id']) ?>">
@@ -73,7 +73,7 @@
                         </article>
                         <!-- Separator -->
                         <div class="h-px bg-gray-100 w-full"></div>
-                    <?php endforeach; ?>
+                    <?php $articleIndex++; endforeach; ?>
                 </div>
 
                 <!-- Pagination -->
@@ -108,7 +108,7 @@
             </div>
 
             <!-- Berita Populer (Mockup) -->
-            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm" data-aos="fade-left" data-aos-delay="400">
                 <h3 class="text-lg font-bold text-gray-900 mb-6 border-l-4 border-yellow-400 ps-3">Terpopuler</h3>
                 <div class="space-y-6">
                     <?php 
@@ -132,7 +132,7 @@
             </div>
 
             <!-- Social Media Box -->
-            <div class="bg-green-900 p-8 rounded-3xl text-white relative overflow-hidden">
+            <div class="bg-green-900 p-8 rounded-3xl text-white relative overflow-hidden" data-aos="fade-left" data-aos-delay="600">
                 <div class="relative z-10">
                     <h3 class="text-xl font-bold mb-2">Ikuti Kami</h3>
                     <p class="text-green-200 text-sm mb-6">Dapatkan update langsung melalui media sosial resmi kami.</p>
