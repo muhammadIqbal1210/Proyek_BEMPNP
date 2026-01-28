@@ -6,9 +6,9 @@
 <!-- Header Section -->
 <header class="pt-24 pb-16 bg-white mb-24">
     <div class="max-w-6xl mx-auto px-6 text-center">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-black mb-4">Kontak Penting</h1>
-        <div class="h-1.5 w-24 bg-orange-500 mx-auto rounded-full mb-6"></div>
-        <p class="text-gray-500 text-lg max-w-2xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-black mb-4" data-aos="fade-down">Kontak Penting</h1>
+        <div class="h-1.5 w-24 bg-orange-500 mx-auto rounded-full mb-6" data-aos="fade-up" data-aos-delay="200"></div>
+        <p class="text-gray-500 text-lg max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="400">
             Hubungi Kontak Penting BEM KM Politeknik Negeri Padang untuk berbagai keperluan informasi dan layanan mahasiswa.
         </p>
     </div>
@@ -39,8 +39,8 @@
             
             <?php if (!empty($kontak_bem)): ?>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
-                    <?php foreach ($kontak_bem as $k): ?>
-                        <?= renderKontakCard($k) ?>
+                    <?php $bemIndex = 0; foreach ($kontak_bem as $k): ?>
+                        <?= renderKontakCard($k, $bemIndex++, 600) ?>
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
@@ -80,9 +80,10 @@
 /**
  * Helper function untuk merender kartu kontak agar kode tidak duplikat
  */
-function renderKontakCard($k) {
+function renderKontakCard($k, $index = 0, $baseDelay = 0) {
+    $delay = $baseDelay + ($index * 200);
     ?>
-    <div class="bg-white p-10 rounded-[1.5rem] shadow-sm border border-gray-100 flex flex-col hover:shadow-md transition-all duration-300 min-h-full">
+    <div class="bg-white p-10 rounded-[1.5rem] shadow-sm border border-gray-100 flex flex-col hover:shadow-md transition-all duration-300 min-h-full" data-aos="fade-up" data-aos-delay="<?= $delay ?>">
         <!-- Top Icon -->
         <div class="mb-4 text-green-600">
             <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">

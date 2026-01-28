@@ -11,8 +11,8 @@
 
 <section class="max-w-7xl mx-auto px-6 py-2">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        
-        <a href="<?= base_url('layanan/advokasi') ?>" class="block group">
+
+        <a href="<?= base_url('layanan/advokasi') ?>" class="block group" data-aos="fade-up" data-aos-delay="400">
             <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
                 <!-- Icon dengan efek warna saat kartu di-hover -->
                 <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
@@ -31,7 +31,7 @@
             </div>
         </a>
 
-        <a href="<?= base_url('/beasiswa') ?>" class="block group">
+        <a href="<?= base_url('/beasiswa') ?>" class="block group" data-aos="fade-up" data-aos-delay="600">
             <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
                 <!-- Icon dengan efek warna saat kartu di-hover -->
                 <div class="w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
@@ -50,7 +50,7 @@
             </div>
         </a>
 
-        <a href="<?= base_url('/lomba') ?>" class="block group">
+        <a href="<?= base_url('/lomba') ?>" class="block group" data-aos="fade-up" data-aos-delay="800">
             <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
                 <!-- Icon dengan efek warna saat kartu di-hover -->
                 <div class="w-16 h-16 bg-yellow-50 text-yellow-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-yellow-600 group-hover:text-white transition-all duration-300">
@@ -68,7 +68,7 @@
                 </div>
             </div>
         </a>
-        <a href="<?= base_url('/event') ?>" class="block group">
+        <a href="<?= base_url('/event') ?>" class="block group" data-aos="fade-up" data-aos-delay="1000">
             <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer h-full">
                 <!-- Icon dengan efek warna saat kartu di-hover -->
                 <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
@@ -87,7 +87,7 @@
             </div>
         </a>
 
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300" data-aos="fade-up" data-aos-delay="1200">
             <div class="w-16 h-16 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
                 <i class="fas fa-folder-open"></i>
             </div>
@@ -95,7 +95,7 @@
             <p class="text-gray-500 text-sm leading-relaxed">Temukan dokumen penting, template surat, dan berkas lainnya.</p>
         </div>
 
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300" data-aos="fade-up" data-aos-delay="1400">
             <div class="w-16 h-16 bg-gray-100 text-gray-600 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
                 <i class="fas fa-id-card"></i>
             </div>
@@ -103,7 +103,7 @@
             <p class="text-gray-500 text-sm leading-relaxed">Hubungi kami melalui narahubung kementerian terkait.</p>
         </div>
 
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300" data-aos="fade-up" data-aos-delay="1600">
             <div class="w-16 h-16 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
                 <i class="fas fa-handshake"></i>
             </div>
