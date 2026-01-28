@@ -7,10 +7,10 @@
 <header class="pt-24 pb-12 bg-white">
     <div class="max-w-6xl mx-auto px-6 text-center">
         <span
-            class="inline-block px-4 py-1.5 bg-orange-50 text-orange-600 text-xs font-bold rounded-full mb-4 tracking-widest uppercase">Eksplorasi</span>
-        <h1 class="text-4xl md:text-5xl font-extrabold text-black mb-4">Profil Organisasi</h1>
-        <div class="h-1.5 w-24 bg-orange-500 mx-auto rounded-full mb-6"></div>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+            class="inline-block px-4 py-1.5 bg-orange-50 text-orange-600 text-xs font-bold rounded-full mb-4 tracking-widest uppercase" data-aos="fade-down">Eksplorasi</span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-black mb-4" data-aos="fade-down" data-aos-delay="200">Profil Organisasi</h1>
+        <div class="h-1.5 w-24 bg-orange-500 mx-auto rounded-full mb-6" data-aos="fade-up" data-aos-delay="400"></div>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="600">
             Mengenal lebih dekat struktur pimpinan dan arah gerak BEM KM Politeknik Negeri Padang
 
             <?= esc($profil_list[0]['nama_kabinet'] ?? 'Nama Kabinet Tidak ada') ?>
@@ -25,8 +25,8 @@
 <?php foreach ($profil_list as $profil): ?>
 
 <!-- SECTION 1: Video Profil (Full Width Style) -->
-<section class="max-w-6xl mx-auto px-6 mb-20">
-    <div class="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative group">
+<section class="max-w-6xl mx-auto px-6 mb-20" data-aos="fade-up">
+    <div class="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative group" data-aos="zoom-in" data-aos-delay="200">
         <?php 
                 $url = $profil['videoprofil'];
                 $video_id = '';
@@ -59,7 +59,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
         <div
-            class="bg-white p-10 rounded-[2rem] shadow-lg border border-gray-100 text-center flex flex-col items-center">
+            class="bg-white p-10 rounded-[2rem] shadow-lg border border-gray-100 text-center flex flex-col items-center" data-aos="fade-right" data-aos-delay="1600">
             <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md">
                 <img src="<?= base_url('uploads/pengurus/' . ($presma['foto'] ?? 'default.jpg')) ?>"
                     alt="Presiden Mahasiswa" class="w-full h-full object-cover">
@@ -72,13 +72,13 @@
                 Presiden Mahasiswa BEM KM PNP <?= esc($profil['periode'] ?? '') ?>
             </p>
 
-            <p class="text-gray-600 italic leading-relaxed text-sm max-w-xs">
+            <p class="text-gray-600 italic leading-relaxed text-sm max-w-xs" data-aos="fade-up" data-aos-delay="600">
                 "<?= esc($profil['s_pres'] ?? 'Mari bersama-sama mewujudkan harmoni...') ?>"
             </p>
         </div>
 
         <div
-            class="bg-white p-10 rounded-[2rem] shadow-lg border border-gray-100 text-center flex flex-col items-center">
+            class="bg-white p-10 rounded-[2rem] shadow-lg border border-gray-100 text-center flex flex-col items-center" data-aos="fade-left" data-aos-delay="1600">
             <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md">
                 <img src="<?= base_url('uploads/pengurus/' . ($wapresma['foto'] ?? 'default.jpg')) ?>"
                     alt="Wakil Presiden Mahasiswa" class="w-full h-full object-cover">
@@ -91,53 +91,53 @@
                 Wakil Presiden Mahasiswa BEM KM PNP <?= esc($profil['periode'] ?? '') ?>
             </p>
 
-            <p class="text-gray-600 italic leading-relaxed text-sm max-w-xs">
+            <p class="text-gray-600 italic leading-relaxed text-sm max-w-xs" data-aos="fade-up" data-aos-delay="600">
                 "<?= esc($profil['s_wapres'] ?? 'Sinergi dan integritas adalah kunci utama...') ?>"
             </p>
         </div>
     </div>
     <!-- Untuk struktur lain -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto ">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto " data-aos="fade-up" data-aos-delay="1200">
         <div
-            class="bg-white p-8 rounded-[2rem] shadow-lg border border-gray-100 text-center flex flex-col items-center">
-            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md">
+            class="bg-white p-8 rounded-[2rem] shadow-lg border border-gray-100 text-center flex flex-col items-center" data-aos="fade-up" data-aos-delay="1400">
+            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md" data-aos="zoom-in" data-aos-delay="1600">
                 <img src="<?= base_url('uploads/pengurus/' . ($sesneg['foto'] ?? 'default.jpg')) ?>"
                     alt="Sekretaris Negara" class="w-full h-full object-cover">
             </div>
 
-            <h3 class="text-l font-bold text-gray-800">
+            <h3 class="text-l font-bold text-gray-800" data-aos="fade-up" data-aos-delay="1700">
                 <?= esc($sesneg['nama'] ?? 'Nama Tidak Set') ?>
             </h3>
-            <p class="text-gray-500 font-medium mb-4 text-sm">
+            <p class="text-gray-500 font-medium mb-4 text-sm" data-aos="fade-up" data-aos-delay="1800">
                 Sekretaris Negara BEM KM PNP <?= esc($profil['periode'] ?? '') ?>
             </p>
         </div>
 
         <div
-            class="bg-white p-8 rounded-[2rem] shadow-lg border border-gray-100 text-center flex flex-col items-center">
-            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md">
+            class="bg-white p-8 rounded-[2rem] shadow-lg border border-gray-100 text-center flex flex-col items-center" data-aos="fade-up" data-aos-delay="1900">
+            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md" data-aos="zoom-in" data-aos-delay="2100">
                 <img src="<?= base_url('uploads/pengurus/' . ($menkoper['foto'] ?? 'default.jpg')) ?>"
                     alt="Menteri Koordinator Pergerakan" class="w-full h-full object-cover">
             </div>
 
-            <h3 class="text-l font-bold text-gray-800">
+            <h3 class="text-l font-bold text-gray-800" data-aos="fade-up" data-aos-delay="2200">
                 <?= esc($menkoper['nama'] ?? 'Nama Tidak Set') ?>
             </h3>
-            <p class="text-gray-500 font-medium mb-4 text-sm">
+            <p class="text-gray-500 font-medium mb-4 text-sm" data-aos="fade-up" data-aos-delay="2300">
                 Menteri Koordinator Pergerakan BEM KM PNP <?= esc($profil['periode'] ?? '') ?>
             </p>
         </div>
         <div
-            class="bg-white p-8 rounded-[2rem] shadow-lg border border-gray-100 text-center flex flex-col items-center">
-            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md">
+            class="bg-white p-8 rounded-[2rem] shadow-lg border border-gray-100 text-center flex flex-col items-center" data-aos="fade-up" data-aos-delay="2400">
+            <div class="w-32 h-32 rounded-full overflow-hidden mb-6 shadow-md" data-aos="zoom-in" data-aos-delay="2600">
                 <img src="<?= base_url('uploads/pengurus/' . ($menkopp['foto'] ?? 'default.jpg')) ?>"
                     alt="Menteri Koordinator Pelayanan dan Pengabdian" class="w-full h-full object-cover">
             </div>
 
-            <h3 class="text-l font-bold text-gray-800">
+            <h3 class="text-l font-bold text-gray-800" data-aos="fade-up" data-aos-delay="2700">
                 <?= esc($menkopp['nama'] ?? 'Nama Tidak Set') ?>
             </h3>
-            <p class="text-gray-500 font-medium text-sm">
+            <p class="text-gray-500 font-medium text-sm" data-aos="fade-up" data-aos-delay="2800">
                 Menteri Koordinator Pelayanan dan Pengabdian BEM KM PNP <?= esc($profil['periode'] ?? '') ?>
             </p>
         </div>

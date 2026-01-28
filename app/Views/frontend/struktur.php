@@ -3,10 +3,10 @@
 <?php $this->section('content') ?>
 <header class="pt-24 pb-12 bg-white">
     <div class="max-w-6xl mx-auto px-6 text-center">
-        <span class="inline-block px-4 py-1.5 bg-orange-50 text-orange-600 text-xs font-bold rounded-full mb-4 tracking-widest uppercase">Eksplorasi</span>
-        <h1 class="text-4xl md:text-5xl font-extrabold text-black mb-4">Struktur Kabinet</h1>
-        <div class="h-1.5 w-24 bg-orange-500 mx-auto rounded-full mb-6"></div>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+        <span class="inline-block px-4 py-1.5 bg-orange-50 text-orange-600 text-xs font-bold rounded-full mb-4 tracking-widest uppercase" data-aos="fade-down">Eksplorasi</span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-black mb-4" data-aos="fade-down" data-aos-delay="200">Struktur Kabinet</h1>
+        <div class="h-1.5 w-24 bg-orange-500 mx-auto rounded-full mb-6" data-aos="fade-up" data-aos-delay="400"></div>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="600">
             Mengenal lebih dekat struktur pimpinan <span class="text-orange-600 font-bold"><?= esc($profil['nama_kabinet'] ?? 'BEM KM PNP') ?></span><br>
             Periode <?= esc($profil['periode'] ?? '') ?>
         </p>
@@ -16,7 +16,7 @@
 <section class="py-12 max-w-7xl mx-auto px-6">
     
     <!-- Filter & Search Bar -->
-    <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 mb-12">
+    <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 mb-12" data-aos="fade-up" data-aos-delay="800">
         <form action="<?= base_url('struktur') ?>" method="GET" class="flex flex-col md:flex-row gap-4">
             <!-- Input Pencarian Nama -->
             <div class="flex-grow relative">
@@ -58,7 +58,7 @@
     </div>
 
     <!-- Judul Hasil -->
-    <div class="mb-12 border-l-8 border-orange-500 pl-6">
+    <div class="mb-12 border-l-8 border-orange-500 pl-6" data-aos="fade-right" data-aos-delay="1000">
         <h2 class="text-3xl font-bold text-slate-800 uppercase tracking-wider">
             <?= !empty($filters['kementerian']) ? str_replace('_', ' ', $filters['kementerian']) : 'Daftar Pengurus' ?>
         </h2>
@@ -69,8 +69,8 @@
 
     <?php if (!empty($pengurus)): ?>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <?php foreach ($pengurus as $p): ?>
-        <div class="group bg-white rounded-[2rem] shadow-md border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-300">
+        <?php $pengurusIndex = 0; foreach ($pengurus as $p): ?>
+        <div class="group bg-white rounded-[2rem] shadow-md border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-300" data-aos="fade-up" data-aos-delay="<?= 1200 + ($pengurusIndex * 100) ?>">
             <div class="aspect-[3/4] overflow-hidden relative">
                 <img src="<?= base_url('uploads/pengurus/' . ($p['foto'] ?? 'default.jpg')) ?>"
                     alt="<?= esc($p['nama']) ?>"
