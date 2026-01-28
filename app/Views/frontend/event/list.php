@@ -12,7 +12,7 @@
         </svg>
     </div>
     
-    <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
+    <div class="max-w-7xl mx-auto px-6 relative z-10 text-center" data-aos="fade-up">
         <div class="inline-block px-4 py-1.5 bg-green-500/30 backdrop-blur-md rounded-full text-green-200 text-xs font-bold uppercase tracking-widest mb-6 border border-green-400/30">
             Pusat Kompetisi & Kegiatan
         </div>
@@ -30,7 +30,7 @@
     <div class="flex flex-col lg:flex-row gap-10">
         
         <!-- Sidebar Filter (Sticky) -->
-        <aside class="w-full lg:w-1/4">
+        <aside class="w-full lg:w-1/4" data-aos="fade-right" data-aos-delay="200">
             <div class="bg-white p-8 rounded-3xl shadow-xl shadow-green-900/5 border border-gray-100 sticky top-28">
                 <h3 class="text-lg font-bold text-gray-900 mb-6 flex items-center">
                     <i class="fas fa-sliders-h mr-3 text-green-600"></i> Filter Event
@@ -65,7 +65,7 @@
         </aside>
 
         <!-- Event Grid -->
-        <div class="w-full lg:w-3/4">
+        <div class="w-full lg:w-3/4" data-aos="fade-left" data-aos-delay="200">
             <?php if (!empty($event_list)): ?>
                 <div class="grid md:grid-cols-2 gap-8">
                     <?php foreach ($event_list as $event): ?>

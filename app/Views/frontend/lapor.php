@@ -3,7 +3,7 @@
 <?php $this->section('content') ?>
 
 <!-- Header Halaman -->
-<header class="pt-16 pb-12 mb-10">
+<header class="pt-16 pb-12 mb-10" data-aos="fade-down">
     <div class="max-w-6xl mx-auto px-6 text-center">
         <h1 class="text-4xl font-extrabold text-black mb-2 pb-2 border-b-4 border-orange-400 inline-block">Layanan
             Advokasi Mahasiswa</h1>
@@ -16,7 +16,7 @@
     <div class="grid lg:grid-cols-3 gap-12">
 
         <!-- KOLOM KIRI: EDUKASI ALUR (33%) -->
-        <div class="lg:col-span-1 space-y-8">
+        <div class="lg:col-span-1 space-y-8" data-aos="fade-right">
             <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 shadow-sm">
                 <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                     <i class="fas fa-graduation-cap mr-3 text-orange-500"></i> Alur Advokasi
@@ -81,7 +81,7 @@
         </div>
 
         <!-- KOLOM KANAN: FORMULIR (66%) -->
-        <div class="lg:col-span-2">
+        <div class="lg:col-span-2" data-aos="fade-up">
             <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
                 <div class="w-full h-32 bg-green-600 flex items-center justify-center relative">
                     <i class="fas fa-file-alt text-6xl text-white opacity-20"></i>

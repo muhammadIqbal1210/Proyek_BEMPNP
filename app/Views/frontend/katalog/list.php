@@ -8,7 +8,7 @@
             <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white"></path>
         </svg>
     </div>
-    <div class="max-w-6xl mx-auto px-6 relative z-10 text-center">
+    <div class="max-w-6xl mx-auto px-6 relative z-10 text-center" data-aos="fade-up">
         <h1 class="text-4xl md:text-5xl font-extrabold mb-6">Katalog Layanan & Produk</h1>
         <p class="text-green-100 text-lg max-w-2xl mx-auto">
             Temukan berbagai merchandise resmi BEM KM PNP serta layanan mahasiswa yang kami sediakan untuk menunjang kreativitas Anda.
@@ -21,7 +21,7 @@
     <div class="flex flex-col md:flex-row gap-8">
         
         <!-- Sidebar Filter -->
-        <aside class="w-full md:w-1/4">
+        <aside class="w-full md:w-1/4" data-aos="fade-right" data-aos-delay="200">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
                 <h2 class="font-bold text-gray-900 mb-4 flex items-center">
                     <i class="fas fa-filter mr-2 text-orange-500"></i> Cari Produk
@@ -50,7 +50,7 @@
         </aside>
 
         <!-- Grid Produk Dinamis -->
-        <div class="w-full md:w-3/4">
+        <div class="w-full md:w-3/4" data-aos="fade-left" data-aos-delay="200">
             <div class="flex justify-between items-center mb-8 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
                 <p class="text-gray-500 text-sm">
                     Menampilkan <span class="font-bold text-gray-900"><?= count($katalog_list) ?></span> Produk

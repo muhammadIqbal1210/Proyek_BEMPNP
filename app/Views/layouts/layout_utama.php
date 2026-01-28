@@ -79,7 +79,7 @@
                         </li>
 
                         <li class="menu-item menu-item-has-children relative group/sub px-4 py-2 hover:bg-orange-50">
-                            <a href="#" class="flex justify-between items-center text-gray-700 hover:text-orange-500">
+                            <a href="<?= base_url('struktur') ?>" class="flex justify-between items-center text-gray-700 hover:text-orange-500">
                                 <span>Struktur</span>
                                 <svg class="w-4 h-4 -rotate-90" viewBox="0 0 24 24">
                                     <path fill="currentColor"

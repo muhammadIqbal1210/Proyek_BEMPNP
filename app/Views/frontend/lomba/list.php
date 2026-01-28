@@ -9,7 +9,7 @@
             <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white"></path>
         </svg>
     </div>
-    <div class="max-w-6xl mx-auto px-6 relative z-10 text-center">
+    <div class="max-w-6xl mx-auto px-6 relative z-10 text-center" data-aos="fade-up">
         <h1 class="text-4xl md:text-5xl font-extrabold mb-6">Informasi Lomba</h1>
         <p class="text-green-100 text-lg max-w-2xl mx-auto">
             Tunjukkan bakatmu! Temukan berbagai kompetisi bergengsi untuk tingkatkan prestasi dan portofolio mahasiswa.
@@ -22,7 +22,7 @@
     <div class="flex flex-col md:flex-row gap-8">
 
         <!-- Sidebar Filter -->
-        <aside class="w-full md:w-1/4">
+        <aside class="w-full md:w-1/4" data-aos="fade-right" data-aos-delay="200">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
                 <h2 class="font-bold text-gray-900 mb-4 flex items-center border-b pb-3">
                     <i class="fas fa-trophy mr-2 text-blue-600"></i> Cari Kompetisi
@@ -62,7 +62,7 @@
         </aside>
 
         <!-- Grid Lomba -->
-        <div class="w-full md:w-3/4">
+        <div class="w-full md:w-3/4" data-aos="fade-up" data-aos-delay="200">
             <?php if (!empty($lomba_list)): ?>
             <div class="grid sm:grid-cols-1 lg:grid-cols-2 gap-8">
                 <?php foreach ($lomba_list as $lomba): ?>

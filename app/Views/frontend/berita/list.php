@@ -93,7 +93,7 @@
         <!-- Sidebar -->
         <aside class="w-full lg:w-1/3 space-y-12">
             <!-- Pencarian -->
-            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm" data-aos="fade-left" data-aos-delay="400">
                 <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-yellow-400 ps-3">Cari Berita</h3>
                 <form action="<?= base_url('berita') ?>" method="GET">
                     <div class="relative">
