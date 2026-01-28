@@ -13,8 +13,8 @@
     <?php if (isset($pengumuman_list) && is_array($pengumuman_list) && count($pengumuman_list) > 0): ?>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-        <?php foreach ($pengumuman_list as $pengumuman): ?>
-        <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transform hover:scale-[1.01] transition duration-300 flex flex-col">
+        <?php $cardIndex = 0; foreach ($pengumuman_list as $pengumuman): ?>
+        <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transform hover:scale-[1.01] transition duration-300 flex flex-col" data-aos="fade-up" data-aos-delay="<?= $cardIndex * 100 + 400 ?>">
             
             <!-- Area Preview -->
             <div class="w-full h-56 bg-gray-100 relative overflow-hidden">
@@ -91,12 +91,12 @@
                 </div>
             </div>
         </div>
-        <?php endforeach; ?>
+        <?php $cardIndex++; endforeach; ?>
 
     </div>
 
     <!-- Pagination -->
-    <div class="mt-12 flex justify-center">
+    <div class="mt-12 flex justify-center" data-aos="fade-up" data-aos-delay="600">
         <?= $pager->links('pengumuman', 'default_full') ?>
     </div>
     <?php endif; ?>
