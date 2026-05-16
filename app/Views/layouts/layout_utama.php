@@ -10,8 +10,15 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
+    html,
+    body {
+        overflow-x: hidden;
+        min-width: 100%;
+    }
+
     body {
         font-family: 'Inter', sans-serif;
+        margin: 0;
     }
 
     /* Helper class for line clamping */
@@ -32,13 +39,16 @@
         scroll-padding-top: 5rem;
     }
 
+    main {
+        overflow-x: hidden;
+    }
     </style>
 </head>
 
 <body class="bg-gray-50 text-gray-800 overflow-x-hidden">
 
     <!-- Navbar -->
-    <nav class="relative bg-green-700/70 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <nav class="sticky bg-green-700/70 backdrop-blur-sm top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-4">
             <div class="flex items-center space-x-3">
                 <img src="<?= base_url('bem.png') ?>" alt="Logo BEM PNP" class="h-10 w-10 object-contain">
@@ -50,7 +60,7 @@
             <button id="mobileNavToggle" type="button" class="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-white hover:bg-green-600/80 focus:outline-none focus:ring-2 focus:ring-white">
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="hidden md:flex space-x-6 font-semibold text-white items-center">
+            <ul class="hidden md:flex gap-6 list-none font-semibold text-white items-center m-0 p-0">
                 <li>
                     <a href="<?= base_url('/') ?>"
                         class="<?= url_is('/') ? 'text-orange-400 border-b-2 border-orange-400' : 'hover:text-orange-400' ?> pb-1 transition-all duration-300">
@@ -190,7 +200,6 @@
                     </a>
                 </li>
             </ul>
-        </div>
         <div id="mobileNavMenu" class="absolute left-0 right-0 top-full hidden md:hidden border-t border-green-600 bg-green-700/95 shadow-xl">
             <div class="max-w-7xl mx-auto px-6 py-4 space-y-2 text-white font-semibold">
                 <a href="<?= base_url('/') ?>" class="block rounded-xl px-4 py-3 hover:bg-green-600/80 transition">
@@ -240,7 +249,7 @@
             </div>
         </div>
     </nav>
-    <main class="pt-24">
+    <main class="pt-2 md:pt-4">
         <?= $this->renderSection('content') ?>
     </main>
     <!-- Footer -->

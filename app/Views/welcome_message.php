@@ -11,21 +11,21 @@
         'videoprofil'  => '',
     ];
 ?>
-<section class="-mt-24 min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-4rem)] bg-cover bg-center bg-no-repeat w-full"
-    style="background-image: url('<?= base_url('home.jpg') ?>');">
+<section class="-mt-24 min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-4rem)] w-screen overflow-hidden bg-cover bg-center bg-no-repeat pt-24 pb-20"
+    style="background-image: url('<?= base_url('home.png') ?>');">
     <div
-        class="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center text-center text-white px-6 py-16 sm:py-24">
+        class=" flex flex-col justify-center items-center text-center text-white px-6 py-16 sm:py-24">
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-2 tracking-tight" data-aos="fade-down">Badan Eksekutif Mahasiswa</h1>
         <p class="text-xl sm:text-2xl md:text-3xl font-bold mb-1 max-w-xl" data-aos="fade-down" data-aos-delay="200">Keluarga Mahasiswa</p>
         <p class="text-base sm:text-lg md:text-xl mb-8 max-w-xl text-orange-400" data-aos="fade-down" data-aos-delay="400">Politeknik Negeri Padang</p>
 
-        <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md justify-center" data-aos="fade-up" data-aos-delay="600">
+        <div class="flex flex-col md:flex-row gap-4 w-full max-w-sm md:max-w-md justify-center mx-auto px-6" data-aos="fade-up" data-aos-delay="600">
             <a href="<?= base_url('profil') ?>"
-                class="w-full sm:w-auto text-center bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3 rounded-full shadow-lg transform hover:-translate-y-1 transition duration-300">
+                class="w-full md:w-auto text-center bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3 rounded-full shadow-lg transform hover:-translate-y-1 transition duration-300 whitespace-nowrap text-sm sm:text-base">
                 Pelajari Selengkapnya
             </a>
             <a href="<?= base_url('pengumuman') ?>"
-                class="w-full sm:w-auto text-center bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 font-bold px-8 py-3 rounded-full transition duration-300">
+                class="w-full md:w-auto text-center bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 font-bold px-8 py-3 rounded-full transition duration-300 whitespace-nowrap text-sm sm:text-base">
                 Lihat Pengumuman
             </a>
         </div>
