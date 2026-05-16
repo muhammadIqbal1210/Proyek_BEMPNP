@@ -74,7 +74,9 @@ class Beasiswa extends BaseController
         $keyword = $this->request->getGet('keyword');
         $status_pengajuan = $this->request->getGet('status_pengajuan');
 
-        $query = $this->beasiswaModel;
+        // $query = $this->beasiswaModel;
+        $query = $this->beasiswaModel->select('beasiswa.*, users.username as nama_user')
+                          ->join('users', 'users.id = beasiswa.user_id', 'left');
 
         if (!empty($keyword)) {
             $query = $query->like('nama_beasiswa', $keyword);

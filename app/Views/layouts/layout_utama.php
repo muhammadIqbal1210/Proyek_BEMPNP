@@ -28,22 +28,29 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+    html {
+        scroll-padding-top: 5rem;
+    }
+
     </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 pt-20">
+<body class="bg-gray-50 text-gray-800 overflow-x-hidden">
 
     <!-- Navbar -->
-    <nav class="bg-green-700/70 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+    <nav class="relative bg-green-700/70 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-4">
             <div class="flex items-center space-x-3">
-                <img src="<?= base_url('bem.png') ?>" alt="Logo BEM PNP" class="h-12 w-12 object-contain">
+                <img src="<?= base_url('bem.png') ?>" alt="Logo BEM PNP" class="h-10 w-10 object-contain">
                 <div class="flex flex-col leading-none">
                     <span class="font-bold text-white">BEM KM</span>
                     <span class="text-xs text-gray-200">Politeknik Negeri Padang</span>
                 </div>
             </div>
-            <ul class="hidden md:flex space-x-6 font-semibold text-white items-center">
+            <button id="mobileNavToggle" type="button" class="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-white hover:bg-green-600/80 focus:outline-none focus:ring-2 focus:ring-white">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="hidden md:flex space-x-6 font-semibold text-white items-center">
                 <li>
                     <a href="<?= base_url('/') ?>"
                         class="<?= url_is('/') ? 'text-orange-400 border-b-2 border-orange-400' : 'hover:text-orange-400' ?> pb-1 transition-all duration-300">
@@ -184,8 +191,58 @@
                 </li>
             </ul>
         </div>
+        <div id="mobileNavMenu" class="absolute left-0 right-0 top-full hidden md:hidden border-t border-green-600 bg-green-700/95 shadow-xl">
+            <div class="max-w-7xl mx-auto px-6 py-4 space-y-2 text-white font-semibold">
+                <a href="<?= base_url('/') ?>" class="block rounded-xl px-4 py-3 hover:bg-green-600/80 transition">
+                    Home
+                </a>
+                <a href="<?= base_url('pengumuman') ?>" class="block rounded-xl px-4 py-3 hover:bg-green-600/80 transition">
+                    Pengumuman
+                </a>
+                <div class="space-y-1 rounded-xl border border-green-600 bg-green-800/80">
+                    <button id="mobileProfilToggle" type="button" class="w-full text-left px-4 py-3 flex items-center justify-between hover:bg-green-600/80 transition">
+                        <span>Profil</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div id="mobileProfilMenu" class="hidden space-y-1 px-4 pb-3">
+                        <a href="<?= base_url('profil') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Tentang Kami</a>
+                        <a href="<?= base_url('struktur') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Struktur</a>
+                        <a href="<?= base_url('struktur?kementerian=kepresidenan') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Kepresidenan</a>
+                        <a href="<?= base_url('struktur?kementerian=audit_internal') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Audit Internal</a>
+                        <a href="<?= base_url('struktur?kementerian=kesekretariatan') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Kesekretariatan</a>
+                        <a href="<?= base_url('struktur?kementerian=keuangan') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Keuangan</a>
+                        <a href="<?= base_url('struktur?kementerian=psdm') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">PSDM</a>
+                        <a href="<?= base_url('struktur?kementerian=adkesma') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Adkesma</a>
+                        <a href="<?= base_url('struktur?kementerian=sosmas') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Sosmas</a>
+                        <a href="<?= base_url('struktur?kementerian=dagri') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Dagri</a>
+                        <a href="<?= base_url('struktur?kementerian=mitbis') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Mitbis</a>
+                        <a href="<?= base_url('struktur?kementerian=lugri') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Lugri</a>
+                        <a href="<?= base_url('struktur?kementerian=kastrat') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Kastrat</a>
+                        <a href="<?= base_url('struktur?kementerian=komris') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Komris</a>
+                        <a href="<?= base_url('struktur?kementerian=pp') ?>" class="block rounded-lg px-3 py-2 hover:bg-green-600/80 transition">Pemberdayaan Perempuan (PP)</a>
+                    </div>
+                </div>
+                <a href="<?= base_url('berita') ?>" class="block rounded-xl px-4 py-3 hover:bg-green-600/80 transition">
+                    Berita
+                </a>
+                <a href="<?= base_url('layanan') ?>" class="block rounded-xl px-4 py-3 hover:bg-green-600/80 transition">
+                    Layanan
+                </a>
+                <a href="<?= base_url('katalog') ?>" class="block rounded-xl px-4 py-3 hover:bg-green-600/80 transition">
+                    Katalog
+                </a>
+                <a href="<?= base_url('kontak') ?>" class="block rounded-xl px-4 py-3 hover:bg-green-600/80 transition">
+                    Kontak
+                </a>
+                <a href="<?= base_url('login') ?>" class="block rounded-xl px-4 py-3 bg-orange-500 text-white text-center font-semibold hover:bg-orange-400 transition">
+                    Login
+                </a>
+            </div>
+        </div>
     </nav>
-    <?= $this->renderSection('content') ?>
+    <main class="pt-24">
+        <?= $this->renderSection('content') ?>
+    </main>
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-300 py-10 mt-10">
         <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 px-6">
@@ -220,6 +277,19 @@
             easing: 'ease-in-out',
             once: true,
             mirror: false
+        });
+
+        const mobileNavToggle = document.getElementById('mobileNavToggle');
+        const mobileNavMenu = document.getElementById('mobileNavMenu');
+        const mobileProfilToggle = document.getElementById('mobileProfilToggle');
+        const mobileProfilMenu = document.getElementById('mobileProfilMenu');
+
+        mobileNavToggle?.addEventListener('click', () => {
+            mobileNavMenu?.classList.toggle('hidden');
+        });
+
+        mobileProfilToggle?.addEventListener('click', () => {
+            mobileProfilMenu?.classList.toggle('hidden');
         });
     </script>
 </body>

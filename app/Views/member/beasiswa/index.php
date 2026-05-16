@@ -53,9 +53,9 @@
                                                 $status = $pengajuan['status_pengajuan'];
                                                 $badgeClass = '';
                                                 switch ($status) {
-                                                    case 'pending': $badgeClass = 'badge-warning'; break;
-                                                    case 'approved': $badgeClass = 'badge-success'; break;
-                                                    case 'rejected': $badgeClass = 'badge-danger'; break;
+                                                    case 'pending': $badgeClass = 'bg-warning'; break;
+                                                    case 'approved': $badgeClass = 'bg-success'; break;
+                                                    case 'rejected': $badgeClass = 'bg-danger'; break;
                                                 }
                                                 ?>
                                                 <span class="badge <?= $badgeClass ?>"><?= ucfirst($status) ?></span>
