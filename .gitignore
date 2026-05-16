@@ -84,6 +84,12 @@ phpunit
 #-------------------------
 # Composer
 #-------------------------
+# Abaikan SEMUA file di dalam folder writable
+writable/*
+
+# TAPI JANGAN abaikan file .gitkeep agar foldernya tetap ikut ke Git
+!writable/**/.gitkeep
+
 vendor/
 
 #-------------------------
