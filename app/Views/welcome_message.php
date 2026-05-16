@@ -580,7 +580,7 @@
                         </a>
 
                         <!-- Form Pengaduan -->
-                        <a href="<?= base_url('lapor') ?>" 
+                        <a href="<?= base_url('layanan/advokasi') ?>" 
                            class="flex items-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200 rounded-2xl hover:shadow-lg hover:border-purple-400 transition-all duration-300 group">
                             <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white text-xl mr-4 group-hover:scale-110 transition-transform">
                                 <i class="fas fa-file-alt"></i>

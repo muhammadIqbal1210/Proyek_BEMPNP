@@ -1,5 +1,23 @@
 <?php $pager->setSurroundCount(2) ?>
 
+<?php
+// Build safe Prev/Next URLs preserving GET params and using the pager group
+$request = \Config\Services::request();
+$get = $request->getGet();
+$group = $pagerGroup ?? 'default';
+$pageVar = 'page_' . $group;
+// PagerRenderer doesn't expose current page; read from GET param instead
+$current = (int) ($request->getGet($pageVar) ?? 1);
+$pageCount = $pager->getPageCount($group) ?: 1;
+
+function build_page_url($base, $getParams, $pageVar, $page)
+{
+    $params = $getParams;
+    $params[$pageVar] = $page;
+    return $base . (count($params) ? '?' . http_build_query($params) : '');
+}
+?>
+
 <!-- Template Pager Kustom dengan Tailwind CSS (Mengganti default_full bawaan) -->
 <nav class="flex justify-center items-center space-x-2" aria-label="Page navigation">
     <ul class="flex items-center space-x-2">
@@ -7,7 +25,7 @@
         <!-- Tombol "First" -->
         <?php if ($pager->hasPrevious()) : ?>
             <li>
-                <a href="<?= $pager->getFirst() ?>" 
+                <a href="<?= build_page_url(current_url(), $get, $pageVar, 1) ?>" 
                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition duration-150" 
                    aria-label="<?= lang('Pager.first') ?>">
                    <i class="fas fa-angle-double-left"></i>
@@ -18,7 +36,7 @@
         <!-- Tombol "Previous" -->
         <?php if ($pager->hasPrevious()) : ?>
             <li>
-                <a href="<?= $pager->getPrevious() ?>" 
+                <a href="<?= build_page_url(current_url(), $get, $pageVar, max(1, $current - 1)) ?>" 
                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition duration-150" 
                    aria-label="<?= lang('Pager.previous') ?>">
                    <i class="fas fa-arrow-left mr-1"></i> 
@@ -41,7 +59,7 @@
         <!-- Tombol "Next" -->
         <?php if ($pager->hasNext()) : ?>
             <li>
-                <a href="<?= $pager->getNext() ?>" 
+                <a href="<?= build_page_url(current_url(), $get, $pageVar, min($pageCount, $current + 1)) ?>" 
                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition duration-150" 
                    aria-label="<?= lang('Pager.next') ?>">
                    <?= lang('Pager.next') ?>
@@ -53,7 +71,7 @@
         <!-- Tombol "Last" -->
         <?php if ($pager->hasNext()) : ?>
             <li>
-                <a href="<?= $pager->getLast() ?>" 
+                <a href="<?= build_page_url(current_url(), $get, $pageVar, $pageCount) ?>" 
                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition duration-150" 
                    aria-label="<?= lang('Pager.last') ?>">
                    <i class="fas fa-angle-double-right"></i>

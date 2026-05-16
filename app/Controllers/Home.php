@@ -125,6 +125,8 @@ class Home extends BaseController
         // 3. Paginate data
         $pengumuman_list = $query->paginate($perPage, 'pengumuman');
         $pager = $query->pager;
+        // Preserve query params in pager links
+        $pager->setPath(current_url() . (count($this->request->getGet()) ? '?' . http_build_query($this->request->getGet()) : ''));
         
         // 4. Base URL untuk file yang dapat diunduh
         $file_base_url = base_url('uploads/pengumuman/');
@@ -339,10 +341,14 @@ class Home extends BaseController
                 ->groupEnd();
         }
 
+        $katalog_list = $katalogObj->paginate(12, 'katalog');
+        $pager = $model->pager;
+        $pager->setPath(current_url() . (count($this->request->getGet()) ? '?' . http_build_query($this->request->getGet()) : ''));
+
         $data = [
             'title'            => 'Katalog Produk Kami',
-            'katalog_list'     => $katalogObj->paginate(12, 'katalog'),
-            'pager'            => $model->pager,
+            'katalog_list'     => $katalog_list,
+            'pager'            => $pager,
             'keyword'          => $keyword,
             'filters'          => ['keyword' => $keyword],
             'produk_base_url'  => base_url('uploads/katalog/') // Sesuaikan folder upload Anda
@@ -368,10 +374,14 @@ class Home extends BaseController
             $beasiswaObj = $beasiswaObj->where('status_beasiswa', $status);
         }
 
+        $beasiswa_list = $beasiswaObj->paginate(12, 'beasiswa');
+        $pager = $model->pager;
+        $pager->setPath(current_url() . (count($this->request->getGet()) ? '?' . http_build_query($this->request->getGet()) : ''));
+
         $data = [
             'title'             => 'Data Beasiswa Mahasiswa',
-            'beasiswa_list'      => $beasiswaObj->paginate(12, 'beasiswa'),
-            'pager'             => $model->pager,
+            'beasiswa_list'     => $beasiswa_list,
+            'pager'             => $pager,
             'keyword'           => $keyword,
             'filters'           => ['keyword' => $keyword, 'status' => $status],
             'beasiswa_base_url' => base_url('uploads/beasiswa/') // Folder khusus gambar beasiswa
@@ -422,10 +432,14 @@ class Home extends BaseController
             $lombaObj = $lombaObj->where('status_lomba', $status);
         }
 
+        $lomba_list = $lombaObj->paginate(12, 'lomba');
+        $pager = $model->pager;
+        $pager->setPath(current_url() . (count($this->request->getGet()) ? '?' . http_build_query($this->request->getGet()) : ''));
+
         $data = [
             'title'             => 'Informasi Lomba',
-            'lomba_list'        => $lombaObj->paginate(12, 'lomba'),
-            'pager'             => $model->pager,
+            'lomba_list'        => $lomba_list,
+            'pager'             => $pager,
             'keyword'           => $keyword,
             'filters'           => ['keyword' => $keyword, 'status' => $status],
             'poster_base_url'   => base_url('uploads/lomba/') // Folder khusus gambar beasiswa
@@ -472,14 +486,18 @@ class Home extends BaseController
                 ->groupEnd();
         }
 
-        $data = [
-            'title'             => 'Informasi Event',
-            'event_list'        => $eventObj->paginate(12, 'event'),
-            'pager'             => $model->pager,
-            'keyword'           => $keyword,
-            'filters'           => ['keyword' => $keyword],
-            'file_base_url'   => base_url('uploads/event/') // Folder khusus gambar beasiswa
-        ];
+            $event_list = $eventObj->paginate(12, 'event');
+            $pager = $model->pager;
+            $pager->setPath(current_url() . (count($this->request->getGet()) ? '?' . http_build_query($this->request->getGet()) : ''));
+
+            $data = [
+                'title'             => 'Informasi Event',
+                'event_list'        => $event_list,
+                'pager'             => $pager,
+                'keyword'           => $keyword,
+                'filters'           => ['keyword' => $keyword],
+                'file_base_url'     => base_url('uploads/event/') // Folder khusus gambar beasiswa
+            ];
 
         return view('frontend/event/list', $data);
     }
@@ -523,12 +541,16 @@ class Home extends BaseController
                 ->groupEnd();
         }
 
-        $data = [
-            'title' => 'Daftar Berita',
-            'semua_berita' => $query->orderBy('created_at', 'DESC')->paginate(9, 'berita'),
-            'pager' => $model->pager,
-            'filters' => ['keyword' => $keyword],
-        ];
+            $semua_berita = $query->orderBy('created_at', 'DESC')->paginate(9, 'berita');
+            $pager = $model->pager;
+            $pager->setPath(current_url() . (count($this->request->getGet()) ? '?' . http_build_query($this->request->getGet()) : ''));
+
+            $data = [
+                'title' => 'Daftar Berita',
+                'semua_berita' => $semua_berita,
+                'pager' => $pager,
+                'filters' => ['keyword' => $keyword],
+            ];
 
         return view('frontend/berita/list', $data);
     }

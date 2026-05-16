@@ -149,7 +149,9 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     $routes->post('kanban/task/status', 'KanbanController::updateTaskStatus');
     $routes->post('kanban/task/delete/(:num)', 'KanbanController::deleteTask/$1');
     //Route Laporan
+    $routes->get('laporan', 'Laporan::index');
     $routes->get('laporan/index', 'Laporan::index');
+    $routes->post('laporan/update_status/(:num)', 'Laporan::update_status/$1');
     $routes->get('laporan/delete/(:num)', 'Laporan::delete/$1');
     // Route Pengurus
     $routes->get('pengurus', 'Pengurus::index');

@@ -2,18 +2,36 @@
 $pager->setSurroundCount(2);
 ?>
 
+<?php
+// Build Prev/Next URLs preserving GET params and using pager group
+$request = \Config\Services::request();
+$get = $request->getGet();
+$group = $pagerGroup ?? 'default';
+$pageVar = 'page_' . $group;
+// PagerRenderer doesn't expose current page; read from GET param instead
+$current = (int) ($request->getGet($pageVar) ?? 1);
+$pageCount = $pager->getPageCount($group) ?: 1;
+
+function build_page_url($base, $getParams, $pageVar, $page)
+{
+    $params = $getParams;
+    $params[$pageVar] = $page;
+    return $base . (count($params) ? '?' . http_build_query($params) : '');
+}
+?>
+
 <nav aria-label="Page navigation" class="flex justify-center my-8">
     <ul class="inline-flex -space-x-px text-sm font-medium rounded-md border border-gray-200 bg-white shadow-sm items-center">
         
         <?php if ($pager->hasPrevious()) : ?>
             <li>
-                <a href="<?= $pager->getFirst() ?>" class="flex items-center justify-center px-3 h-10 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 hover:text-gray-700" aria-label="First">
+                <a href="<?= build_page_url(current_url(), $get, $pageVar, 1) ?>" class="flex items-center justify-center px-3 h-10 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100 hover:text-gray-700" aria-label="First">
                     &laquo;
                 </a>
             </li>
             
             <li>
-                <a href="<?= $pager->getPrevious() ?>" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-600 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" aria-label="Previous">
+                <a href="<?= build_page_url(current_url(), $get, $pageVar, max(1, $current - 1)) ?>" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-600 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" aria-label="Previous">
                     Previous
                 </a>
             </li>
@@ -36,13 +54,13 @@ $pager->setSurroundCount(2);
 
         <?php if ($pager->hasNext()) : ?>
             <li>
-                <a href="<?= $pager->getNext() ?>" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-600 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" aria-label="Next">
+                <a href="<?= build_page_url(current_url(), $get, $pageVar, min($pageCount, $current + 1)) ?>" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-600 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" aria-label="Next">
                     Next
                 </a>
             </li>
 
             <li>
-                <a href="<?= $pager->getLast() ?>" class="flex items-center justify-center px-3 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100 hover:text-gray-700" aria-label="Last">
+                <a href="<?= build_page_url(current_url(), $get, $pageVar, $pageCount) ?>" class="flex items-center justify-center px-3 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100 hover:text-gray-700" aria-label="Last">
                     &raquo;
                 </a>
             </li>

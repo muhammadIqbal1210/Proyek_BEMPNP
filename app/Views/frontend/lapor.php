@@ -98,8 +98,8 @@
                             <i class="fas fa-check-circle text-green-500 text-xl"></i>
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm font-bold text-green-800">Berhasil!</p>
-                            <p class="text-xs text-green-700"><?= session()->getFlashdata('success') ?></p>
+                            <p class="text-m font-bold text-green-800">Berhasil!</p>
+                            <p class="text-s text-green-700"><?= session()->getFlashdata('success') ?></p>
                         </div>
                         <button type="button" onclick="this.parentElement.remove()"
                             class="ml-auto text-green-500 hover:text-green-700">
