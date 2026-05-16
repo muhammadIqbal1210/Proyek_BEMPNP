@@ -1,222 +1,339 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanban Pro - Persistent Storage</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        'primary': '#6366f1',
-                        'todo': '#f59e0b',
-                        'inprogress': '#3b82f6',
-                        'done': '#10b981',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        .kanban-column { min-height: 400px; transition: all 0.3s ease; }
-        .drag-over { background-color: #f1f5f9 !important; border: 2px dashed #6366f1 !important; }
-        .task-card { cursor: grab; transition: transform 0.2s, box-shadow 0.2s; }
-        .task-card:active { cursor: grabbing; transform: scale(0.98); }
-        .task-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    </style>
-</head>
-<body class="bg-slate-50 min-h-screen font-sans text-slate-900">
+<style>
+    .kanban-shell {
+        --kb-green: #0f8f5f;
+        --kb-soft: #eef8f3;
+    }
+    .board-card,
+    .kanban-column,
+    .task-card {
+        border: 1px solid #e8eef3;
+        border-radius: 10px;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+    }
+    .board-card {
+        background: #fff;
+    }
+    .kanban-column {
+        min-height: 420px;
+        background: #f8fafc;
+        transition: background-color .18s ease, border-color .18s ease;
+    }
+    .kanban-column.drag-over {
+        background: #eef8f3;
+        border-color: rgba(15, 143, 95, .45);
+    }
+    .task-card {
+        background: #fff;
+        cursor: grab;
+        transition: transform .16s ease, box-shadow .16s ease;
+    }
+    .task-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+    }
+    .task-card[draggable="false"] {
+        cursor: default;
+    }
+    .kanban-pill {
+        background: var(--kb-soft);
+        color: var(--kb-green);
+        border-radius: 999px;
+        padding: .25rem .65rem;
+        font-size: .75rem;
+        font-weight: 700;
+    }
+</style>
 
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-success rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+<?php
+    $prefix = $prefix ?? (in_array(session()->get('role'), ['admin', 'superadmin'], true) ? 'admin' : 'member');
+    $boards = $boards ?? [];
+    $selectedBoard = $selectedBoard ?? null;
+    $tasks = $tasks ?? [];
+    $canEdit = (bool) ($canEdit ?? false);
+    $canManageBoard = (bool) ($canManageBoard ?? false);
+    $users = $users ?? [];
+    $sharedUserIds = $sharedUserIds ?? [];
+    $columns = [
+        'todo' => ['label' => 'To Do', 'class' => 'warning', 'icon' => 'fa-list-check'],
+        'inprogress' => ['label' => 'Sedang Dikerjakan', 'class' => 'primary', 'icon' => 'fa-spinner'],
+        'done' => ['label' => 'Selesai', 'class' => 'success', 'icon' => 'fa-circle-check'],
+    ];
+?>
+
+<div class="container-fluid kanban-shell">
+    <?php if (session()->getFlashdata('success')): ?>
+        <div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div>
+    <?php endif; ?>
+    <?php if (session()->getFlashdata('error')): ?>
+        <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
+    <?php endif; ?>
+
+    <div class="row g-3 mb-3">
+        <div class="col-lg-4">
+            <div class="board-card p-3 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h5 class="mb-1">Board Saya</h5>
+                        <div class="small text-muted">Pilih board untuk melihat progress.</div>
                     </div>
-                    <span class="text-xl font-bold tracking-tight">Kanban<span class="text-success">Sync</span></span>
-                </div>
-                <div id="storage-status" class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-full border border-slate-200">
-                    <div id="status-dot" class="w-2 h-2 rounded-full bg-yellow-500"></div>
-                    <span id="status-text" class="text-xs font-semibold text-slate-600">Inisialisasi...</span>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <main class="max-w-7xl mx-auto p-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Kolom To Do -->
-            <div class="flex flex-col bg-slate-100 rounded-2xl p-4 min-h-[500px] border border-slate-200">
-                <div class="flex items-center justify-between mb-4 px-2">
-                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-todo"></span> To-Do
-                    </h3>
-                    <button onclick="openForm('todo')" class="p-2 hover:bg-green-200 rounded text-green-800">
-                        <i class="fas fa-plus me-1"></i> Tambah Tugas
+                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#createBoardModal">
+                        <i class="fas fa-plus me-1"></i> Board
                     </button>
                 </div>
-                <div id="col-todo" class="kanban-column space-y-3 p-2 rounded-xl border-2 border-transparent" ondragover="event.preventDefault(); this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event, 'todo')"></div>
-            </div>
 
-            <!-- Kolom In Progress -->
-            <div class="flex flex-col bg-slate-100 rounded-2xl p-4 min-h-[500px] border border-slate-200">
-                <div class="flex items-center justify-between mb-4 px-2">
-                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-inprogress"></span> Sedang Dikerjakan
-                    </h3>
-                </div>
-                <div id="col-inprogress" class="kanban-column space-y-3 p-2 rounded-xl border-2 border-transparent" ondragover="event.preventDefault(); this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event, 'inprogress')"></div>
-            </div>
-
-            <!-- Kolom Done -->
-            <div class="flex flex-col bg-slate-100 rounded-2xl p-4 min-h-[500px] border border-slate-200">
-                <div class="flex items-center justify-between mb-4 px-2">
-                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-done"></span> Selesai
-                    </h3>
-                </div>
-                <div id="col-done" class="kanban-column space-y-3 p-2 rounded-xl border-2 border-transparent" ondragover="event.preventDefault(); this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event, 'done')"></div>
+                <?php if (!empty($boards)): ?>
+                    <div class="list-group">
+                        <?php foreach ($boards as $board): ?>
+                            <a href="<?= base_url($prefix . '/kanban?board=' . $board['id']) ?>"
+                               class="list-group-item list-group-item-action <?= $selectedBoard && (int) $selectedBoard['id'] === (int) $board['id'] ? 'active' : '' ?>">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-semibold text-truncate"><?= esc($board['title']) ?></span>
+                                    <small><?= (int) $board['owner_id'] === (int) session()->get('user_id') ? 'Owner' : 'Shared' ?></small>
+                                </div>
+                                <div class="small <?= $selectedBoard && (int) $selectedBoard['id'] === (int) $board['id'] ? 'text-white-50' : 'text-muted' ?>">
+                                    <?= $board['visibility'] === 'shared' ? 'Dibagikan' : 'Pribadi' ?>
+                                </div>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <div class="text-muted small border rounded p-3">Belum ada board. Buat board untuk mulai mengatur progress tim.</div>
+                <?php endif; ?>
             </div>
         </div>
-    </main>
 
-    <!-- Modal Form -->
-    <div id="modal-form" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
-            <div class="p-6">
-                <h2 id="modal-title" class="text-xl font-bold mb-4">Tambah Tugas</h2>
-                <div class="space-y-4">
-                    <input type="text" id="task-title" placeholder="Judul Tugas" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-primary">
-                    <textarea id="task-desc" placeholder="Deskripsi (Opsional)" rows="3" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-primary"></textarea>
-                </div>
-            </div>
-            <div class="bg-slate-50 p-4 flex gap-3">
-                <button onclick="closeForm()" class="flex-1 py-2 font-semibold text-slate-600">Batal</button>
-                <button onclick="saveTask()" class="flex-1 py-2 bg-primary text-white rounded-lg font-bold">Simpan</button>
+        <div class="col-lg-8">
+            <div class="board-card p-3 h-100">
+                <?php if ($selectedBoard): ?>
+                    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <h4 class="mb-0"><?= esc($selectedBoard['title']) ?></h4>
+                                <span class="kanban-pill"><?= $selectedBoard['visibility'] === 'shared' ? 'Shared' : 'Private' ?></span>
+                            </div>
+                            <p class="text-muted mb-0"><?= esc($selectedBoard['description'] ?: 'Tidak ada deskripsi.') ?></p>
+                        </div>
+                        <?php if ($canEdit): ?>
+                            <div class="d-flex gap-2">
+                                <?php if ($canManageBoard): ?>
+                                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#boardSettingModal">
+                                        <i class="fas fa-share-nodes me-1"></i> Share
+                                    </button>
+                                <?php endif; ?>
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#taskModal">
+                                    <i class="fas fa-plus me-1"></i> Tugas
+                                </button>
+                            </div>
+                        <?php else: ?>
+                            <span class="align-self-start badge bg-info-subtle text-info">Mode lihat progress</span>
+                        <?php endif; ?>
+                    </div>
+                <?php else: ?>
+                    <h4 class="mb-1">Belum ada board dipilih</h4>
+                    <p class="text-muted mb-0">Buat board baru atau minta owner membagikan board ke akun Anda.</p>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 
-    <script type="module">
-        let tasks = [];
-        let isCloudMode = false;
-        
-        // Data Handling
-        const STORAGE_KEY = 'kanban_tasks_local';
+    <?php if ($selectedBoard): ?>
+        <div class="row g-3">
+            <?php foreach ($columns as $status => $column): ?>
+                <div class="col-lg-4">
+                    <div class="kanban-column p-3" data-status="<?= esc($status) ?>">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">
+                                <i class="fas <?= esc($column['icon']) ?> text-<?= esc($column['class']) ?> me-2"></i>
+                                <?= esc($column['label']) ?>
+                            </h6>
+                            <span class="badge bg-<?= esc($column['class']) ?>">
+                                <?= count(array_filter($tasks, static fn ($task) => ($task['status'] ?? '') === $status)) ?>
+                            </span>
+                        </div>
 
-        function init() {
-            // Coba ambil dari LocalStorage dulu sebagai fallback instan
-            const localData = localStorage.getItem(STORAGE_KEY);
-            if (localData) {
-                tasks = JSON.parse(localData);
-                renderBoard();
-            }
-
-            // Cek apakah konfigurasi Firebase ada
-            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-            
-            if (firebaseConfig) {
-                setupCloud(firebaseConfig);
-            } else {
-                updateStatus('offline');
-                console.log("Menggunakan LocalStorage karena Cloud Config tidak ditemukan.");
-            }
-        }
-
-        function updateStatus(mode) {
-            const dot = document.getElementById('status-dot');
-            const text = document.getElementById('status-text');
-            if (mode === 'online') {
-                dot.className = "w-2 h-2 rounded-full bg-green-500";
-                text.textContent = "Cloud Tersinkron";
-                isCloudMode = true;
-            } else {
-                dot.className = "w-2 h-2 rounded-full bg-blue-500";
-                text.textContent = "Penyimpanan Lokal";
-                isCloudMode = false;
-            }
-        }
-
-        // Render UI
-        function renderBoard() {
-            const cols = { todo: 'col-todo', inprogress: 'col-inprogress', done: 'col-done' };
-            Object.values(cols).forEach(id => document.getElementById(id).innerHTML = '');
-
-            tasks.forEach(task => {
-                const container = document.getElementById(`col-${task.status}`);
-                if (!container) return;
-
-                const card = document.createElement('div');
-                card.className = 'task-card bg-white p-4 rounded-xl border border-slate-200 shadow-sm';
-                card.draggable = true;
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-2">
-                        <h4 class="font-bold text-slate-800">${task.title}</h4>
-                        <button onclick="deleteTask('${task.id}')" class="text-slate-300 hover:text-red-500">
-                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        </button>
+                        <div class="d-flex flex-column gap-2">
+                            <?php foreach ($tasks as $task): ?>
+                                <?php if (($task['status'] ?? '') !== $status) continue; ?>
+                                <div class="task-card p-3" draggable="<?= $canEdit ? 'true' : 'false' ?>" data-task-id="<?= (int) $task['id'] ?>">
+                                    <div class="d-flex justify-content-between gap-2">
+                                        <div class="fw-semibold"><?= esc($task['title']) ?></div>
+                                        <?php if ($canEdit): ?>
+                                            <form action="<?= base_url($prefix . '/kanban/task/delete/' . $task['id']) ?>" method="post" onsubmit="return confirm('Hapus tugas ini?')">
+                                                <?= csrf_field() ?>
+                                                <button class="btn btn-sm btn-link text-danger p-0" type="submit"><i class="fas fa-trash"></i></button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </div>
+                                    <?php if (!empty($task['description'])): ?>
+                                        <div class="small text-muted mt-2"><?= esc($task['description']) ?></div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
-                    <p class="text-xs text-slate-500">${task.description || ''}</p>
-                `;
-                card.ondragstart = (e) => e.dataTransfer.setData('taskId', task.id);
-                container.appendChild(card);
-            });
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+</div>
 
-            // Simpan ke LocalStorage setiap ada perubahan
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+<div class="modal fade" id="createBoardModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" action="<?= base_url($prefix . '/kanban/board/store') ?>" method="post">
+            <?= csrf_field() ?>
+            <div class="modal-header">
+                <h5 class="modal-title">Board Baru</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Nama board</label>
+                    <input type="text" name="title" class="form-control" placeholder="Contoh: Event Dies Natalis" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Deskripsi</label>
+                    <textarea name="description" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Akses</label>
+                    <select name="visibility" class="form-select" data-share-toggle="create">
+                        <option value="private">Pribadi</option>
+                        <option value="shared">Bagikan ke user terpilih</option>
+                    </select>
+                </div>
+                <div class="mb-0 d-none" data-share-box="create">
+                    <label class="form-label">User yang bisa melihat</label>
+                    <select name="shared_users[]" class="form-select" multiple size="6">
+                        <?php foreach ($users as $user): ?>
+                            <option value="<?= (int) $user['id'] ?>"><?= esc($user['username']) ?> - <?= esc($user['role']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div class="small text-muted mt-1">Tahan Ctrl untuk memilih lebih dari satu user.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                <button class="btn btn-success" type="submit">Simpan Board</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<?php if ($selectedBoard && $canManageBoard): ?>
+<div class="modal fade" id="boardSettingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" action="<?= base_url($prefix . '/kanban/board/update/' . $selectedBoard['id']) ?>" method="post">
+            <?= csrf_field() ?>
+            <div class="modal-header">
+                <h5 class="modal-title">Pengaturan Board</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Nama board</label>
+                    <input type="text" name="title" class="form-control" value="<?= esc($selectedBoard['title']) ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Deskripsi</label>
+                    <textarea name="description" class="form-control" rows="3"><?= esc($selectedBoard['description'] ?? '') ?></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Akses</label>
+                    <select name="visibility" class="form-select" data-share-toggle="edit">
+                        <option value="private" <?= $selectedBoard['visibility'] === 'private' ? 'selected' : '' ?>>Pribadi</option>
+                        <option value="shared" <?= $selectedBoard['visibility'] === 'shared' ? 'selected' : '' ?>>Bagikan ke user terpilih</option>
+                    </select>
+                </div>
+                <div class="<?= $selectedBoard['visibility'] === 'shared' ? '' : 'd-none' ?>" data-share-box="edit">
+                    <label class="form-label">User yang bisa melihat</label>
+                    <select name="shared_users[]" class="form-select" multiple size="6">
+                        <?php foreach ($users as $user): ?>
+                            <option value="<?= (int) $user['id'] ?>" <?= in_array((int) $user['id'], $sharedUserIds, true) ? 'selected' : '' ?>>
+                                <?= esc($user['username']) ?> - <?= esc($user['role']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div class="small text-muted mt-1">User terpilih hanya bisa melihat progress.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                <button class="btn btn-success" type="submit">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+<?php endif; ?>
+
+<?php if ($selectedBoard && $canEdit): ?>
+<div class="modal fade" id="taskModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" action="<?= base_url($prefix . '/kanban/task/store') ?>" method="post">
+            <?= csrf_field() ?>
+            <input type="hidden" name="board_id" value="<?= (int) $selectedBoard['id'] ?>">
+            <input type="hidden" name="status" value="todo">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Tugas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Judul tugas</label>
+                    <input type="text" name="title" class="form-control" required>
+                </div>
+                <div class="mb-0">
+                    <label class="form-label">Deskripsi</label>
+                    <textarea name="description" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                <button class="btn btn-success" type="submit">Tambah</button>
+            </div>
+        </form>
+    </div>
+</div>
+<?php endif; ?>
+
+<script>
+document.querySelectorAll('[data-share-toggle]').forEach((select) => {
+    const target = document.querySelector(`[data-share-box="${select.dataset.shareToggle}"]`);
+    const sync = () => target && target.classList.toggle('d-none', select.value !== 'shared');
+    select.addEventListener('change', sync);
+    sync();
+});
+
+<?php if ($selectedBoard && $canEdit): ?>
+document.querySelectorAll('.task-card[draggable="true"]').forEach((card) => {
+    card.addEventListener('dragstart', (event) => {
+        event.dataTransfer.setData('task_id', card.dataset.taskId);
+    });
+});
+
+document.querySelectorAll('.kanban-column').forEach((column) => {
+    column.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        column.classList.add('drag-over');
+    });
+    column.addEventListener('dragleave', () => column.classList.remove('drag-over'));
+    column.addEventListener('drop', async (event) => {
+        event.preventDefault();
+        column.classList.remove('drag-over');
+        const taskId = event.dataTransfer.getData('task_id');
+        const formData = new FormData();
+        formData.append('task_id', taskId);
+        formData.append('status', column.dataset.status);
+
+        const response = await fetch('<?= base_url($prefix . '/kanban/task/status') ?>', {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+
+        if (response.ok) {
+            window.location.reload();
         }
-
-        // Action Functions
-        window.saveTask = () => {
-            const title = document.getElementById('task-title').value;
-            const desc = document.getElementById('task-desc').value;
-            if (!title) return;
-
-            const newTask = {
-                id: Date.now().toString(),
-                title,
-                description: desc,
-                status: 'todo'
-            };
-
-            tasks.push(newTask);
-            renderBoard();
-            closeForm();
-        };
-
-        window.deleteTask = (id) => {
-            tasks = tasks.filter(t => t.id !== id);
-            renderBoard();
-        };
-
-        window.handleDrop = (e, newStatus) => {
-            e.preventDefault();
-            const id = e.dataTransfer.getData('taskId');
-            const task = tasks.find(t => t.id === id);
-            if (task) {
-                task.status = newStatus;
-                renderBoard();
-            }
-            e.currentTarget.classList.remove('drag-over');
-        };
-
-        window.openForm = (status) => {
-            document.getElementById('modal-form').classList.remove('hidden');
-            document.getElementById('task-title').value = '';
-            document.getElementById('task-desc').value = '';
-        };
-
-        window.closeForm = () => {
-            document.getElementById('modal-form').classList.add('hidden');
-        };
-
-        // Inisialisasi saat window dimuat
-        window.onload = init;
-    </script>
-</body>
-</html>
+    });
+});
+<?php endif; ?>
+</script>

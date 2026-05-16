@@ -204,7 +204,6 @@
         
         if (rawPhone) {
             // Bersihkan nomor: hapus spasi, dash, dan pastikan diawali 62
-            // Mengubah 0812... menjadi 62812...
             let cleanPhone = rawPhone.replace(/\D/g, ''); // hanya ambil angka
             if (cleanPhone.startsWith('0')) {
                 cleanPhone = '62' + cleanPhone.substring(1);

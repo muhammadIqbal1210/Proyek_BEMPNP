@@ -64,8 +64,8 @@
                     <tbody>
                         <?php if (!empty($berita_list)): ?>
                             <?php 
-                            $perPage = 10; 
-                            $currentPage = (int)($pager->getCurrentPage() ?? 1);
+                            $perPage = $pager->getPerPage('berita') ?: 10; 
+                            $currentPage = (int)($pager->getCurrentPage('berita') ?? 1);
                             $no = 1 + (($currentPage - 1) * $perPage); 
                             ?>
                             <?php foreach ($berita_list as $berita): ?>
@@ -122,7 +122,7 @@
                 Menampilkan <strong><?= count($berita_list) ?></strong> data berita.
             </p>
             <div>
-                <?= $pager->links('default', 'default_full') ?>
+                <?= $pager->links('berita', 'bootstrap_pagination') ?>
             </div>
         </div>
     </div>

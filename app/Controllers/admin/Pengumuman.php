@@ -40,15 +40,15 @@ class Pengumuman extends BaseController
             $query = $query->where('status', $status);
         }
 
-        // Ambil data yang sudah difilter
-        // Jika tidak ada filter, ini setara dengan findAll()
-        $pengumuman_list = $query->findAll();
+        $pengumuman_list = $query->paginate(10, 'pengumuman');
+        $pager = $query->pager;
 
         // --- 3. Siapkan data untuk View ---
         $data = [
             'title'             => 'Pengelolaan Pengumuman',
             'halaman'           => 'Daftar Pengumuman',
             'pengumuman_list'   => $pengumuman_list, // Data untuk tabel
+            'pager'             => $pager,
             'content'           => 'admin/pengumuman/index', // View utama
             // Kirim state filter kembali ke view agar form tetap terisi
             'filters' => [

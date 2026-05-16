@@ -232,6 +232,49 @@
             margin-left: var(--sidebar-collapsed-width);
         }
 
+        .content {
+            max-width: 100%;
+        }
+
+        .page-header {
+            background: #fff;
+            border: 1px solid #e8eef3;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+        }
+
+        .card {
+            border-color: #e8eef3;
+            border-radius: 10px;
+            transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+            border-color: rgba(0, 191, 92, .22);
+        }
+
+        .btn,
+        .page-link,
+        .dropdown-item {
+            transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease, color .16s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .table tbody tr {
+            transition: background-color .16s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8fbf9;
+        }
+
     </style>
 </head>
 <body>

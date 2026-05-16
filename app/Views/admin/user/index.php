@@ -68,7 +68,7 @@
                     </thead>
                     <tbody>
                         <?php if (!empty($user_list)): ?>
-                            <?php $no = 1; ?>
+                            <?php $no = 1 + ((($pager->getCurrentPage('user') ?? 1) - 1) * ($pager->getPerPage('user') ?: 10)); ?>
                             <?php foreach ($user_list as $user): ?>
                                 <tr>
                                     <td><?= $no++ ?></td>
@@ -111,15 +111,7 @@
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center">
             <span class="text-muted small">Menampilkan <?= count($user_list) ?> Pengguna</span>
-            <!-- Placeholder untuk Pagination jika diperlukan -->
-             <nav aria-label="Page navigation">
-                <!-- Placeholder untuk pagination -->
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+            <?= isset($pager) ? $pager->links('user', 'bootstrap_pagination') : '' ?>
         </div>
     </div>
     

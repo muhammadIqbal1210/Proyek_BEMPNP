@@ -131,6 +131,13 @@
                     <p class="text-gray-400 font-medium">Maaf, kompetisi belum tersedia.</p>
                 </div>
             <?php endif; ?>
+
+            <!-- Pagination -->
+            <div class="mt-12 flex justify-center" data-aos="fade-up" data-aos-delay="600">
+                <?php if(isset($pager)): ?>
+                    <?= $pager->links('lomba', 'default_full') ?>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </main>

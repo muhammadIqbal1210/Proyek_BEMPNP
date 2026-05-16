@@ -43,7 +43,7 @@
                             </thead>
                             <tbody>
                                 <?php if (!empty($pengajuan_list)): ?>
-                                    <?php $no = 1 + (($pager->getCurrentPage() - 1) * $pager->getPerPage()); ?>
+                                    <?php $no = 1 + (($pager->getCurrentPage('pengajuan') - 1) * $pager->getPerPage('pengajuan')); ?>
                                     <?php foreach ($pengajuan_list as $pengajuan): ?>
                                         <tr>
                                             <td><?= $no++ ?></td>

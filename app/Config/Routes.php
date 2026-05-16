@@ -34,6 +34,11 @@ $routes->get('berita/detail/(:num)', 'Home::detailberita/$1');
 $routes->group('member', ['filter' => 'member', 'namespace' => 'App\Controllers\Member'], function($routes) {
     $routes->get('dashboard', 'Dashboard::index');
     $routes->get('kanban', 'KanbanController::kanban');
+    $routes->post('kanban/board/store', 'KanbanController::storeBoard');
+    $routes->post('kanban/board/update/(:num)', 'KanbanController::updateBoard/$1');
+    $routes->post('kanban/task/store', 'KanbanController::storeTask');
+    $routes->post('kanban/task/status', 'KanbanController::updateTaskStatus');
+    $routes->post('kanban/task/delete/(:num)', 'KanbanController::deleteTask/$1');
     // Routes Beasiswa Member
     $routes->get('beasiswa', 'Beasiswa::index');
     $routes->get('beasiswa/create', 'Beasiswa::create');
@@ -138,6 +143,11 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     $routes->get('katalog/delete/(:num)', 'katalog::delete/$1');
     // Route Kanban
     $routes->get('kanban', 'KanbanController::kanban');
+    $routes->post('kanban/board/store', 'KanbanController::storeBoard');
+    $routes->post('kanban/board/update/(:num)', 'KanbanController::updateBoard/$1');
+    $routes->post('kanban/task/store', 'KanbanController::storeTask');
+    $routes->post('kanban/task/status', 'KanbanController::updateTaskStatus');
+    $routes->post('kanban/task/delete/(:num)', 'KanbanController::deleteTask/$1');
     //Route Laporan
     $routes->get('laporan/index', 'Laporan::index');
     $routes->get('laporan/delete/(:num)', 'Laporan::delete/$1');

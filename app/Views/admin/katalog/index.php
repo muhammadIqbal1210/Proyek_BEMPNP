@@ -77,8 +77,8 @@
                         <?php if (!empty($katalog_list)): ?>
                         <?php 
                         // Hitung nomor awal untuk pagination (asumsi variabel $pager tersedia)
-                        $perPage = @$pager->getPerPage() ?: 10;
-                        $currentPage = @$pager->getCurrentPage() ?: 1;
+                        $perPage = @$pager->getPerPage('katalog') ?: 10;
+                        $currentPage = @$pager->getCurrentPage('katalog') ?: 1;
                         $no = 1 + (($currentPage - 1) * $perPage); 
                         ?>
                         <?php foreach ($katalog_list as $katalog): ?>
@@ -151,14 +151,7 @@
                 Data kosong
                 <?php endif; ?>
             </span>
-            <nav aria-label="Page navigation">
-                <!-- Placeholder untuk pagination - Ganti dengan fungsi framework Anda jika tersedia -->
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+            <?= isset($pager) ? $pager->links('katalog', 'bootstrap_pagination') : '' ?>
         </div>
     </div>
 

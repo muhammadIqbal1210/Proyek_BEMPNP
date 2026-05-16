@@ -42,7 +42,21 @@
     });
     
     document.addEventListener('DOMContentLoaded', () => {
-         // Fungsi yang ingin dijalankan saat DOM selesai dimuat
+        const currentPath = window.location.pathname.replace('/index.php', '');
+        document.querySelectorAll('.nav-link').forEach(link => {
+            const linkHref = (link.getAttribute('href') || '').replace('/index.php', '');
+            if (currentPath === linkHref || currentPath.startsWith(linkHref + '/')) {
+                if (link.closest('.submenu-container')) {
+                    link.classList.add('sub-active', 'active');
+                    const parentSubmenu = link.closest('.submenu-container');
+                    const parentMenuItem = parentSubmenu.parentElement;
+                    parentSubmenu.classList.add('open', 'show');
+                    parentMenuItem.classList.add('active', 'expanded');
+                } else if (link.parentElement) {
+                    link.parentElement.classList.add('active');
+                }
+            }
+        });
     });
 </script>
 </body>

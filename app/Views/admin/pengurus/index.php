@@ -87,8 +87,8 @@
                         <?php if (!empty($pengurus_list)): ?>
                             <?php 
                             // Hitung nomor awal untuk pagination
-                            $perPage = @$pager->getPerPage() ?: 10;
-                            $currentPage = @$pager->getCurrentPage() ?: 1;
+                            $perPage = @$pager->getPerPage('default') ?: 10;
+                            $currentPage = @$pager->getCurrentPage('default') ?: 1;
                             $no = 1 + (($currentPage - 1) * $perPage); 
                             ?>
                             <?php foreach ($pengurus_list as $pengurus): ?>
@@ -145,14 +145,7 @@
                     Data kosong
                 <?php endif; ?>
             </span>
-            <nav aria-label="Page navigation">
-                <!-- Placeholder untuk pagination -->
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+            <?= isset($pager) ? $pager->links('default', 'bootstrap_pagination') : '' ?>
         </div>
     </div>
     

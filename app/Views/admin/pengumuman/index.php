@@ -75,7 +75,7 @@
                     </thead>
                     <tbody>
                         <?php if (!empty($pengumuman_list)): ?>
-                            <?php $no = 1; ?>
+                            <?php $no = 1 + ((($pager->getCurrentPage('pengumuman') ?? 1) - 1) * ($pager->getPerPage('pengumuman') ?: 10)); ?>
                             <?php foreach ($pengumuman_list as $pengumuman): ?>
                                 <tr>
                                     <td><?= $no++ ?></td>
@@ -136,14 +136,7 @@
         <div class="card-footer d-flex justify-content-between align-items-center">
             <!-- Paging dan informasi jumlah data (asumsi data tidak terlalu banyak) -->
             <span class="text-muted small">Menampilkan <?= count($pengumuman_list) ?> Pengumuman</span>
-            <nav aria-label="Page navigation">
-                <!-- Placeholder untuk pagination -->
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+            <?= isset($pager) ? $pager->links('pengumuman', 'bootstrap_pagination') : '' ?>
         </div>
     </div>
     

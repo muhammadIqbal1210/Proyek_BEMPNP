@@ -113,6 +113,7 @@
     .menu-item a:hover {
         background-color: var(--sidebar-active-bg);
         color: var(--sidebar-active-color);
+        transform: translateX(3px);
     }
 
     .menu-icon {
@@ -320,47 +321,3 @@
         <?php endif; ?>
     </div>
 </div>
-
-<script>
-    function toggleSubMenu(id, element) {
-        const submenu = document.getElementById(id);
-        const parent = element.parentElement;
-        const isOpen = submenu.classList.contains('open');
-        
-        document.querySelectorAll('.submenu-container').forEach(sm => {
-            if(sm.id !== id) {
-                sm.classList.remove('open');
-                sm.parentElement.classList.remove('expanded');
-            }
-        });
-
-        if (!isOpen) {
-            submenu.classList.add('open');
-            parent.classList.add('expanded');
-        } else {
-            submenu.classList.remove('open');
-            parent.classList.remove('expanded');
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const currentPath = window.location.pathname;
-        const navLinks = document.querySelectorAll(".nav-link");
-
-        navLinks.forEach(link => {
-            const linkHref = link.getAttribute("href");
-            if (currentPath === linkHref || currentPath.startsWith(linkHref + '/')) {
-                if (link.closest('.submenu-container')) {
-                    link.classList.add("sub-active");
-                    const parentSubmenu = link.closest('.submenu-container');
-                    const parentMenuItem = parentSubmenu.parentElement;
-                    parentSubmenu.classList.add('open');
-                    parentMenuItem.classList.add('active'); 
-                    parentMenuItem.classList.add('expanded'); 
-                } else {
-                    link.parentElement.classList.add("active");
-                }
-            }
-        });
-    });
-</script>

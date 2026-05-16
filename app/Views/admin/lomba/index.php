@@ -79,8 +79,8 @@
                         <?php if (!empty($lomba_list)): ?>
                             <?php 
                             // Hitung nomor awal untuk pagination
-                            $perPage = @$pager->getPerPage() ?: 10;
-                            $currentPage = @$pager->getCurrentPage() ?: 1;
+                            $perPage = @$pager->getPerPage('lomba') ?: 10;
+                            $currentPage = @$pager->getCurrentPage('lomba') ?: 1;
                             $no = 1 + (($currentPage - 1) * $perPage); 
                             ?>
                             <?php foreach ($lomba_list as $lomba): ?>
@@ -156,14 +156,7 @@
                     Data kosong
                 <?php endif; ?>
             </span>
-            <nav aria-label="Page navigation">
-                <!-- Placeholder untuk pagination -->
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+            <?= isset($pager) ? $pager->links('lomba', 'bootstrap_pagination') : '' ?>
         </div>
     </div>
     

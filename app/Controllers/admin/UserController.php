@@ -39,14 +39,15 @@ class UserController extends BaseController
             $query = $query->where('role', $role);
         }
 
-        // Ambil data yang sudah difilter
-        $user_list = $query->findAll();
+        $user_list = $query->paginate(10, 'user');
+        $pager = $query->pager;
 
 
         $data = [
             'title'             => 'Pengelolaan Akun Pengguna',
             'halaman'           => 'Daftar Akun Pengguna',
             'user_list'         => $user_list, // Data untuk tabel
+            'pager'             => $pager,
             'content'           => 'admin/user/index', // View utama 
 
             'filters' => [

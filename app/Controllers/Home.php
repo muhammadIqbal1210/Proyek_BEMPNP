@@ -72,6 +72,7 @@ class Home extends BaseController
 
         // 2. Ambil Event Terdekat
         $upcomingEvents = $eventModel
+            ->where('status_pengajuan', 'approved')
             ->where('waktu >=', date('Y-m-d')) // Gunakan format Y-m-d jika di database tipe DATE
             ->orderBy('waktu', 'ASC')
             ->limit(5)
@@ -79,12 +80,14 @@ class Home extends BaseController
 
         // 3. Ambil Berita Terbaru
         $latestNews = $beritaModel
+            ->where('status_pengajuan', 'approved')
             ->orderBy('created_at', 'DESC')
             ->limit(3)
             ->findAll();
 
         // 4. Ambil Katalog Produk/Layanan
         $katalogList = $katalogModel
+            ->where('status_pengajuan', 'approved')
             ->limit(4)
             ->findAll();
         
@@ -327,10 +330,13 @@ class Home extends BaseController
         // Mengambil keyword dari pencarian jika ada
         $keyword = $this->request->getVar('keyword');
         
+        $katalogObj = $model->where('status_pengajuan', 'approved');
         if ($keyword) {
-            $katalogObj = $model->like('nama_barang', $keyword)->orLike('deskripsi', $keyword);
-        } else {
-            $katalogObj = $model;
+            $katalogObj = $katalogObj
+                ->groupStart()
+                    ->like('nama_barang', $keyword)
+                    ->orLike('deskripsi', $keyword)
+                ->groupEnd();
         }
 
         $data = [
@@ -338,6 +344,7 @@ class Home extends BaseController
             'katalog_list'     => $katalogObj->paginate(12, 'katalog'),
             'pager'            => $model->pager,
             'keyword'          => $keyword,
+            'filters'          => ['keyword' => $keyword],
             'produk_base_url'  => base_url('uploads/katalog/') // Sesuaikan folder upload Anda
         ];
 
@@ -347,11 +354,18 @@ class Home extends BaseController
     {
         $model = new BeasiswaModel();
         $keyword = $this->request->getVar('keyword');
+        $status = $this->request->getGet('status');
         
+        $beasiswaObj = $model->where('status_pengajuan', 'approved');
         if ($keyword) {
-            $beasiswaObj = $model->like('nama_beasiswa', $keyword)->orLike('deskripsi', $keyword);
-        } else {
-            $beasiswaObj = $model;
+            $beasiswaObj = $beasiswaObj
+                ->groupStart()
+                    ->like('nama_beasiswa', $keyword)
+                    ->orLike('deskripsi', $keyword)
+                ->groupEnd();
+        }
+        if (!empty($status)) {
+            $beasiswaObj = $beasiswaObj->where('status_beasiswa', $status);
         }
 
         $data = [
@@ -359,6 +373,7 @@ class Home extends BaseController
             'beasiswa_list'      => $beasiswaObj->paginate(12, 'beasiswa'),
             'pager'             => $model->pager,
             'keyword'           => $keyword,
+            'filters'           => ['keyword' => $keyword, 'status' => $status],
             'beasiswa_base_url' => base_url('uploads/beasiswa/') // Folder khusus gambar beasiswa
         ];
 
@@ -371,7 +386,7 @@ class Home extends BaseController
              throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Pengumuman tidak ditemukan.');
         }
 
-        $beasiswa = $this->beasiswaModel->find($id);
+        $beasiswa = $this->beasiswaModel->where('status_pengajuan', 'approved')->find($id);
 
         if (!$beasiswa) {
             // Jika tidak ditemukan atau statusnya bukan 'aktif', lempar 404
@@ -393,11 +408,18 @@ class Home extends BaseController
     {
         $model = new LombaModel();
         $keyword = $this->request->getVar('keyword');
+        $status = $this->request->getGet('status');
         
+        $lombaObj = $model->where('status_pengajuan', 'approved');
         if ($keyword) {
-            $lombaObj = $model->like('nama_lomba', $keyword)->orLike('deskripsi', $keyword);
-        } else {
-            $lombaObj = $model;
+            $lombaObj = $lombaObj
+                ->groupStart()
+                    ->like('nama_lomba', $keyword)
+                    ->orLike('deskripsi', $keyword)
+                ->groupEnd();
+        }
+        if (!empty($status)) {
+            $lombaObj = $lombaObj->where('status_lomba', $status);
         }
 
         $data = [
@@ -405,6 +427,7 @@ class Home extends BaseController
             'lomba_list'        => $lombaObj->paginate(12, 'lomba'),
             'pager'             => $model->pager,
             'keyword'           => $keyword,
+            'filters'           => ['keyword' => $keyword, 'status' => $status],
             'poster_base_url'   => base_url('uploads/lomba/') // Folder khusus gambar beasiswa
         ];
 
@@ -417,7 +440,7 @@ class Home extends BaseController
              throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Lomba tidak ditemukan.');
         }
 
-        $lomba = $this->lombaModel->find($id);
+        $lomba = $this->lombaModel->where('status_pengajuan', 'approved')->find($id);
 
         if (!$lomba) {
             // Jika tidak ditemukan atau statusnya bukan 'aktif', lempar 404
@@ -440,10 +463,13 @@ class Home extends BaseController
         $model = new eventModel();
         $keyword = $this->request->getVar('keyword');
         
+        $eventObj = $model->where('status_pengajuan', 'approved');
         if ($keyword) {
-            $eventObj = $model->like('nama_event', $keyword)->orLike('deskripsi', $keyword);
-        } else {
-            $eventObj = $model;
+            $eventObj = $eventObj
+                ->groupStart()
+                    ->like('nama_event', $keyword)
+                    ->orLike('deskripsi', $keyword)
+                ->groupEnd();
         }
 
         $data = [
@@ -451,6 +477,7 @@ class Home extends BaseController
             'event_list'        => $eventObj->paginate(12, 'event'),
             'pager'             => $model->pager,
             'keyword'           => $keyword,
+            'filters'           => ['keyword' => $keyword],
             'file_base_url'   => base_url('uploads/event/') // Folder khusus gambar beasiswa
         ];
 
@@ -463,7 +490,7 @@ class Home extends BaseController
              throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Lomba tidak ditemukan.');
         }
 
-        $event = $this->eventModel->find($id);
+        $event = $this->eventModel->where('status_pengajuan', 'approved')->find($id);
 
         if (!$event) {
             // Jika tidak ditemukan atau statusnya bukan 'aktif', lempar 404
@@ -483,10 +510,24 @@ class Home extends BaseController
     }
     public function berita()
     {
-        $model = new beritaModel();
+        $model = new BeritaModel();
+        $keyword = $this->request->getGet('keyword');
+        $query = $model->where('status_pengajuan', 'approved');
+
+        if (!empty($keyword)) {
+            $query = $query
+                ->groupStart()
+                    ->like('judulberita', $keyword)
+                    ->orLike('isiberita', $keyword)
+                    ->orLike('author', $keyword)
+                ->groupEnd();
+        }
+
         $data = [
             'title' => 'Daftar Berita',
-            'semua_berita' => $this->beritaModel->orderBy('created_at', 'DESC')->findAll()
+            'semua_berita' => $query->orderBy('created_at', 'DESC')->paginate(9, 'berita'),
+            'pager' => $model->pager,
+            'filters' => ['keyword' => $keyword],
         ];
 
         return view('frontend/berita/list', $data);
@@ -494,7 +535,7 @@ class Home extends BaseController
     public function detailberita($id)
     {
         // 1. Ambil data berita yang dipilih
-        $berita = $this->beritaModel->find($id);
+        $berita = $this->beritaModel->where('status_pengajuan', 'approved')->find($id);
 
         // Jika berita tidak ada, tampilkan error 404
         if (!$berita) {
@@ -504,6 +545,7 @@ class Home extends BaseController
         // 2. Ambil berita lainnya untuk sidebar (misal 5 berita terbaru selain yang sedang dibaca)
         $berita_lainnya = $this->beritaModel
             ->where('id !=', $id)
+            ->where('status_pengajuan', 'approved')
             ->orderBy('tanggalberita', 'DESC')
             ->findAll(5);
 

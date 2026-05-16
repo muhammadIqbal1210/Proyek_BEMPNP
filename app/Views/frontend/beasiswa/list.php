@@ -125,6 +125,9 @@
                 </a>
                 <?php endforeach; ?>
             </div>
+            <div class="flex justify-center">
+                <?= $pager->links('beasiswa', 'tailwind_pagination') ?>
+            </div>
             <?php else: ?>
             <div class="bg-gray-50 border-2 border-dashed border-gray-200 rounded-3xl p-20 text-center">
                 <i class="fas fa-search text-gray-300 text-6xl mb-4"></i>

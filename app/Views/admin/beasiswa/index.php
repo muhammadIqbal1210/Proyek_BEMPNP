@@ -80,8 +80,8 @@
                         <?php if (!empty($beasiswa_list)): ?>
                             <?php 
                             // Hitung nomor awal untuk pagination
-                            $perPage = @$pager->getPerPage() ?: 10;
-                            $currentPage = @$pager->getCurrentPage() ?: 1;
+                            $perPage = @$pager->getPerPage('beasiswa') ?: 10;
+                            $currentPage = @$pager->getCurrentPage('beasiswa') ?: 1;
                             $no = 1 + (($currentPage - 1) * $perPage); 
                             ?>
                             <?php foreach ($beasiswa_list as $beasiswa): ?>
@@ -158,14 +158,7 @@
                     Data kosong
                 <?php endif; ?>
             </span>
-            <nav aria-label="Page navigation">
-                <!-- Placeholder untuk pagination -->
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+            <?= isset($pager) ? $pager->links('beasiswa', 'bootstrap_pagination') : '' ?>
         </div>
     </div>
     
@@ -173,6 +166,5 @@
     <?php echo view('admin/beasiswa/create'); ?>
 
     <?= $this->include('admin/beasiswa/edit') ?>
-    <?= $this->include('admin/pengumuman/detail') ?> 
 
 </div>

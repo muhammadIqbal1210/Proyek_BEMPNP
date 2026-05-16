@@ -510,6 +510,98 @@
     </div>
 </section>
 
+<!-- PENGADUAN & ADVOKASI SECTION -->
+<section id="advokasi" class="py-12 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M0,50 Q25,25 50,50 T100,50" fill="none" stroke="white" stroke-width="2"/>
+        </svg>
+    </div>
+
+    <div class="max-w-5xl mx-auto relative z-10">
+        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+            <div class="grid md:grid-cols-2 gap-0">
+                <!-- Left: Visual -->
+                <div class="bg-gradient-to-br from-red-600 to-orange-600 p-8 sm:p-12 flex flex-col justify-center text-white" data-aos="fade-right">
+                    <div class="mb-6">
+                        <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-4 backdrop-blur-md">
+                            <i class="fas fa-megaphone text-4xl text-white"></i>
+                        </div>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-black mb-4 leading-tight">Layanan Pengaduan & Advokasi</h2>
+                    <p class="text-lg text-white/90 mb-8 leading-relaxed">
+                        Kami siap membantu Anda! Jika mengalami kendala administratif, akademik, atau memiliki saran untuk kami, silakan laporkan melalui saluran advokasi kami.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center text-white/80 text-sm">
+                            <i class="fas fa-check-circle mr-3 text-yellow-300"></i>
+                            Respons cepat dari tim advokasi
+                        </li>
+                        <li class="flex items-center text-white/80 text-sm">
+                            <i class="fas fa-check-circle mr-3 text-yellow-300"></i>
+                            Proses penanganan transparan
+                        </li>
+                        <li class="flex items-center text-white/80 text-sm">
+                            <i class="fas fa-check-circle mr-3 text-yellow-300"></i>
+                            Solusi yang adil dan berkelanjutan
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Right: Contact Options -->
+                <div class="p-8 sm:p-12 flex flex-col justify-center" data-aos="fade-left">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-8">Hubungi Kami Via</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/6282184556644?text=Assalamu%27alaikum%20BEM%20KM%20PNP.%20Saya%20ingin%20mengadukan%20tentang..." target="_blank" 
+                           class="flex items-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl hover:shadow-lg hover:border-green-400 transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white text-xl mr-4 group-hover:scale-110 transition-transform">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-900">WhatsApp Advokasi</p>
+                                <p class="text-sm text-gray-600">+62 821-8455-6644</p>
+                            </div>
+                            <i class="fas fa-arrow-right text-green-500 ml-auto group-hover:translate-x-2 transition-transform"></i>
+                        </a>
+
+                        <!-- Email -->
+                        <a href="mailto:advokasi@bem-km-pnp.org?subject=Pengaduan%20dan%20Advokasi&body=Assalamu%27alaikum%20BEM%20KM%20PNP%0A%0ASaya%20ingin%20mengadukan%20tentang..." 
+                           class="flex items-center p-4 bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-2xl hover:shadow-lg hover:border-blue-400 transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl mr-4 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-900">Email Advokasi</p>
+                                <p class="text-sm text-gray-600">advokasi@bem-km-pnp.org</p>
+                            </div>
+                            <i class="fas fa-arrow-right text-blue-500 ml-auto group-hover:translate-x-2 transition-transform"></i>
+                        </a>
+
+                        <!-- Form Pengaduan -->
+                        <a href="<?= base_url('lapor') ?>" 
+                           class="flex items-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200 rounded-2xl hover:shadow-lg hover:border-purple-400 transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white text-xl mr-4 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-900">Form Pengaduan Online</p>
+                                <p class="text-sm text-gray-600">Isi formulir pengaduan Anda</p>
+                            </div>
+                            <i class="fas fa-arrow-right text-purple-500 ml-auto group-hover:translate-x-2 transition-transform"></i>
+                        </a>
+                    </div>
+
+                    <div class="mt-8 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg">
+                        <p class="text-sm text-gray-700"><strong>💡 Tip:</strong> Sertakan detail lengkap tentang masalah Anda agar kami dapat memberikan solusi yang tepat.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <style>
 .line-clamp-2 {
     display: -webkit-box;

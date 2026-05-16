@@ -31,8 +31,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="isiberita">Isi Berita *</label>
-                            <textarea class="form-control" id="isiberita" name="isiberita" rows="6" required><?= set_value('isiberita') ?></textarea>
+                            <label for="editor_berita_member">Isi Berita *</label>
+                            <textarea class="form-control" id="editor_berita_member" name="isiberita" rows="10" required><?= set_value('isiberita') ?></textarea>
                             <?php if (isset($errors['isiberita'])): ?>
                                 <small class="text-danger"><?= $errors['isiberita'] ?></small>
                             <?php endif; ?>
@@ -57,3 +57,44 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+<style>
+    .ck-editor__editable_inline {
+        min-height: 360px;
+        background-color: #fff;
+    }
+</style>
+<script>
+    class MemberBeritaUploadAdapter {
+        constructor(loader) {
+            this.loader = loader;
+        }
+        upload() {
+            return this.loader.file.then(file => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve({ default: reader.result });
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            }));
+        }
+        abort() {}
+    }
+
+    function MemberBeritaUploadAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = loader => new MemberBeritaUploadAdapter(loader);
+    }
+
+    ClassicEditor
+        .create(document.querySelector('#editor_berita_member'), {
+            extraPlugins: [MemberBeritaUploadAdapterPlugin],
+            toolbar: {
+                items: [
+                    'heading', '|',
+                    'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
+                    'uploadImage', 'insertTable', 'blockQuote', 'undo', 'redo'
+                ]
+            }
+        })
+        .catch(error => console.error(error));
+</script>

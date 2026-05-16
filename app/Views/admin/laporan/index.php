@@ -60,7 +60,7 @@
                 </thead>
                 <tbody>
                     <?php if (!empty($laporan_list)): ?>
-                        <?php $no = 1 + (($pager->getCurrentPage() - 1) * $pager->getPerPage()); ?>
+                        <?php $no = 1 + (($pager->getCurrentPage('laporan') - 1) * $pager->getPerPage('laporan')); ?>
                         <?php foreach ($laporan_list as $lp): ?>
                             <tr>
                                 <td><?= $no++ ?></td>
@@ -113,8 +113,9 @@
             </table>
         </div>
     </div>
-    <div class="card-footer">
-        <?= $pager->links() ?>
+    <div class="card-footer d-flex justify-content-between align-items-center">
+        <span class="text-muted small">Menampilkan <?= count($laporan_list ?? []) ?> laporan</span>
+        <?= isset($pager) ? $pager->links('laporan', 'bootstrap_pagination') : '' ?>
     </div>
 </div>
 
