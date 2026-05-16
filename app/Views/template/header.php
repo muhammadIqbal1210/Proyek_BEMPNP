@@ -11,7 +11,7 @@
     <style>
         /* ==================== 1. GLOBAL STYLES & LAYOUT VARIABLES ==================== */
         :root {
-            --sidebar-width: 250px;
+            --sidebar-width: 260px;
             --sidebar-collapsed-width: 60px;
             --main-color: #00bf5c; /* Hijau BEM KM PNP */
             --bg-color: #f8f9fa; 
@@ -271,8 +271,8 @@
                 
                 <div class="dropdown">
                     <a class="nav-link d-flex align-items-center user-profile cursor-pointer" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/bem.png" alt="Super Admin">
-                        <span class="d-none d-md-inline me-1">Super Admin</span>
+                        <img src="/bem.png" alt="<?= esc(ucfirst(session()->get('role') ?? 'User')) ?>">
+                        <span class="d-none d-md-inline me-1"><?= esc(session()->get('username') ?? ucfirst(session()->get('role') ?? 'User')) ?></span>
                         <i class="fas fa-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -286,8 +286,6 @@
         </div>
     </nav>
     
-    <div class="sidebar" id="sidebarNav">
-        <?php echo view('template/sidebar'); ?>
-    </div>
+    <?php echo view('template/sidebar'); ?>
     
     <div class="main-content" id="mainContent">

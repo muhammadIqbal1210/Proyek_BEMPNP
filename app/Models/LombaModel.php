@@ -17,6 +17,7 @@ class LombaModel extends Model
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+    protected $useSoftDeletes = false;
 
     // Bidang yang diizinkan untuk diisi (fillable fields)
     protected $allowedFields = [
@@ -25,7 +26,9 @@ class LombaModel extends Model
         'deskripsi',  
         'status_lomba', 
         'link_informasi', 
-        'poster'
+        'poster',
+        'status_pengajuan', // pending, approved, rejected
+        'user_id' // ID user yang mengajukan
     ];
     // --- Aturan Validasi ---
     protected $validationRules = [

@@ -18,7 +18,16 @@ class Berita extends BaseController
 
     public function index()
     {
+        $keyword = $this->request->getGet('keyword');
+        
         $query = $this->beritaModel;
+
+        if (!empty($keyword)) {
+            $query = $query->like('judulberita', $keyword);
+        }
+
+        // Hanya tampilkan yang approved
+        $query = $query->where('status_pengajuan', 'approved');
 
         $perPage = 10;
         $berita_list = $query->paginate($perPage, 'berita');
@@ -28,11 +37,81 @@ class Berita extends BaseController
             'title'         => 'Manajemen Berita',
             'berita_list'   => $berita_list,
             'content'       => 'admin/berita/index',
-            'filters'       => $this->request->getGet(),
+            'filters'       => ['keyword' => $keyword],
             'pager'         => $pager,
             'berita_base_url' => base_url('uploads/berita/')
         ];
         return view('template/wrapper', $data); 
+    }
+
+    /**
+     * Menampilkan daftar pengajuan berita untuk approval.
+     */
+    public function pengajuan()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $status_pengajuan = $this->request->getGet('status_pengajuan');
+
+        $query = $this->beritaModel;
+
+        if (!empty($keyword)) {
+            $query = $query->like('judulberita', $keyword);
+        }
+
+        if (!empty($status_pengajuan)) {
+            $query = $query->where('status_pengajuan', $status_pengajuan);
+        }
+
+        $perPage = 10;
+        $pengajuan_list = $query->paginate($perPage, 'pengajuan');
+        $pager = $query->pager;
+
+        $data = [
+            'title'         => 'Pengajuan Berita',
+            'halaman'       => 'Daftar Pengajuan Berita',
+            'pengajuan_list' => $pengajuan_list,
+            'content'       => 'admin/berita/pengajuan',
+            'pager'         => $pager,
+            'berita_base_url' => base_url('uploads/berita/'),
+            'filters' => [
+                'keyword' => $keyword,
+                'status_pengajuan' => $status_pengajuan,
+            ],
+        ];
+
+        return view('template/wrapper', $data);
+    }
+
+    /**
+     * Approve pengajuan berita.
+     */
+    public function approve($id)
+    {
+        $berita = $this->beritaModel->find($id);
+
+        if (!$berita) {
+            return redirect()->to(base_url('admin/berita/pengajuan'))->with('error', 'Pengajuan tidak ditemukan.');
+        }
+
+        $this->beritaModel->update($id, ['status_pengajuan' => 'approved']);
+
+        return redirect()->to(base_url('admin/berita/pengajuan'))->with('success', 'Pengajuan berita disetujui.');
+    }
+
+    /**
+     * Reject pengajuan berita.
+     */
+    public function reject($id)
+    {
+        $berita = $this->beritaModel->find($id);
+
+        if (!$berita) {
+            return redirect()->to(base_url('admin/berita/pengajuan'))->with('error', 'Pengajuan tidak ditemukan.');
+        }
+
+        $this->beritaModel->update($id, ['status_pengajuan' => 'rejected']);
+
+        return redirect()->to(base_url('admin/berita/pengajuan'))->with('success', 'Pengajuan berita ditolak.');
     }
 
     public function store()
@@ -56,7 +135,9 @@ class Berita extends BaseController
             'isiberita'     => $this->request->getPost('isiberita'), // Data dari CKEditor
             'gambarberita'  => $namaGambar,
             'tanggalberita' => date('Y-m-d'),
-            'author'        => session()->get('nama_user') ?? 'Admin'
+            'author'        => session()->get('username') ?? 'Admin',
+            'status_pengajuan' => 'approved',
+            'user_id'       => session()->get('user_id'),
         ]);
 
         return redirect()->to('/admin/berita')->with('success', 'Berita berhasil diterbitkan.');

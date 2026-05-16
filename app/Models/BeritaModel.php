@@ -19,7 +19,9 @@ class BeritaModel extends Model
         'isiberita', 
         'gambarberita', 
         'tanggalberita', 
-        'author'
+        'author',
+        'status_pengajuan', // pending, approved, rejected
+        'user_id' // ID user yang mengajukan
     ];
 
     // Dates

@@ -30,8 +30,8 @@ class Lomba extends BaseController
 
         // Terapkan Filter Keyword (Pencarian)
         if (!empty($keyword)) {
-            // Mencari di kolom 'title' atau kolom relevan lainnya
-            $query = $query->like('title', $keyword);
+            // Mencari di kolom 'nama_lomba'
+            $query = $query->like('nama_lomba', $keyword);
         }
 
         // Terapkan Filter Status
@@ -40,7 +40,9 @@ class Lomba extends BaseController
             $query = $query->where('status_lomba', $status);
         }
 
-        
+        // Hanya tampilkan yang approved
+        $query = $query->where('status_pengajuan', 'approved');
+
         // Ambil data yang sudah difilter
         $perPage = 10;
         $lomba_list = $query->paginate($perPage, 'lomba');
@@ -66,6 +68,78 @@ class Lomba extends BaseController
         
         // Memuat view dengan layout admin
         return view('template/wrapper', $data); 
+    }
+
+    /**
+     * Menampilkan daftar pengajuan lomba untuk approval.
+     */
+    public function pengajuan()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $status_pengajuan = $this->request->getGet('status_pengajuan');
+
+        $query = $this->lombaModel;
+
+        if (!empty($keyword)) {
+            $query = $query->like('nama_lomba', $keyword);
+        }
+
+        if (!empty($status_pengajuan)) {
+            $query = $query->where('status_pengajuan', $status_pengajuan);
+        }
+
+        $perPage = 10;
+        $pengajuan_list = $query->paginate($perPage, 'pengajuan');
+        $pager = $query->pager;
+
+        $poster_base_url = base_url('uploads/lomba') . '/';
+
+        $data = [
+            'title'         => 'Pengajuan Lomba',
+            'halaman'       => 'Daftar Pengajuan Lomba',
+            'poster_base_url' => $poster_base_url,
+            'pengajuan_list' => $pengajuan_list,
+            'content'       => 'admin/lomba/pengajuan',
+            'pager'         => $pager,
+            'filters' => [
+                'keyword' => $keyword,
+                'status_pengajuan' => $status_pengajuan,
+            ],
+        ];
+
+        return view('template/wrapper', $data);
+    }
+
+    /**
+     * Approve pengajuan lomba.
+     */
+    public function approve($id)
+    {
+        $lomba = $this->lombaModel->find($id);
+
+        if (!$lomba) {
+            return redirect()->to(base_url('admin/lomba/pengajuan'))->with('error', 'Pengajuan tidak ditemukan.');
+        }
+
+        $this->lombaModel->update($id, ['status_pengajuan' => 'approved']);
+
+        return redirect()->to(base_url('admin/lomba/pengajuan'))->with('success', 'Pengajuan lomba disetujui.');
+    }
+
+    /**
+     * Reject pengajuan lomba.
+     */
+    public function reject($id)
+    {
+        $lomba = $this->lombaModel->find($id);
+
+        if (!$lomba) {
+            return redirect()->to(base_url('admin/lomba/pengajuan'))->with('error', 'Pengajuan tidak ditemukan.');
+        }
+
+        $this->lombaModel->update($id, ['status_pengajuan' => 'rejected']);
+
+        return redirect()->to(base_url('admin/lomba/pengajuan'))->with('success', 'Pengajuan lomba ditolak.');
     }
 
     /**
@@ -100,6 +174,8 @@ class Lomba extends BaseController
             'status_lomba'         => $this->request->getPost('status_lomba'),
             'link_informasi'       => $this->request->getPost('link_informasi'),
             'poster'               => $filePath, // Simpan nama file
+            'status_pengajuan'     => 'approved',
+            'user_id'              => session()->get('user_id'),
         ];
 
         // 4. Simpan ke database

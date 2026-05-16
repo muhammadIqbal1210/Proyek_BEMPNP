@@ -29,9 +29,12 @@ class Event extends BaseController
 
         // Terapkan Filter Keyword (Pencarian)
         if (!empty($keyword)) {
-            // Mencari di kolom 'title' atau kolom relevan lainnya
-            $query = $query->like('title', $keyword);
+            // Mencari di kolom 'nama_event'
+            $query = $query->like('nama_event', $keyword);
         }
+
+        // Hanya tampilkan yang approved
+        $query = $query->where('status_pengajuan', 'approved');
         
         // Ambil data yang sudah difilter
         $perPage = 10;
@@ -57,6 +60,78 @@ class Event extends BaseController
         
         // Memuat view dengan layout admin
         return view('template/wrapper', $data); 
+    }
+
+    /**
+     * Menampilkan daftar pengajuan event untuk approval.
+     */
+    public function pengajuan()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $status_pengajuan = $this->request->getGet('status_pengajuan');
+
+        $query = $this->eventModel;
+
+        if (!empty($keyword)) {
+            $query = $query->like('nama_event', $keyword);
+        }
+
+        if (!empty($status_pengajuan)) {
+            $query = $query->where('status_pengajuan', $status_pengajuan);
+        }
+
+        $perPage = 10;
+        $pengajuan_list = $query->paginate($perPage, 'pengajuan');
+        $pager = $query->pager;
+
+        $file_base_url = base_url('uploads/event') . '/';
+
+        $data = [
+            'title'         => 'Pengajuan Event',
+            'halaman'       => 'Daftar Pengajuan Event',
+            'file_base_url' => $file_base_url,
+            'pengajuan_list' => $pengajuan_list,
+            'content'       => 'admin/event/pengajuan',
+            'pager'         => $pager,
+            'filters' => [
+                'keyword' => $keyword,
+                'status_pengajuan' => $status_pengajuan,
+            ],
+        ];
+
+        return view('template/wrapper', $data);
+    }
+
+    /**
+     * Approve pengajuan event.
+     */
+    public function approve($id)
+    {
+        $event = $this->eventModel->find($id);
+
+        if (!$event) {
+            return redirect()->to(base_url('admin/event/pengajuan'))->with('error', 'Pengajuan tidak ditemukan.');
+        }
+
+        $this->eventModel->update($id, ['status_pengajuan' => 'approved']);
+
+        return redirect()->to(base_url('admin/event/pengajuan'))->with('success', 'Pengajuan event disetujui.');
+    }
+
+    /**
+     * Reject pengajuan event.
+     */
+    public function reject($id)
+    {
+        $event = $this->eventModel->find($id);
+
+        if (!$event) {
+            return redirect()->to(base_url('admin/event/pengajuan'))->with('error', 'Pengajuan tidak ditemukan.');
+        }
+
+        $this->eventModel->update($id, ['status_pengajuan' => 'rejected']);
+
+        return redirect()->to(base_url('admin/event/pengajuan'))->with('success', 'Pengajuan event ditolak.');
     }
 
     /**
@@ -91,6 +166,8 @@ class Event extends BaseController
             'biaya'                => $this->request->getPost('biaya'),
             'link_informasi'       => $this->request->getPost('link_informasi'),
             'file'                 => $filePath, // Simpan nama file
+            'status_pengajuan'     => 'approved',
+            'user_id'              => session()->get('user_id'),
         ];
 
         // 4. Simpan ke database

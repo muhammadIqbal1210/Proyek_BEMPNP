@@ -18,7 +18,9 @@ class EventModel extends Model
         'link_informasi',
         'waktu',
         'biaya',
-        'file'
+        'file',
+        'status_pengajuan', // pending, approved, rejected
+        'user_id' // ID user yang mengajukan
     ];
 
     protected bool $allowEmptyInserts = false;

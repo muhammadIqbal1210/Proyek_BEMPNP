@@ -1,15 +1,40 @@
-# Fix User Growth Analytics Dashboard
+# TODO: Implementasi Sistem Pengajuan Beasiswa
 
-## Tasks
-- [x] Update Dashboard controller to calculate actual monthly growth data for users, beasiswas, and beritas
-- [x] Test the dashboard to ensure charts display correctly with real data
+## Langkah-langkah Implementasi:
 
-## Information Gathered
-- Dashboard currently uses hardcoded arrays for growth analytics
-- Models have timestamps enabled (created_at available)
-- Need to query database for monthly counts over past 12 months
+### 1. Buat Migrasi untuk Tabel Pengajuan Beasiswa
+- [ ] Buat file migrasi baru untuk tabel `pengajuan_beasiswa`
+- [ ] Jalankan migrasi untuk membuat tabel
 
-## Plan
-- Replace hardcoded growth arrays with database queries
-- Use SQL queries to count records by month for past year
-- Update controller to pass real data to view
+### 2. Buat Model PengajuanBeasiswaModel
+- [ ] Buat model dengan relasi ke UserModel dan BeasiswaModel
+- [ ] Tambahkan validation rules
+
+### 3. Update Admin Beasiswa Controller
+- [ ] Tambahkan method pengajuan() untuk daftar pengajuan
+- [ ] Tambahkan method approve() dan reject() untuk approval
+- [ ] Update routes untuk admin pengajuan
+
+### 4. Buat Member Beasiswa Controller
+- [ ] Buat controller baru untuk member
+- [ ] Tambahkan method index() untuk daftar pengajuan member
+- [ ] Tambahkan method apply() untuk mengajukan beasiswa
+- [ ] Update routes untuk member beasiswa
+
+### 5. Buat Views untuk Admin Pengajuan
+- [ ] Buat view admin/beasiswa/pengajuan.php
+- [ ] Tambahkan modal untuk approve/reject
+
+### 6. Buat Views untuk Member
+- [ ] Buat view member/beasiswa/index.php (daftar pengajuan)
+- [ ] Buat view member/beasiswa/apply.php (form pengajuan)
+- [ ] Update sidebar jika diperlukan
+
+### 7. Update Routes
+- [ ] Tambahkan routes untuk admin pengajuan
+- [ ] Tambahkan routes untuk member beasiswa
+
+### 8. Testing
+- [ ] Test flow pengajuan dari member
+- [ ] Test approval dari admin
+- [ ] Test status update

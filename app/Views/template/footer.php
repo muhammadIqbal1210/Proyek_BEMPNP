@@ -14,16 +14,20 @@
         }
         
         const menu = document.getElementById(menuId);
-        const arrow = element.querySelector('.menu-arrow i');
-        
-        menu.classList.toggle('show');
-        element.classList.toggle('active');
+        const parent = element.parentElement;
+        const isOpen = menu.classList.contains('open');
 
-        if (menu.classList.contains('show')) {
-            arrow.style.transform = 'rotate(180deg)';
-        } else {
-            arrow.style.transform = 'rotate(0deg)';
-        }
+        document.querySelectorAll('.submenu-container').forEach(sm => {
+            if (sm.id !== menuId) {
+                sm.classList.remove('open', 'show');
+                sm.parentElement.classList.remove('active', 'expanded');
+            }
+        });
+
+        menu.classList.toggle('open', !isOpen);
+        menu.classList.toggle('show', !isOpen);
+        parent.classList.toggle('active', !isOpen);
+        parent.classList.toggle('expanded', !isOpen);
     }
     
     // Fungsi Toggle Sidebar (Collapse/Expand)

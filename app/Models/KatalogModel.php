@@ -17,7 +17,8 @@ class KatalogModel extends Model
         'harga',  
         'user_id',
         'foto_produk',
-        'link_jual', 
+        'link_jual',
+        'status_pengajuan', // pending, approved, rejected
     ];
 
     // Timestamps

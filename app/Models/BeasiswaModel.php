@@ -20,13 +20,15 @@ class BeasiswaModel extends Model
 
     // Bidang yang diizinkan untuk diisi (fillable fields)
     protected $allowedFields = [
-        'nama_beasiswa', 
-        'deskripsi', 
+        'nama_beasiswa',
+        'deskripsi',
         'tanggal_buka',
-        'tanggal_tutup', 
-        'status_beasiswa', 
-        'link_informasi', 
-        'poster'
+        'tanggal_tutup',
+        'status_beasiswa',
+        'link_informasi',
+        'poster',
+        'status_pengajuan', // pending, approved, rejected
+        'user_id' // ID user yang mengajukan
     ];
     protected $validationRules = [
         'nama_beasiswa'     => 'required|max_length[255]',

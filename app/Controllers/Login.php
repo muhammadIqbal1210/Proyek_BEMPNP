@@ -56,17 +56,20 @@ class Login extends BaseController
             
             if ($verifyPass) {
                 $sesData = [
-                    'id_user'    => $user['id'],
+                    'user_id'    => $user['id'],
                     'username'   => $user['username'],
                     'email'      => $user['email'],
                     'role'       => $user['role'],
-                    'isLoggedIn' => TRUE
+                    'isLoggedIn' => true
                 ];
                 $session->set($sesData);
-                
-                return ($user['role'] === 'admin') 
-                    ? redirect()->to('/admin/dashboard') 
-                    : redirect()->to('/member/dashboard');
+                // Redirect admins (including superadmin) to admin dashboard
+                if (in_array($user['role'], ['admin', 'superadmin'])) {
+                    return redirect()->to('/admin/dashboard');
+                }
+
+                // Default: member dashboard
+                return redirect()->to('/member/dashboard');
 
             } else {
                 // Password Salah

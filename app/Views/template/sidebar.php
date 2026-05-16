@@ -29,17 +29,33 @@
     }
 
     /* PERBAIKAN UTAMA: Sidebar sebagai container scroll tunggal */
-    .sidebar {
+    #sidebarNav {
         width: 260px;
-        height: 90vh;
+        height: calc(100vh - var(--navbar-height, 80px));
         position: fixed; /* Sidebar tetap di kiri */
-        top: 2;
+        top: var(--navbar-height, 80px);
         left: 0;
         background: var(--sidebar-bg);
         border-right: 1px solid #e2e8f0;
         display: flex;
         flex-direction: column;
-        z-index: 50;
+        z-index: 999;
+    }
+
+    #sidebarNav.collapsed {
+        width: var(--sidebar-collapsed-width, 60px);
+    }
+
+    #sidebarNav.collapsed .sidebar-header,
+    #sidebarNav.collapsed .menu-item a span:not(.menu-icon),
+    #sidebarNav.collapsed .menu-arrow,
+    #sidebarNav.collapsed .submenu-container {
+        display: none !important;
+    }
+
+    #sidebarNav.collapsed .menu-item a {
+        justify-content: center;
+        padding: 0.75rem 0;
     }
 
     .sidebar-header {
@@ -150,23 +166,24 @@
 </style>
 
 <?php 
-    $role = session()->get('role') ?? 'member'; 
+    $role = session()->get('role') ?? 'member';
+    $isAdmin = in_array($role, ['admin', 'superadmin'], true);
 ?>
 
-<div class="sidebar">
+<div class="sidebar" id="sidebarNav">
     <div class="sidebar-header">Main Menu (<?= ucfirst($role) ?>)</div>
 
     <!-- Hapus class 'fixed' dan 'top-0' di sini karena sudah dihandle parent -->
     <div class="main-menu-container" id="nav-accordion">
         <!-- Dashboard -->
         <div class="menu-item">
-            <a href="<?= ($role == 'admin') ? '/admin/dashboard' : '/member/dashboard' ?>" class="nav-link">
+            <a href="<?= $isAdmin ? '/admin/dashboard' : '/member/dashboard' ?>" class="nav-link">
                 <span class="menu-icon"><i class="fas fa-home"></i></span>
                 <span>Home</span>
             </a>
         </div>
 
-        <?php if ($role == 'admin') : ?>
+        <?php if ($isAdmin) : ?>
         <div class="menu-item">
             <a href="/admin/user" class="nav-link">
                 <span class="menu-icon"><i class="fas fa-user"></i></span>
@@ -193,10 +210,13 @@
                 <span class="menu-arrow"><i class="fas fa-angle-down"></i></span>
             </a>
             <div id="beasiswaSubMenu" class="submenu-container">
-                <?php if ($role == 'admin') : ?>
+                <?php if ($isAdmin) : ?>
                     <a href="/admin/beasiswa/index" class="nav-link">Daftar Beasiswa</a>
+                    <a href="/admin/beasiswa/pengajuan" class="nav-link">Pengajuan Beasiswa</a>
+                <?php else : ?>
+                    <a href="/member/beasiswa" class="nav-link">Daftar Pengajuan</a>
+                    <a href="/member/beasiswa/create" class="nav-link">Pengajuan Baru</a>
                 <?php endif; ?>
-                <a href="/admin/beasiswa/create" class="nav-link">Pengajuan Baru</a>
             </div>
         </div>
 
@@ -207,10 +227,13 @@
                 <span class="menu-arrow"><i class="fas fa-angle-down"></i></span>
             </a>
             <div id="lombaSubMenu" class="submenu-container">
-                <?php if ($role == 'admin') : ?>
+                <?php if ($isAdmin) : ?>
                     <a href="/admin/lomba/index" class="nav-link">Daftar Lomba</a>
+                    <a href="/admin/lomba/pengajuan" class="nav-link">Pengajuan Lomba</a>
+                <?php else : ?>
+                    <a href="/member/lomba" class="nav-link">Daftar Pengajuan</a>
+                    <a href="/member/lomba/create" class="nav-link">Pengajuan Baru</a>
                 <?php endif; ?>
-                <a href="/admin/lomba/create" class="nav-link">Ajukan Lomba</a>
             </div>
         </div>
 
@@ -221,10 +244,13 @@
                 <span class="menu-arrow"><i class="fas fa-angle-down"></i></span>
             </a>
             <div id="eventSubMenu" class="submenu-container">
-                <?php if ($role == 'admin') : ?>
+                <?php if ($isAdmin) : ?>
                     <a href="/admin/event/index" class="nav-link">Daftar Event</a>
+                    <a href="/admin/event/pengajuan" class="nav-link">Pengajuan Event</a>
+                <?php else : ?>
+                    <a href="/member/event" class="nav-link">Daftar Pengajuan</a>
+                    <a href="/member/event/create" class="nav-link">Pengajuan Baru</a>
                 <?php endif; ?>
-                <a href="/admin/event/create" class="nav-link">Pengajuan Event</a>
             </div>
         </div>
         
@@ -235,10 +261,13 @@
                 <span class="menu-arrow"><i class="fas fa-angle-down"></i></span>
             </a>
             <div id="beritaSubMenu" class="submenu-container">
-                <?php if ($role == 'admin') : ?>
+                <?php if ($isAdmin) : ?>
                     <a href="/admin/berita/index" class="nav-link">Daftar Berita</a>
+                    <a href="/admin/berita/pengajuan" class="nav-link">Pengajuan Berita</a>
+                <?php else : ?>
+                    <a href="/member/berita" class="nav-link">Daftar Pengajuan</a>
+                    <a href="/member/berita/create" class="nav-link">Pengajuan Baru</a>
                 <?php endif; ?>
-                <a href="/admin/berita/create" class="nav-link">Pengajuan Berita</a>
             </div>
         </div>
 
@@ -249,23 +278,24 @@
                 <span class="menu-arrow"><i class="fas fa-angle-down"></i></span>
             </a>
             <div id="katalogSubMenu" class="submenu-container">
-                <?php if ($role == 'admin') : ?>
+                <?php if ($isAdmin) : ?>
                     <a href="/admin/katalog/index" class="nav-link">Daftar Katalog</a>
+                    <a href="/admin/katalog/pengajuan" class="nav-link">Pengajuan Katalog</a>
+                <?php else : ?>
+                    <a href="/member/katalog" class="nav-link">Daftar Pengajuan</a>
+                    <a href="/member/katalog/create" class="nav-link">Pengajuan Baru</a>
                 <?php endif; ?>
-                <a href="/admin/katalog/create" class="nav-link">Pengajuan Katalog</a>
             </div>
         </div>
 
-        <?php if ($role == 'admin' || $role == 'member') : ?>
         <div class="menu-item">
-            <a href="/admin/kanban" class="nav-link">
+            <a href="<?= $isAdmin ? '/admin/kanban' : '/member/kanban' ?>" class="nav-link">
                 <span class="menu-icon"><i class="fa-solid fa-layer-group"></i></span>
                 <span>Kanban Board</span>
             </a>
         </div>
-        <?php endif; ?>
 
-        <?php if ($role == 'admin') : ?>
+        <?php if ($isAdmin) : ?>
         <div class="menu-item">
             <a href="/admin/laporan/index" class="nav-link">
                 <span class="menu-icon"><i class="fa-regular fa-file-lines"></i></span>
@@ -274,6 +304,7 @@
         </div>
         <?php endif; ?>
 
+        <?php if ($isAdmin) : ?>
         <div class="menu-item has-submenu">
             <a onclick="toggleSubMenu('internalSubMenu', this);" class="dropdown-link">
                 <span class="menu-icon"><i class="fas fa-briefcase"></i></span>
@@ -281,13 +312,12 @@
                 <span class="menu-arrow"><i class="fas fa-angle-down"></i></span>
             </a>
             <div id="internalSubMenu" class="submenu-container">
-                <?php if ($role == 'admin') : ?>
-                    <a href="/admin/pengurus" class="nav-link">Kepengurusan</a>
-                    <a href="/admin/profil" class="nav-link">Profil Kabinet</a>
-                    <a href="/admin/kontak" class="nav-link">Kontak Penting</a>
-                <?php endif; ?>
+                <a href="/admin/pengurus" class="nav-link">Kepengurusan</a>
+                <a href="/admin/profil" class="nav-link">Profil Kabinet</a>
+                <a href="/admin/kontak" class="nav-link">Kontak Penting</a>
             </div>
         </div>
+        <?php endif; ?>
     </div>
 </div>
 

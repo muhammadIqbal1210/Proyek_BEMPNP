@@ -1,6 +1,16 @@
 <?= $this->extend('layouts/layout_utama') ?>
 
 <?php $this->section('content') ?>
+<?php
+    $profil_list = is_array($profil_list ?? null) ? $profil_list : [];
+    $profil_list += [
+        'periode'      => '',
+        'nama_kabinet' => 'BEM KM PNP',
+        's_pres'       => 'Mari bersama-sama mewujudkan harmoni...',
+        's_wapres'     => 'Sinergi dan integritas adalah kunci utama...',
+        'videoprofil'  => '',
+    ];
+?>
 <section class=" h-[90vh] bg-cover bg-center bg-no-repeat"
     style="background-image: url('<?= base_url('home.jpg') ?>');">
     <div
@@ -113,6 +123,7 @@
         <p class="text-gray-600 mt-4 max-w-2xl mx-auto text-l">
             Sambutan dari Presiden dan Wakil Presiden Mahasiswa BEM KM Politeknik Negeri Padang
             <?= esc($profil_list['periode']) ?>
+        </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
@@ -164,7 +175,7 @@
     </div>
     <div class="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative group">
         <?php 
-                $url = $profil_list['videoprofil'];
+                $url = $profil_list['videoprofil'] ?? '';
                 $video_id = '';
                 if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match)) {
                     $video_id = $match[1];

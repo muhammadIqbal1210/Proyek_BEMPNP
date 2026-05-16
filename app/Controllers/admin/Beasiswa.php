@@ -30,22 +30,22 @@ class Beasiswa extends BaseController
 
         // Terapkan Filter Keyword (Pencarian)
         if (!empty($keyword)) {
-            // Mencari di kolom 'title' atau kolom relevan lainnya
-            $query = $query->like('title', $keyword);
+            // Mencari di kolom 'nama_beasiswa'
+            $query = $query->like('nama_beasiswa', $keyword);
         }
 
         // Terapkan Filter Status
-        // Pastikan $status TIDAK kosong agar tidak memfilter status=""
         if (!empty($status)) {
             $query = $query->where('status_beasiswa', $status);
         }
 
-        
+        // Hanya tampilkan yang approved
+        $query = $query->where('status_pengajuan', 'approved');
+
         // Ambil data yang sudah difilter
         $perPage = 10;
         $beasiswa_list = $query->paginate($perPage, 'beasiswa');
         $pager = $query->pager;
-        // $beasiswa_list = $query->findAll();
 
         $poster_base_url = base_url('uploads/beasiswa') . '/';
 
@@ -54,18 +54,88 @@ class Beasiswa extends BaseController
             'title'         => 'Pengelolaan Beasiswa',
             'halaman'       => 'Daftar Beasiswa',
             'poster_base_url' => $poster_base_url,
-            'beasiswa_list' => $beasiswa_list, // Data untuk tabel
-            'content'       => 'admin/beasiswa/index', // View utama
+            'beasiswa_list' => $beasiswa_list,
+            'content'       => 'admin/beasiswa/index',
             'pager'         => $pager,
-            // Kirim state filter kembali ke view agar form tetap terisi
             'filters' => [
                 'keyword' => $keyword,
                 'status_beasiswa' => $status,
             ],
         ];
-        
-        // Memuat view dengan layout admin
-        return view('template/wrapper', $data); 
+
+        return view('template/wrapper', $data);
+    }
+
+    /**
+     * Menampilkan daftar pengajuan beasiswa untuk approval.
+     */
+    public function pengajuan()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $status_pengajuan = $this->request->getGet('status_pengajuan');
+
+        $query = $this->beasiswaModel;
+
+        if (!empty($keyword)) {
+            $query = $query->like('nama_beasiswa', $keyword);
+        }
+
+        if (!empty($status_pengajuan)) {
+            $query = $query->where('status_pengajuan', $status_pengajuan);
+        }
+
+        $perPage = 10;
+        $pengajuan_list = $query->paginate($perPage, 'pengajuan');
+        $pager = $query->pager;
+
+        $poster_base_url = base_url('uploads/beasiswa') . '/';
+
+        $data = [
+            'title'         => 'Pengajuan Beasiswa',
+            'halaman'       => 'Daftar Pengajuan Beasiswa',
+            'poster_base_url' => $poster_base_url,
+            'pengajuan_list' => $pengajuan_list,
+            'content'       => 'admin/beasiswa/pengajuan',
+            'pager'         => $pager,
+            'filters' => [
+                'keyword' => $keyword,
+                'status_pengajuan' => $status_pengajuan,
+            ],
+        ];
+
+        return view('template/wrapper', $data);
+    }
+
+    /**
+     * Approve pengajuan beasiswa.
+     */
+    public function approve($id)
+    {
+        $beasiswa = $this->beasiswaModel->find($id);
+
+        if (!$beasiswa) {
+            return redirect()->to(base_url('admin/beasiswa/pengajuan'))->with('error', 'Pengajuan tidak ditemukan.');
+        }
+
+        $this->beasiswaModel->update($id, ['status_pengajuan' => 'approved']);
+
+        return redirect()->to(base_url('admin/beasiswa/pengajuan'))->with('success', 'Pengajuan beasiswa disetujui.');
+    }
+
+    /**
+     * Reject pengajuan beasiswa.
+     */
+    public function reject($id)
+    {
+        $beasiswa = $this->beasiswaModel->find($id);
+
+        if (!$beasiswa) {
+            return redirect()->to(base_url('admin/beasiswa/pengajuan'))->with('error', 'Pengajuan tidak ditemukan.');
+        }
+
+        $this->beasiswaModel->update($id, ['status_pengajuan' => 'rejected']);
+
+        return redirect()->to(base_url('admin/beasiswa/pengajuan'))->with('success', 'Pengajuan beasiswa ditolak.');
     }
 
     /**
@@ -101,6 +171,8 @@ class Beasiswa extends BaseController
             'status_beasiswa'           => $this->request->getPost('status_beasiswa'),
             'link_informasi'            => $this->request->getPost('link_informasi'),
             'poster'                    => $filePath, // Simpan nama file
+            'status_pengajuan'          => 'approved',
+            'user_id'                   => session()->get('user_id'),
         ];
 
         // 4. Simpan ke database

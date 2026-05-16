@@ -24,6 +24,14 @@ class Katalog extends BaseController
         $filters = ['keyword' => $keyword];
         
         $query = $this->katalogModel;
+
+        if (!empty($keyword)) {
+            $query = $query->like('nama_barang', $keyword);
+        }
+
+        // Hanya tampilkan yang approved
+        $query = $query->where('status_pengajuan', 'approved');
+
         // Pengaturan pagination 
         $perPage = 10;
         $katalog_list = $query->paginate($perPage, 'katalog');
@@ -39,11 +47,81 @@ class Katalog extends BaseController
             'filters'         => $filters,
             'content'       => 'admin/katalog/index',
             'produk_base_url'   => $produk_base_url,
-            // Anda dapat menambahkan data lain seperti daftar kategori jika diperlukan
         ];
 
-        // Memuat view index
         return view('template/wrapper', $data);
+    }
+
+    /**
+     * Menampilkan daftar pengajuan katalog untuk approval.
+     */
+    public function pengajuan()
+    {
+        $keyword = $this->request->getGet('keyword');
+        $status_pengajuan = $this->request->getGet('status_pengajuan');
+
+        $query = $this->katalogModel;
+
+        if (!empty($keyword)) {
+            $query = $query->like('nama_barang', $keyword);
+        }
+
+        if (!empty($status_pengajuan)) {
+            $query = $query->where('status_pengajuan', $status_pengajuan);
+        }
+
+        $perPage = 10;
+        $pengajuan_list = $query->paginate($perPage, 'pengajuan');
+        $pager = $query->pager;
+
+        $produk_base_url = base_url('uploads/katalog/');
+
+        $data = [
+            'title'         => 'Pengajuan Katalog',
+            'halaman'       => 'Daftar Pengajuan Katalog',
+            'pengajuan_list' => $pengajuan_list,
+            'content'       => 'admin/katalog/pengajuan',
+            'pager'         => $pager,
+            'produk_base_url' => $produk_base_url,
+            'filters' => [
+                'keyword' => $keyword,
+                'status_pengajuan' => $status_pengajuan,
+            ],
+        ];
+
+        return view('template/wrapper', $data);
+    }
+
+    /**
+     * Approve pengajuan katalog.
+     */
+    public function approve($id)
+    {
+        $katalog = $this->katalogModel->find($id);
+
+        if (!$katalog) {
+            return redirect()->to(base_url('admin/katalog/pengajuan'))->with('error', 'Pengajuan tidak ditemukan.');
+        }
+
+        $this->katalogModel->update($id, ['status_pengajuan' => 'approved']);
+
+        return redirect()->to(base_url('admin/katalog/pengajuan'))->with('success', 'Pengajuan katalog disetujui.');
+    }
+
+    /**
+     * Reject pengajuan katalog.
+     */
+    public function reject($id)
+    {
+        $katalog = $this->katalogModel->find($id);
+
+        if (!$katalog) {
+            return redirect()->to(base_url('admin/katalog/pengajuan'))->with('error', 'Pengajuan tidak ditemukan.');
+        }
+
+        $this->katalogModel->update($id, ['status_pengajuan' => 'rejected']);
+
+        return redirect()->to(base_url('admin/katalog/pengajuan'))->with('success', 'Pengajuan katalog ditolak.');
     }
 
     /**
@@ -78,7 +156,8 @@ class Katalog extends BaseController
             'harga'         => $this->request->getPost('harga'),        
             'link_jual'     => $this->request->getPost('link_jual'),
             'foto_produk'   => $filePath,
-            // 'user_id'      => auth()->id(), // Contoh jika menggunakan sistem Auth
+            'status_pengajuan' => 'approved',
+            'user_id'      => session()->get('user_id'),
         ];
 
         if ($this->katalogModel->save($data_katalog)) {

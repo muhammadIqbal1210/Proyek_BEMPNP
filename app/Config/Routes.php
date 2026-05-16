@@ -31,11 +31,45 @@ $routes->get('event/detail/(:num)', 'Home::detailevent/$1');
 $routes->get('berita', 'Home::berita');
 $routes->get('berita/detail/(:num)', 'Home::detailberita/$1');
 
-$routes->group('member', ['filter' => 'member'], function($routes) {
-    $routes->get('dashboard', 'Admin\Dashboard::index');
+$routes->group('member', ['filter' => 'member', 'namespace' => 'App\Controllers\Member'], function($routes) {
+    $routes->get('dashboard', 'Dashboard::index');
     $routes->get('kanban', 'KanbanController::kanban');
+    // Routes Beasiswa Member
+    $routes->get('beasiswa', 'Beasiswa::index');
+    $routes->get('beasiswa/create', 'Beasiswa::create');
+    $routes->post('beasiswa/store', 'Beasiswa::store');
+    $routes->get('beasiswa/edit/(:num)', 'Beasiswa::edit/$1');
+    $routes->post('beasiswa/update/(:num)', 'Beasiswa::update/$1');
+    $routes->get('beasiswa/delete/(:num)', 'Beasiswa::delete/$1');
+    // Routes Lomba Member
+    $routes->get('lomba', 'Lomba::index');
+    $routes->get('lomba/create', 'Lomba::create');
+    $routes->post('lomba/store', 'Lomba::store');
+    $routes->get('lomba/edit/(:num)', 'Lomba::edit/$1');
+    $routes->post('lomba/update/(:num)', 'Lomba::update/$1');
+    $routes->get('lomba/delete/(:num)', 'Lomba::delete/$1');
+    // Routes Event Member
+    $routes->get('event', 'Event::index');
+    $routes->get('event/create', 'Event::create');
+    $routes->post('event/store', 'Event::store');
+    $routes->get('event/edit/(:num)', 'Event::edit/$1');
+    $routes->post('event/update/(:num)', 'Event::update/$1');
+    $routes->get('event/delete/(:num)', 'Event::delete/$1');
+    // Routes Berita Member
+    $routes->get('berita', 'Berita::index');
+    $routes->get('berita/create', 'Berita::create');
+    $routes->post('berita/store', 'Berita::store');
+    $routes->get('berita/edit/(:num)', 'Berita::edit/$1');
+    $routes->post('berita/update/(:num)', 'Berita::update/$1');
+    $routes->get('berita/delete/(:num)', 'Berita::delete/$1');
+    // Routes Katalog Member
+    $routes->get('katalog', 'Katalog::index');
+    $routes->get('katalog/create', 'Katalog::create');
+    $routes->post('katalog/store', 'Katalog::store');
+    $routes->get('katalog/edit/(:num)', 'Katalog::edit/$1');
+    $routes->post('katalog/update/(:num)', 'Katalog::update/$1');
+    $routes->get('katalog/delete/(:num)', 'Katalog::delete/$1');
 });
-
 $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Admin'], function($routes) {
     $routes->get('dashboard', 'Dashboard::index');
     //User route
@@ -55,6 +89,9 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     //Route Beasiswa
     $routes->get('beasiswa', 'Beasiswa::index'); 
     $routes->get('beasiswa/index', 'Beasiswa::index');
+    $routes->get('beasiswa/pengajuan', 'Beasiswa::pengajuan');
+    $routes->get('beasiswa/approve/(:num)', 'Beasiswa::approve/$1');
+    $routes->get('beasiswa/reject/(:num)', 'Beasiswa::reject/$1');
     $routes->post('beasiswa/store', 'Beasiswa::store');
     $routes->get('beasiswa/edit/(:num)', 'Beasiswa::edit/$1'); // Ambil data JSON
     $routes->post('beasiswa/update/(:num)', 'Beasiswa::update/$1'); // Proses Update
@@ -62,6 +99,9 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     // Routes Lomba
     $routes->get('lomba', 'Lomba::index'); 
     $routes->get('lomba/index', 'Lomba::index');
+    $routes->get('lomba/pengajuan', 'Lomba::pengajuan');
+    $routes->get('lomba/approve/(:num)', 'Lomba::approve/$1');
+    $routes->get('lomba/reject/(:num)', 'Lomba::reject/$1');
     $routes->post('lomba/store', 'Lomba::store');
     $routes->get('lomba/edit/(:num)', 'lomba::edit/$1'); // Ambil data JSON
     $routes->post('lomba/update/(:num)', 'lomba::update/$1'); // Proses Update
@@ -69,6 +109,9 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     //Event Route
     $routes->get('event', 'Event::index'); 
     $routes->get('event/index', 'Event::index');
+    $routes->get('event/pengajuan', 'Event::pengajuan');
+    $routes->get('event/approve/(:num)', 'Event::approve/$1');
+    $routes->get('event/reject/(:num)', 'Event::reject/$1');
     $routes->post('event/store', 'Event::store');
     $routes->get('event/edit/(:num)', 'event::edit/$1'); // Ambil data JSON
     $routes->post('event/update/(:num)', 'event::update/$1'); // Proses Update
@@ -76,6 +119,9 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     //Route Berita
     $routes->get('berita', 'Berita::index'); 
     $routes->get('berita/index', 'Berita::index');
+    $routes->get('berita/pengajuan', 'Berita::pengajuan');
+    $routes->get('berita/approve/(:num)', 'Berita::approve/$1');
+    $routes->get('berita/reject/(:num)', 'Berita::reject/$1');
     $routes->post('berita/store', 'Berita::store');
     $routes->get('berita/edit/(:num)', 'berita::edit/$1'); // Ambil data JSON
     $routes->post('berita/update/(:num)', 'berita::update/$1'); // Proses Update
@@ -83,6 +129,9 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     // Route Katalog
     $routes->get('katalog', 'Katalog::index');
     $routes->get('katalog/index', 'Katalog::index');
+    $routes->get('katalog/pengajuan', 'Katalog::pengajuan');
+    $routes->get('katalog/approve/(:num)', 'Katalog::approve/$1');
+    $routes->get('katalog/reject/(:num)', 'Katalog::reject/$1');
     $routes->post('katalog/store', 'Katalog::store');
     $routes->get('katalog/edit/(:num)', 'katalog::edit/$1');
     $routes->post('katalog/update/(:num)', 'katalog::update/$1');
@@ -110,4 +159,4 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     $routes->get('kontak/edit/(:num)', 'Kontak::edit/$1');
     $routes->post('kontak/update/(:num)', 'Kontak::update/$1');
     $routes->get('kontak/delete/(:num)', 'Kontak::delete/$1');
-});
+    });
