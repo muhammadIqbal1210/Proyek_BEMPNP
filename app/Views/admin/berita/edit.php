@@ -57,6 +57,7 @@
     </div>
 </div>
 
+<script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
 <script>
     let editorInstanceEdit;
 
@@ -76,6 +77,14 @@
         const editForm = document.getElementById('formEditBerita');
         const baseUrl = '<?= base_url('admin/berita') ?>';
         const pathGambar = '<?= base_url('uploads/berita') ?>/';
+
+        if (editForm) {
+            editForm.addEventListener('submit', function () {
+                if (editorInstanceEdit) {
+                    editorInstanceEdit.updateSourceElement();
+                }
+            });
+        }
 
         // Memicu pengisian data saat modal akan ditampilkan
         editModal.addEventListener('show.bs.modal', function (event) {
