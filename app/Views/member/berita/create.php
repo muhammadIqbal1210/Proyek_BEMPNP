@@ -6,6 +6,10 @@
                     <h3 class="card-title">Pengajuan Berita Baru</h3>
                 </div>
                 <div class="card-body">
+                    <?php $errors = $errors ?? session()->getFlashdata('errors') ?? []; ?>
+                    <?php if (session()->getFlashdata('error')): ?>
+                        <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
+                    <?php endif; ?>
                     <form action="<?= base_url('member/berita/store') ?>" method="POST" enctype="multipart/form-data">
                         <?= csrf_field() ?>
 
@@ -32,7 +36,7 @@
 
                         <div class="form-group">
                             <label for="editor_berita_member">Isi Berita *</label>
-                            <textarea class="form-control" id="editor_berita_member" name="isiberita" rows="10" required><?= set_value('isiberita') ?></textarea>
+                            <textarea class="form-control" id="editor_berita_member" name="isiberita" rows="10"><?= set_value('isiberita') ?></textarea>
                             <?php if (isset($errors['isiberita'])): ?>
                                 <small class="text-danger"><?= $errors['isiberita'] ?></small>
                             <?php endif; ?>
@@ -48,8 +52,12 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Ajukan Berita</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">Ajukan Berita</button>
                             <a href="<?= base_url('member/berita') ?>" class="btn btn-secondary">Batal</a>
+                            <span id="submittingText" style="display:none; margin-left: 10px;">
+                                <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+                                Mengirim...
+                            </span>
                         </div>
                     </form>
                 </div>
@@ -85,6 +93,7 @@
         editor.plugins.get('FileRepository').createUploadAdapter = loader => new MemberBeritaUploadAdapter(loader);
     }
 
+    let editorInstance;
     ClassicEditor
         .create(document.querySelector('#editor_berita_member'), {
             extraPlugins: [MemberBeritaUploadAdapterPlugin],
@@ -96,5 +105,24 @@
                 ]
             }
         })
-        .catch(error => console.error(error));
+        .then(editor => {
+            editorInstance = editor;
+
+            // SINKRONISASI OTOMATIS TIAP KALI ADA PERUBAHAN TEKS
+            editor.model.document.on('change:data', () => {
+                document.querySelector('#editor_berita_member').value = editor.getData();
+            });
+        })
+        .catch(error => console.error('CKEditor error:', error));
+
+    // Script penanganan form submit lama bisa tetap dibiarkan atau dihapus safely
+    document.querySelector('form').addEventListener('submit', function(e) {
+        if (editorInstance) {
+            document.querySelector('#editor_berita_member').value = editorInstance.getData();
+        }
+        
+        // Memunculkan text loading "Mengirim..." yang sudah kamu buat
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('submittingText').style.display = 'inline-block';
+    });
 </script>

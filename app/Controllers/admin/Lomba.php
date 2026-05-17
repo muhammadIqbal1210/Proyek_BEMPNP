@@ -78,7 +78,9 @@ class Lomba extends BaseController
         $keyword = $this->request->getGet('keyword');
         $status_pengajuan = $this->request->getGet('status_pengajuan');
 
-        $query = $this->lombaModel;
+        $query = $this->lombaModel->select('lombas.*, users.username as nama_user')
+                                  ->join('users', 'users.id = lombas.user_id', 'left')
+                                  ->where('users.role', 'member');
 
         if (!empty($keyword)) {
             $query = $query->like('nama_lomba', $keyword);
@@ -214,13 +216,12 @@ class Lomba extends BaseController
 
         // 2. Validasi Input
         if (!$this->validate($this->lombaModel->getValidationRules())) {
-            // Redirect ke index dengan error flashdata (Mirip Pengumuman)
-            return redirect()->to(base_url('admin/lomba'))->with('errors', $this->validator->getErrors());
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $filePath = $old_data['poster']; // Pertahankan file lama
         $poster = $this->request->getFile('poster_file');
-        $remove_poster = $this->request->getPost('remove_poster'); // Checkbox untuk hapus poster
+        $remove_poster = $this->request->getPost('remove_file'); // Checkbox untuk hapus poster
         $uploadPath = FCPATH . 'uploads/lomba/'; // Menggunakan FCPATH
 
         // 3. Handle File Upload Baru atau Penghapusan File Lama
@@ -256,10 +257,10 @@ class Lomba extends BaseController
 
         // 5. Update ke database
         if ($this->lombaModel->save($data)) {
-            return redirect()->to(base_url('admin/lomba'))->with('success', 'Lomba berhasil diperbarui.');
+            return redirect()->back()->with('success', 'Lomba berhasil diperbarui.');
         } else {
             // Ini akan terjadi jika ada masalah database, bukan validasi
-            return redirect()->to(base_url('admin/lomba'))->with('error', 'Terjadi kesalahan saat memperbarui data.');
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data.');
         }
     }
     /**

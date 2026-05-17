@@ -70,7 +70,9 @@ class Event extends BaseController
         $keyword = $this->request->getGet('keyword');
         $status_pengajuan = $this->request->getGet('status_pengajuan');
 
-        $query = $this->eventModel;
+        $query = $this->eventModel->select('events.*, users.username as nama_user')
+                                  ->join('users', 'users.id = events.user_id', 'left')
+                                  ->where('users.role', 'member');
 
         if (!empty($keyword)) {
             $query = $query->like('nama_event', $keyword);
@@ -206,8 +208,7 @@ class Event extends BaseController
 
         // 2. Validasi Input
         if (!$this->validate($this->eventModel->getValidationRules())) {
-            // Redirect ke index dengan error flashdata (Mirip Pengumuman)
-            return redirect()->to(base_url('admin/event'))->with('errors', $this->validator->getErrors());
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $filePath = $old_data['file']; // Pertahankan file lama
@@ -248,10 +249,10 @@ class Event extends BaseController
 
         // 5. Update ke database
         if ($this->eventModel->save($data)) {
-            return redirect()->to(base_url('admin/event'))->with('success', 'Event berhasil diperbarui.');
+            return redirect()->back()->with('success', 'Event berhasil diperbarui.');
         } else {
             // Ini akan terjadi jika ada masalah database, bukan validasi
-            return redirect()->to(base_url('admin/event'))->with('error', 'Terjadi kesalahan saat memperbarui data.');
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data.');
         }
     }
     /**

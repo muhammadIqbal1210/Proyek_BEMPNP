@@ -51,14 +51,15 @@
                                     <td><?= $no++ ?></td>
                                     <td><?= esc($pengajuan['judulberita']) ?></td>
                                     <td><?= !empty($pengajuan['tanggalberita']) ? date('d M Y', strtotime($pengajuan['tanggalberita'])) : '-' ?></td>
-                                    <td><?= esc($pengajuan['user_id'] ?? '-') ?></td>
+                                    <td><?= esc($pengajuan['nama_user'] ?? $pengajuan['user_id'] ?? '-') ?></td>
                                     <td><span class="badge <?= $badgeClass ?>"><?= esc(ucfirst($status)) ?></span></td>
                                     <td>
                                         <?php if ($status === 'pending'): ?>
                                             <a href="<?= base_url('admin/berita/approve/' . $pengajuan['id']) ?>" class="btn btn-sm btn-success">Setujui</a>
                                             <a href="<?= base_url('admin/berita/reject/' . $pengajuan['id']) ?>" class="btn btn-sm btn-danger">Tolak</a>
                                         <?php elseif ($status === 'approved'): ?>
-                                            <span class="badge bg-success">Sudah Disetujui</span>
+                                            <button type="button" class="btn btn-sm btn-warning" data-id="<?= $pengajuan['id'] ?>" data-bs-toggle="modal" data-bs-target="#editBeritaModal">Edit</button>
+                                            <a href="<?= base_url('admin/berita/delete/' . $pengajuan['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</a>
                                         <?php else: ?>
                                             <span class="badge bg-danger">Sudah Ditolak</span>
                                         <?php endif; ?>
@@ -82,3 +83,4 @@
         </div>
     </div>
 </div>
+<?= $this->include('admin/berita/edit') ?>

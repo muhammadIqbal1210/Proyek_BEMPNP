@@ -48,10 +48,7 @@
                                             <td><?= $no++ ?></td>
                                             <td><?= esc($pengajuan['nama_beasiswa']) ?></td>
                                             <td>
-                                                <?php
-                                                // Assuming we have user model to get name, but for now just show ID
-                                                echo 'User ID: ' . $pengajuan['user_id'];
-                                                ?>
+                                                <?= esc($pengajuan['nama_user'] ?? $pengajuan['user_id']) ?>
                                             </td>
                                             <td><?= date('d M Y', strtotime($pengajuan['tanggal_buka'])) ?></td>
                                             <td><?= date('d M Y', strtotime($pengajuan['tanggal_tutup'])) ?></td>
@@ -71,6 +68,9 @@
                                                 <?php if ($status == 'pending'): ?>
                                                     <a href="<?= base_url('admin/beasiswa/approve/' . $pengajuan['id']) ?>" class="btn btn-sm btn-success" onclick="return confirm('Apakah Anda yakin ingin menyetujui pengajuan ini?')">Setujui</a>
                                                     <a href="<?= base_url('admin/beasiswa/reject/' . $pengajuan['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menolak pengajuan ini?')">Tolak</a>
+                                                <?php elseif ($status == 'approved'): ?>
+                                                    <button type="button" class="btn btn-sm btn-warning" data-id="<?= $pengajuan['id'] ?>" data-bs-toggle="modal" data-bs-target="#editBeasiswaModal">Edit</button>
+                                                    <a href="<?= base_url('admin/beasiswa/delete/' . $pengajuan['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</a>
                                                 <?php else: ?>
                                                     <span class="text-muted">Sudah diproses</span>
                                                 <?php endif; ?>
@@ -96,4 +96,5 @@
             </div>
         </div>
     </div>
+    <?= $this->include('admin/beasiswa/edit') ?>
 </div>

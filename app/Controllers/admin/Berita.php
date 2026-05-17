@@ -52,7 +52,9 @@ class Berita extends BaseController
         $keyword = $this->request->getGet('keyword');
         $status_pengajuan = $this->request->getGet('status_pengajuan');
 
-        $query = $this->beritaModel;
+        $query = $this->beritaModel->select('berita.*, users.username as nama_user')
+                                    ->join('users', 'users.id = berita.user_id', 'left')
+                                    ->where('users.role', 'member');
 
         if (!empty($keyword)) {
             $query = $query->like('judulberita', $keyword);
@@ -198,7 +200,7 @@ class Berita extends BaseController
             'author'        => session()->get('nama_user') ?? $beritaLama['author']
         ]);
 
-        return redirect()->to('/admin/berita')->with('success', 'Berita berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Berita berhasil diperbarui.');
     }
     public function delete($id)
     {

@@ -47,7 +47,7 @@
                                             <td><?= $no++ ?></td>
                                             <td><?= esc($pengajuan['nama_event']) ?></td>
                                             <td><?= date('d M Y', strtotime($pengajuan['waktu'])) ?></td>
-                                            <td><?= esc($pengajuan['user_id']) ?></td>
+                                            <td><?= esc($pengajuan['nama_user'] ?? $pengajuan['user_id']) ?></td>
                                             <td>
                                                 <?php
                                                 $status = $pengajuan['status_pengajuan'];
@@ -65,7 +65,8 @@
                                                     <a href="<?= base_url('admin/event/approve/' . $pengajuan['id']) ?>" class="btn btn-sm btn-success">Setujui</a>
                                                     <a href="<?= base_url('admin/event/reject/' . $pengajuan['id']) ?>" class="btn btn-sm btn-danger">Tolak</a>
                                                 <?php elseif ($status == 'approved'): ?>
-                                                    <span class="badge badge-success">Sudah Disetujui</span>
+                                                    <button type="button" class="btn btn-sm btn-warning" data-id="<?= $pengajuan['id'] ?>" data-bs-toggle="modal" data-bs-target="#editEventModal">Edit</button>
+                                                    <a href="<?= base_url('admin/event/delete/' . $pengajuan['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</a>
                                                 <?php else: ?>
                                                     <span class="badge badge-danger">Sudah Ditolak</span>
                                                 <?php endif; ?>
@@ -91,4 +92,5 @@
             </div>
         </div>
     </div>
+    <?= $this->include('admin/event/edit') ?>
 </div>

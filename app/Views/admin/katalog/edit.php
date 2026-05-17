@@ -68,7 +68,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-warning"><i class="fas fa-save me-1"></i> Update Katalog</button>
                 </div>
-            <?= form_close() ?>>
+            <?= form_close() ?>
         </div>
     </div>
 </div>

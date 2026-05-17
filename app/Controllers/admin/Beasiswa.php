@@ -74,9 +74,10 @@ class Beasiswa extends BaseController
         $keyword = $this->request->getGet('keyword');
         $status_pengajuan = $this->request->getGet('status_pengajuan');
 
-        // $query = $this->beasiswaModel;
-        $query = $this->beasiswaModel->select('beasiswa.*, users.username as nama_user')
-                          ->join('users', 'users.id = beasiswa.user_id', 'left');
+        // Use actual table name 'beasiswas' when selecting/joining so column names match
+        $query = $this->beasiswaModel->select('beasiswas.*, users.username as nama_user')
+                  ->join('users', 'users.id = beasiswas.user_id', 'left')
+                  ->where('users.role', 'member');
 
         if (!empty($keyword)) {
             $query = $query->like('nama_beasiswa', $keyword);
@@ -213,13 +214,13 @@ class Beasiswa extends BaseController
 
         // 2. Validasi Input
         if (!$this->validate($this->beasiswaModel->getValidationRules())) {
-            // Redirect ke index dengan error flashdata (Mirip Pengumuman)
-            return redirect()->to(base_url('admin/beasiswa'))->with('errors', $this->validator->getErrors());
+            // Redirect back to the page where the form was submitted
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $filePath = $old_data['poster']; // Pertahankan file lama
         $poster = $this->request->getFile('poster_file');
-        $remove_poster = $this->request->getPost('remove_poster'); // Checkbox untuk hapus poster
+        $remove_poster = $this->request->getPost('remove_file'); // Checkbox untuk hapus poster
         $uploadPath = FCPATH . 'uploads/beasiswa/'; // Menggunakan FCPATH
 
         // 3. Handle File Upload Baru atau Penghapusan File Lama
@@ -256,10 +257,10 @@ class Beasiswa extends BaseController
 
         // 5. Update ke database
         if ($this->beasiswaModel->save($data)) {
-            return redirect()->to(base_url('admin/beasiswa'))->with('success', 'Beasiswa berhasil diperbarui.');
+            return redirect()->back()->with('success', 'Beasiswa berhasil diperbarui.');
         } else {
             // Ini akan terjadi jika ada masalah database, bukan validasi
-            return redirect()->to(base_url('admin/beasiswa'))->with('error', 'Terjadi kesalahan saat memperbarui data.');
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data.');
         }
     }
     /**

@@ -76,6 +76,10 @@ class Berita extends BaseController
      */
     public function store()
     {
+        // Log incoming request
+        log_message('info', 'Member Berita Store - POST data: ' . json_encode($this->request->getPost()));
+        log_message('info', 'Member Berita Store - FILES: ' . json_encode($this->request->getFiles()));
+
         $validationRules = [
             'judulberita'       => 'required|min_length[5]|max_length[255]',
             'isiberita'         => 'required',
@@ -84,6 +88,7 @@ class Berita extends BaseController
         ];
 
         if (!$this->validate($validationRules)) {
+            log_message('error', 'Member Berita Validation failed: ' . json_encode($this->validator->getErrors()));
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
@@ -91,9 +96,21 @@ class Berita extends BaseController
         $gambar = $this->request->getFile('gambarberita_file');
 
         if ($gambar && $gambar->isValid() && !$gambar->hasMoved()) {
-            $newName = $gambar->getName();
-            $gambar->move(FCPATH . 'uploads/berita', $newName);
-            $filePath = $newName;
+            // Ensure upload directory exists and use random file name to avoid collisions
+            $uploadDir = FCPATH . 'uploads/berita/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+                log_message('info', 'Created upload directory: ' . $uploadDir);
+            }
+            $newName = $gambar->getRandomName();
+            log_message('info', 'Uploading file: ' . $gambar->getName() . ' as ' . $newName);
+            if ($gambar->move($uploadDir, $newName)) {
+                $filePath = $newName;
+                log_message('info', 'File uploaded successfully: ' . $filePath);
+            } else {
+                log_message('error', 'File upload failed for: ' . $gambar->getName());
+                return redirect()->back()->withInput()->with('error', 'Gagal meng-upload gambar.');
+            }
         }
 
         // Generate slug dari judul
@@ -110,9 +127,13 @@ class Berita extends BaseController
             'user_id'           => session()->get('user_id'),
         ];
 
+        log_message('info', 'Saving berita data: ' . json_encode($data));
+
         if ($this->beritaModel->save($data)) {
+            log_message('info', 'Berita saved successfully');
             return redirect()->to(base_url('member/berita'))->with('success', 'Pengajuan berita berhasil dikirim.');
         } else {
+            log_message('error', 'Failed to save berita: ' . json_encode($this->beritaModel->errors()));
             return redirect()->back()->with('error', 'Terjadi kesalahan saat mengirim pengajuan.');
         }
     }
@@ -167,12 +188,18 @@ class Berita extends BaseController
         $uploadPath = FCPATH . 'uploads/berita/';
 
         if ($gambar && $gambar->isValid() && !$gambar->hasMoved()) {
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
             if ($filePath && file_exists($uploadPath . $filePath)) {
                 unlink($uploadPath . $filePath);
             }
-            $newName = $gambar->getName();
-            $gambar->move($uploadPath, $newName);
-            $filePath = $newName;
+            $newName = $gambar->getRandomName();
+            if ($gambar->move($uploadPath, $newName)) {
+                $filePath = $newName;
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal meng-upload gambar.');
+            }
         }
 
         // Generate slug dari judul

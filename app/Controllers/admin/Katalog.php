@@ -60,7 +60,9 @@ class Katalog extends BaseController
         $keyword = $this->request->getGet('keyword');
         $status_pengajuan = $this->request->getGet('status_pengajuan');
 
-        $query = $this->katalogModel;
+        $query = $this->katalogModel->select('katalog.*, users.username as nama_user')
+                                    ->join('users', 'users.id = katalog.user_id', 'left')
+                                    ->where('users.role', 'member');
 
         if (!empty($keyword)) {
             $query = $query->like('nama_barang', $keyword);
@@ -195,7 +197,7 @@ class Katalog extends BaseController
 
         // 2. Validasi Input
         if (!$this->validate($this->katalogModel->getValidationRules())) {
-            return redirect()->to(base_url('admin/katalog'))->with('errors', $this->validator->getErrors());
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $filePath = $old_data['foto_produk']; // Pertahankan file lama sebagai default
@@ -233,9 +235,9 @@ class Katalog extends BaseController
         ];
 
         if ($this->katalogModel->save($data)) {
-            return redirect()->to(base_url('admin/katalog'))->with('success', 'Katalog berhasil diperbarui.');
+            return redirect()->back()->with('success', 'Katalog berhasil diperbarui.');
         } else {
-            return redirect()->to(base_url('admin/katalog'))->with('error', 'Terjadi kesalahan saat memperbarui data.');
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data.');
         }
     }
 

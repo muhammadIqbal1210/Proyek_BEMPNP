@@ -6,6 +6,10 @@
                     <h3 class="card-title">Edit Pengajuan Berita</h3>
                 </div>
                 <div class="card-body">
+                    <?php $errors = $errors ?? session()->getFlashdata('errors') ?? []; ?>
+                    <?php if (session()->getFlashdata('error')): ?>
+                        <div class="alert alert-danger"><?= esc(session()->getFlashdata('error')) ?></div>
+                    <?php endif; ?>
                     <form action="<?= base_url('member/berita/update/' . $berita['id']) ?>" method="POST" enctype="multipart/form-data">
                         <?= csrf_field() ?>
 
