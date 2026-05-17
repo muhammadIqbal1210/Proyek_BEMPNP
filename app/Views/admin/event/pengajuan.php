@@ -119,15 +119,11 @@
                             </div>
                             <div class="row g-3">
                                 <div class="col-md-5">
-                                    <h6 class="fw-bold text-secondary">File Pendukung</h6>
+                                    <h6 class="fw-bold text-secondary">Poster</h6>
                                     <?php if (!empty($pengajuan['file'])): ?>
-                                        <div class="border rounded p-3 bg-light">
-                                            <a href="<?= $file_base_url . esc($pengajuan['file']) ?>" target="_blank" class="text-decoration-none">
-                                                <i class="fas fa-file-alt me-2"></i><?= esc($pengajuan['file']) ?>
-                                            </a>
-                                        </div>
+                                        <img src="<?= $file_base_url . esc($pengajuan['file']) ?>" class="img-fluid rounded border" alt="File Pendukung" style="max-height: 260px; object-fit: contain;">
                                     <?php else: ?>
-                                        <div class="border rounded p-4 text-center text-muted">Tidak ada file</div>
+                                        <div class="border rounded p-4 text-center text-muted">Tidak ada poster</div>
                                     <?php endif; ?>
                                 </div>
                                 <div class="col-md-7">
