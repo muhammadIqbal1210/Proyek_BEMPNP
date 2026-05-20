@@ -24,10 +24,17 @@
                 class="w-full md:w-auto text-center bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3 rounded-full shadow-lg transform hover:-translate-y-1 transition duration-300 whitespace-nowrap text-sm sm:text-base">
                 Pelajari Selengkapnya
             </a>
-            <a href="<?= base_url('pengumuman') ?>"
-                class="w-full md:w-auto text-center bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 font-bold px-8 py-3 rounded-full transition duration-300 whitespace-nowrap text-sm sm:text-base">
-                Lihat Pengumuman
-            </a>
+            <?php if (session()->get('isLoggedIn')): ?>
+                <a href="<?= base_url(session()->get('role') === 'admin' ? 'admin/dashboard' : 'member/dashboard') ?>"
+                    class="w-full md:w-auto text-center bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 font-bold px-8 py-3 rounded-full transition duration-300 whitespace-nowrap text-sm sm:text-base">
+                    Dashboard Saya
+                </a>
+            <?php else: ?>
+                <a href="<?= base_url('pengumuman') ?>"
+                    class="w-full md:w-auto text-center bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 font-bold px-8 py-3 rounded-full transition duration-300 whitespace-nowrap text-sm sm:text-base">
+                    Lihat Pengumuman
+                </a>
+            <?php endif; ?>
         </div>
     </div>
 </section>
@@ -44,67 +51,68 @@
         </div>
 
         <!-- Calendar Container -->
-        <div class="bg-white p-6 sm:p-10 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 group"
-            data-aos="fade-up" data-aos-delay="400">
-            <div class="relative overflow-hidden">
-                <!-- Wrapper for Marquee Effect -->
-                <div class="flex animate-marquee whitespace-nowrap hover:[animation-play-state:paused] cursor-pointer">
-
-                    <?php if (!empty($upcoming_events)): ?>
-                    <!-- Generate Events Twice for Seamless Loop -->
-                    <?php for ($i = 0; $i < 3; $i++): ?>
-                    <div class="flex items-center space-x-12 px-6">
-                        <?php foreach ($upcoming_events as $event): 
-                                    $tgl = strtotime($event['waktu']);
-                                    
-                                ?>
-                        <div
-                            class="flex items-center space-x-5 min-w-[300px] py-4 px-6 rounded-2xl hover:bg-green-50 transition-colors duration-300">
-                            <!-- Date Badge -->
-                            <div
-                                class="flex-shrink-0 text-center bg-gradient-to-br from-green-600 to-green-400 text-white rounded-xl p-3 w-16 sm:w-20 shadow-lg shadow-green-200">
-                                <p class="text-2xl sm:text-3xl font-black leading-none"><?= date('d', $tgl) ?></p>
-                                <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider mt-1">
-                                    <?= date('M', $tgl) ?></p>
-                            </div>
-
-                            <!-- Event Details -->
-                            <div class="whitespace-normal">
-                                <h4
-                                    class="font-bold text-gray-900 text-lg leading-tight hover:text-orange-600 transition-colors line-clamp-1">
-                                    <?= esc($event['nama_event']) ?>
-                                </h4>
-                                <div class="flex flex-col mt-1">
-                                    <span
-                                        class="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center">
-                                    </span>
-                                    <span class="text-xs font-medium text-orange-600/70 mt-0.5">
-                                        <?= esc($event['biaya'] == 'gratis' ? 'Free Admission' : 'Berbayar') ?>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- Action Link (Optional hidden icon) -->
-                            <?php if (!empty($event['link_informasi'])): ?>
-                            <a href="<?= esc($event['link_informasi']) ?>"
-                                class="flex-shrink-0 text-gray-300 hover:text-orange-500 transition-colors">
-                                <i class="fas fa-external-link-alt text-sm"></i>
-                            </a>
-                            <?php endif; ?>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-                    <?php endfor; ?>
-                    <?php else: ?>
-                    <!-- Empty State -->
-                    <div class="w-full text-center py-10">
-                        <p class="text-gray-400 font-medium italic">Belum ada agenda terdekat saat ini.</p>
-                    </div>
-                    <?php endif; ?>
-
-                </div>
+        <?php
+        $calendarEvents = [];
+        if (!empty($calendar_events)) {
+            foreach ($calendar_events as $event) {
+                $dateKey = date('Y-m-d', strtotime($event['waktu']));
+                $calendarEvents[$dateKey][] = $event;
+            }
+        }
+        $monthName = date('F Y');
+        $daysInMonth = date('t');
+        $firstDayOfWeek = date('N', strtotime(date('Y-m-01')));
+        $blankDays = $firstDayOfWeek - 1;
+    ?>
+    <div class="bg-white rounded-[2rem] shadow-xl border border-gray-100 p-8 mb-10">
+        <div class="flex flex-col md:flex-row justify-between gap-4 items-start md:items-center">
+            <div>
+                <p class="text-sm font-semibold text-green-600 uppercase mb-2">Kalender Event</p>
+                <h2 class="text-2xl md:text-3xl font-black text-gray-900">Agenda Bulan <?= esc($monthName) ?></h2>
+                <p class="text-sm text-gray-500 mt-2 max-w-2xl">Tampilkan event terjadwal di kalender. Klik tanggal yang memiliki event untuk melihat detailnya.</p>
+            </div>
+            <div class="text-sm text-gray-500">
+                <p class="font-semibold">Total event bulan ini:</p>
+                <p class="text-2xl font-bold text-green-700"><?= number_format(array_sum(array_map('count', $calendarEvents))) ?></p>
             </div>
         </div>
+
+        <div class="grid grid-cols-7 gap-2 mt-8 text-center text-xs font-semibold text-gray-500">
+            <?php foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as $shortDay): ?>
+                <div class="py-2 bg-gray-50 rounded-3xl"><?= esc($shortDay) ?></div>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="grid grid-cols-7 gap-2 mt-2 text-sm">
+            <?php for ($i = 0; $i < $blankDays; $i++): ?>
+                <div class="min-h-[5rem] rounded-3xl bg-gray-50"></div>
+            <?php endfor; ?>
+
+            <?php for ($day = 1; $day <= $daysInMonth; $day++): ?>
+                <?php $dateKey = date('Y-m-') . sprintf('%02d', $day); ?>
+                <?php $hasEvent = !empty($calendarEvents[$dateKey]); ?>
+                <div class="min-h-[5rem] rounded-3xl border p-3 <?= $dateKey === date('Y-m-d') ? 'bg-green-50 border-green-200' : 'bg-gray-50' ?>">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-gray-800"><?= $day ?></span>
+                        <?php if ($hasEvent): ?>
+                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-500 text-white text-[10px]"><?= count($calendarEvents[$dateKey]) ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <?php if ($hasEvent): ?>
+                        <ul class="space-y-1 text-left text-[11px]">
+                            <?php foreach (array_slice($calendarEvents[$dateKey], 0, 2) as $event): ?>
+                                <li class="truncate"><a href="<?= base_url('event/detail/' . $event['id']) ?>" class="text-green-700 hover:text-green-900"><?= esc($event['nama_event']) ?></a></li>
+                            <?php endforeach; ?>
+                            <?php if (count($calendarEvents[$dateKey]) > 2): ?>
+                                <li class="text-xs text-gray-500">+<?= count($calendarEvents[$dateKey]) - 2 ?> lainnya</li>
+                            <?php endif; ?>
+                        </ul>
+                    <?php endif; ?>
+                </div>
+            <?php endfor; ?>
+        </div>
+    </div>
+
 
         <!-- View All Link -->
         <div class="mt-10 text-center" data-aos="fade-up" data-aos-delay="600">
