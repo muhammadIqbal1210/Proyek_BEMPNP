@@ -486,18 +486,34 @@ class Home extends BaseController
                 ->groupEnd();
         }
 
-            $event_list = $eventObj->paginate(12, 'event');
-            $pager = $model->pager;
-            $pager->setPath(current_url() . (count($this->request->getGet()) ? '?' . http_build_query($this->request->getGet()) : ''));
+        $calendarModel = new eventModel();
+        $calendarEventsQuery = $calendarModel->where('status_pengajuan', 'approved')
+            ->where('waktu >=', date('Y-m-01'))
+            ->where('waktu <=', date('Y-m-t'));
 
-            $data = [
-                'title'             => 'Informasi Event',
-                'event_list'        => $event_list,
-                'pager'             => $pager,
-                'keyword'           => $keyword,
-                'filters'           => ['keyword' => $keyword],
-                'file_base_url'     => base_url('uploads/event/') // Folder khusus gambar beasiswa
-            ];
+        if ($keyword) {
+            $calendarEventsQuery = $calendarEventsQuery
+                ->groupStart()
+                    ->like('nama_event', $keyword)
+                    ->orLike('deskripsi', $keyword)
+                ->groupEnd();
+        }
+
+        $calendar_events = $calendarEventsQuery->findAll();
+
+        $event_list = $eventObj->paginate(12, 'event');
+        $pager = $model->pager;
+        $pager->setPath(current_url() . (count($this->request->getGet()) ? '?' . http_build_query($this->request->getGet()) : ''));
+
+        $data = [
+            'title'             => 'Informasi Event',
+            'event_list'        => $event_list,
+            'pager'             => $pager,
+            'keyword'           => $keyword,
+            'filters'           => ['keyword' => $keyword],
+            'file_base_url'     => base_url('uploads/event/'),
+            'calendar_events'   => $calendar_events,
+        ];
 
         return view('frontend/event/list', $data);
     }
