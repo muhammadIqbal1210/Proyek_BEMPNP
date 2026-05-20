@@ -122,7 +122,7 @@ class Berita extends BaseController
             'isiberita'         => $this->request->getPost('isiberita'),
             'gambarberita'      => $filePath,
             'tanggalberita'     => $this->request->getPost('tanggalberita'),
-            'author'            => session()->get('username') ?? session()->get('user_id'),
+            'author'            => session()->get('nama_lengkap') ?? session()->get('username') ?? session()->get('user_id'),
             'status_pengajuan'  => 'pending',
             'user_id'           => session()->get('user_id'),
         ];

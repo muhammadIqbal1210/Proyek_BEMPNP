@@ -56,6 +56,10 @@
             <div class="text-lg-end">
                 <div class="small opacity-75">Status pengajuan</div>
                 <div class="fw-semibold"><?= (int) $totalPending ?> menunggu review</div>
+                <div class="d-flex gap-2 justify-content-lg-end mt-2">
+                    <a href="<?= base_url('member/profile/edit') ?>" class="btn btn-sm btn-light"><i class="fas fa-user-edit me-1"></i>Edit Profil</a>
+                    <a href="<?= base_url('/') ?>" class="btn btn-sm btn-light">Halaman Depan</a>
+                </div>
             </div>
         </div>
     </div>
