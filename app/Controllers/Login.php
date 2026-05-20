@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\ProfileModel;
 use CodeIgniter\Controller;
 
 class Login extends BaseController
@@ -18,7 +19,8 @@ class Login extends BaseController
     {
         $session = session();
         helper(['form']);
-        $model = new UserModel();
+        $userModel = new UserModel();
+        $profileModel = new ProfileModel();
         
         // 1. Definisikan Aturan Validasi
         $rules = [
@@ -37,7 +39,6 @@ class Login extends BaseController
                 ]
             ],
         ];
-
         // 2. Jalankan Validasi
         if (!$this->validate($rules)) {
             // PERBAIKAN: Gunakan ->with('errors', ...) agar bisa di-looping di View
@@ -49,19 +50,46 @@ class Login extends BaseController
         $email = $this->request->getVar('email');
         $password = $this->request->getVar('password');
 
-        $user = $model->where('email', $email)->first();
+        $user = $userModel->where('email', $email)->first();
 
         if ($user) {
+            if ($user) {
+
+                // Memeriksa apakah key 'is_active' ada di database, jika belum ada atau bernilai 0, maka blokir login
+                $isActive = isset($user['is_active']) ? $user['is_active'] : 1; 
+
+                if (!$isActive) {
+                    return redirect()->to('/login')
+                        ->withInput()
+                        ->with('error', 'Akun Anda tidak aktif. Hubungi admin untuk mengaktifkannya kembali.');
+                }
+            }
+            
+
             $verifyPass = password_verify($password, $user['password']);
             
             if ($verifyPass) {
+                // Ambil profile data berdasarkan user_id
+                $profile = $profileModel->where('user_id', $user['id'])->first();
+                
                 $sesData = [
-                    'user_id'    => $user['id'],
-                    'username'   => $user['username'],
-                    'email'      => $user['email'],
-                    'role'       => $user['role'],
-                    'isLoggedIn' => true
+                    'user_id'      => $user['id'],
+                    'username'     => $user['username'],
+                    'email'        => $user['email'],
+                    'role'         => $user['role'],
+                    'is_active'    => $user['is_active'],
+                    'isLoggedIn'   => true,
                 ];
+                
+                // Tambahkan profile data jika tersedia
+                if ($profile) {
+                    $sesData['nama_lengkap'] = $profile['nama_lengkap'];
+                    $sesData['kementerian']  = $profile['kementerian'];
+                    $sesData['jabatan']      = $profile['jabatan'];
+                    $sesData['alamat']       = $profile['alamat'];
+                    $sesData['no_telepon']   = $profile['no_telepon'];
+                }
+                
                 $session->set($sesData);
                 // Redirect admins (including superadmin) to admin dashboard
                 if (in_array($user['role'], ['admin', 'superadmin'])) {
