@@ -62,10 +62,11 @@ class UserController extends BaseController
     {
         // 1. Tentukan aturan validasi
         $rules = [
-            'username' => 'required|min_length[3]|max_length[100]|is_unique[users.username]',
-            'email'    => 'required|max_length[255]|valid_email|is_unique[users.email]',
-            'password' => 'required|min_length[8]',
-            'role'     => 'required|in_list[guest,member,admin]',
+            'username'      => 'required|min_length[3]|max_length[100]|is_unique[users.username]',
+            'email'         => 'required|max_length[255]|valid_email|is_unique[users.email]',
+            'password'      => 'required|min_length[8]',
+            'role'          => 'required|in_list[member,admin]',
+            'is_active'     => 'required|in_list[0,1]',
         ];
 
         // 2. Lakukan validasi
@@ -76,10 +77,11 @@ class UserController extends BaseController
 
         // 3. Data siap disimpan
         $data = [
-            'username' => $this->request->getPost('username'),
-            'email'    => $this->request->getPost('email'),
-            'password' => $this->request->getPost('password'), // Akan di-hash oleh Model
-            'role'     => $this->request->getPost('role'),
+            'username'      => $this->request->getPost('username'),
+            'email'         => $this->request->getPost('email'),
+            'password'      => $this->request->getPost('password'),
+            'role'          => $this->request->getPost('role'),
+            'is_active'     => $this->request->getPost('is_active') === '1' ? 1 : 0,
         ];
 
         // 4. Simpan ke database
@@ -121,7 +123,8 @@ class UserController extends BaseController
 
         // 1. Tentukan aturan validasi dasar
         $rules = [
-            'role'     => 'required|in_list[guest,member,admin]',
+            'role'          => 'required|in_list[member,admin]',
+            'is_active'     => 'required|in_list[0,1]',
         ];
         
         // 2. Aturan untuk Username (hanya unik jika username berubah)
@@ -152,10 +155,11 @@ class UserController extends BaseController
 
         // 6. Data siap disimpan
         $data = [
-            'id'       => $id,
-            'username' => $this->request->getPost('username'),
-            'email'    => $this->request->getPost('email'),
-            'role'     => $this->request->getPost('role'),
+            'id'            => $id,
+            'username'      => $this->request->getPost('username'),
+            'email'         => $this->request->getPost('email'),
+            'role'          => $this->request->getPost('role'),
+            'is_active'     => $this->request->getPost('is_active') === '1' ? 1 : 0,
         ];
         
         // Hanya tambahkan password jika diisi
