@@ -33,6 +33,11 @@ class User extends Migration
                 'constraint' => ['superadmin', 'member', 'admin'],
                 'default'    => 'member',
             ],
+            'is_active' => [
+                'type'       => 'TINYINT',
+                'constraint' => 1,
+                'default'    => 1, // Otomatis aktif saat user dibuat
+            ],
             'created_at' => [
                 'type'       => 'DATETIME',
                 'null'       => true,

@@ -100,6 +100,7 @@
             <div class="text-lg-end">
                 <div class="small opacity-75">Hari ini</div>
                 <div class="fw-semibold"><?= date('d M Y') ?></div>
+                <a href="<?= base_url('/') ?>" class="btn btn-sm btn-light mt-2">Lihat Halaman Depan</a>
             </div>
         </div>
     </div>

@@ -10,8 +10,8 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('login', 'Login::index');              // Menampilkan form login
 $routes->post('login/auth', 'Login::loginAuth');
-// $routes->get('register', 'Register::index'); // Untuk menampilkan form
-// $routes->post('register', 'Register::store');
+$routes->get('register', 'Register::index'); // Untuk menampilkan form
+$routes->post('register', 'Register::store');
 $routes->get('logout', 'Auth::logout'); 
 $routes->get('pengumuman', 'Home::pengumuman');
 $routes->get('pengumuman/detail/(:num)', 'Home::detailpengumuman/$1');
@@ -33,6 +33,9 @@ $routes->get('berita/detail/(:num)', 'Home::detailberita/$1');
 
 $routes->group('member', ['filter' => 'member', 'namespace' => 'App\Controllers\Member'], function($routes) {
     $routes->get('dashboard', 'Dashboard::index');
+    // Routes Profile
+    $routes->get('profile/edit', 'Profile::edit');
+    $routes->post('profile/update', 'Profile::update');
     $routes->get('kanban', 'KanbanController::kanban');
     $routes->post('kanban/board/store', 'KanbanController::storeBoard');
     $routes->post('kanban/board/update/(:num)', 'KanbanController::updateBoard/$1');
@@ -83,6 +86,9 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     $routes->get('user/edit/(:num)', 'UserController::edit/$1'); // Mengambil data user spesifik (untuk JS)
     $routes->put('user/update/(:num)', 'UserController::update/$1'); // Mengupdate data user (UPDATE)
     $routes->get('user/delete/(:num)', 'UserController::delete/$1'); // Menghapus user (DELETE)
+    // Profile User
+    $routes->get('profile/edit', 'Profile::edit');
+    $routes->post('profile/update', 'Profile::update');
     // <!--Route Pengumuman-->
     $routes->get('pengumuman', 'Pengumuman::index'); // URL: /admin/pengumuman/index
     $routes->get('pengumuman/index', 'Pengumuman::index');

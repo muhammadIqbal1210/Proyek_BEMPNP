@@ -24,12 +24,21 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="edit-is_active" class="form-label">Status Aktif</label>
+                        <select class="form-select" id="edit-is_active" name="is_active" required>
+                            <option value="1">Aktif</option>
+                            <option value="0">Tidak Aktif</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
                         <label for="edit-role" class="form-label">Role Akun <span class="text-danger">*</span></label>
                         <select class="form-select" id="edit-role" name="role" required>
                             <option value="member">Member (Pengguna Biasa)</option>
                             <option value="admin">Admin (Akses Penuh)</option>
                         </select>
                     </div>
+
 
                     <hr>
                     <div class="mb-3">
@@ -65,7 +74,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('edit-user-id').value = data.id;
                 document.getElementById('edit-username').value = data.username;
                 document.getElementById('edit-email').value = data.email;
+                document.getElementById('edit-is_active').value = data.is_active == 1 ? '1' : '0';
                 document.getElementById('edit-role').value = data.role;
+
+
                 
                 // Atur Action form
                 const form = document.getElementById('editUserForm');

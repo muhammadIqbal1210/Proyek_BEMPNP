@@ -10,7 +10,7 @@ class UserModel extends Model {
     protected $returnType     = 'array'; 
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['username', 'email', 'password', 'role'];
+    protected $allowedFields = ['username', 'email', 'password', 'role', 'is_active'];
     
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
@@ -27,5 +27,11 @@ class UserModel extends Model {
             $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
         }
         return $data;
+    }
+
+    // Relasi ke Profile (one-to-one)
+    public function profile()
+    {
+        return $this->hasOne(ProfileModel::class, 'user_id', 'id');
     }
 }

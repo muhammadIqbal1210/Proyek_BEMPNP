@@ -62,6 +62,7 @@
                             <th>Username</th>
                             <th>Email</th>
                             <th>Role</th>
+                            <th>Status</th>
                             <th>Tanggal Daftar</th>
                             <th>Aksi</th>
                         </tr>
@@ -81,6 +82,13 @@
                                         <span class="badge bg-<?= $roleClass ?>">
                                             <?= ucfirst($user['role']) ?>
                                         </span>
+                                    </td>
+                                    <td>
+                                        <?php if (!empty($user['is_active']) && $user['is_active'] == 1): ?>
+                                            <span class="badge bg-success">Aktif</span>
+                                        <?php else: ?>
+                                            <span class="badge bg-danger">Tidak Aktif</span>
+                                        <?php endif; ?>
                                     </td>
                                     <td><?= date('d/m/Y', strtotime($user['created_at'])) ?></td>
                                     <td>

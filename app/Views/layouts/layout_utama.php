@@ -194,10 +194,17 @@
                 </li>
 
                 <li>
-                    <a href="<?= base_url('login') ?>"
-                        class="bg-orange-500 hover:bg-orange-400 text-white font-semibold px-6 pt-1 pb-2 rounded-full transition shadow-md">
-                        Login
-                    </a>
+                    <?php if (session()->get('isLoggedIn')): ?>
+                        <a href="<?= base_url(session()->get('role') === 'admin' ? 'admin/dashboard' : 'member/dashboard') ?>"
+                            class="bg-orange-500 hover:bg-orange-400 text-white font-semibold px-6 pt-1 pb-2 rounded-full transition shadow-md">
+                            Dashboard
+                        </a>
+                    <?php else: ?>
+                        <a href="<?= base_url('login') ?>"
+                            class="bg-orange-500 hover:bg-orange-400 text-white font-semibold px-6 pt-1 pb-2 rounded-full transition shadow-md">
+                            Login
+                        </a>
+                    <?php endif; ?>
                 </li>
             </ul>
         <div id="mobileNavMenu" class="absolute left-0 right-0 top-full hidden md:hidden border-t border-green-600 bg-green-700/95 shadow-xl">
@@ -243,9 +250,15 @@
                 <a href="<?= base_url('kontak') ?>" class="block rounded-xl px-4 py-3 hover:bg-green-600/80 transition">
                     Kontak
                 </a>
-                <a href="<?= base_url('login') ?>" class="block rounded-xl px-4 py-3 bg-orange-500 text-white text-center font-semibold hover:bg-orange-400 transition">
-                    Login
-                </a>
+                <?php if (session()->get('isLoggedIn')): ?>
+                    <a href="<?= base_url(session()->get('role') === 'admin' ? 'admin/dashboard' : 'member/dashboard') ?>" class="block rounded-xl px-4 py-3 bg-orange-500 text-white text-center font-semibold hover:bg-orange-400 transition">
+                        Dashboard
+                    </a>
+                <?php else: ?>
+                    <a href="<?= base_url('login') ?>" class="block rounded-xl px-4 py-3 bg-orange-500 text-white text-center font-semibold hover:bg-orange-400 transition">
+                        Login
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </nav>

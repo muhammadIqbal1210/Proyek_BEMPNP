@@ -32,6 +32,16 @@
                             <option value="admin">Admin (Akses Penuh)</option>
                         </select>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="is_active" class="form-label">Status Aktif</label>
+                        <select class="form-select" id="is_active" name="is_active" required>
+                            <option value="1" selected>Aktif</option>
+                            <option value="0">Tidak Aktif</option>
+                        </select>
+                    </div>
+
+                    <small class="form-text text-muted d-block mt-3"><strong>Catatan:</strong> Profile pengguna (nama lengkap, kementerian, jabatan, dll) diisi saat pendaftaran atau dapat diubah di dashboard member.</small>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

@@ -319,7 +319,16 @@
                         <i class="fas fa-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i> Profile</a></li>
+                        <li>
+                            <?php 
+                            // Ambil role dari session user yang sedang login
+                            $userRole = session()->get('role'); 
+                            ?>
+
+                            <a href="<?= base_url($userRole . '/profile/edit') ?>" class="dropdown-item">
+                                <i class="fas fa-user"></i> Edit Profil
+                            </a>
+                        </li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
                     </ul>
