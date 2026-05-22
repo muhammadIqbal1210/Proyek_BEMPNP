@@ -91,6 +91,13 @@ class Home extends BaseController
             ->limit(4)
             ->findAll();
         
+        // 5. Ambil Event untuk Kalender (bulan ini)
+        $calendarEvents = $eventModel
+            ->where('status_pengajuan', 'approved')
+            ->where('waktu >=', date('Y-m-01'))
+            ->where('waktu <=', date('Y-m-t'))
+            ->findAll();
+        
         $data = [
             'title'                => 'Home Page',
             'profil_list'          => $profil_list,
@@ -100,6 +107,7 @@ class Home extends BaseController
             'upcoming_events'      => $upcomingEvents,
             'latest_news'          => $latestNews,
             'katalog_list'         => $katalogList,
+            'calendar_events'      => $calendarEvents,
             'url_pengumuman'       => base_url('uploads/pengumuman/'),
             'url_event'            => base_url('uploads/event/'),
             'url_berita'           => base_url('uploads/berita/'),  // URL untuk gambar berita
