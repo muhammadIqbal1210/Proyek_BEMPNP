@@ -92,19 +92,65 @@
                                     </td>
                                     <td><?= date('d/m/Y', strtotime($user['created_at'])) ?></td>
                                     <td>
-                                        <!-- Tombol Aksi (Lihat Detail, Edit, Hapus) -->
-                                        <button class="btn btn-sm btn-outline-warning btn-edit-user me-1" 
-                                            title="Edit Akun" 
-                                            data-id="<?= $user['id'] ?>" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#editPenggunaModal">
-                                            <i class="fas fa-user-edit"></i>
-                                        </button>
-                                        <a href="<?= base_url('admin/user/delete/' . $user['id']) ?>" 
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus akun ini?');" 
-                                            class="btn btn-sm btn-outline-danger" title="Hapus Akun">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                        <!-- Mengambil data user yang sedang login -->
+                                        <?php $currentUserId = session()->get('user_id'); ?>
+                                        <?php $currentUserRole = session()->get('role'); // Ambil role user yang login (Pastikan session 'role' tersedia) ?>
+                                        
+                                        <!-- Kondisi pembanding -->
+                                        <?php $isSelfUser = ($currentUserId == $user['id']); ?>
+                                        <?php $targetIsSuperAdmin = ($user['role'] === 'superadmin'); ?>
+
+                                        <!-- 1. TOMBOL EDIT -->
+                                        <?php 
+                                            $allowEdit = false;
+                                            if ($currentUserRole === 'superadmin') {
+                                                // Superadmin bisa edit siapa saja (termasuk dirinya sendiri)
+                                                $allowEdit = true; 
+                                            } elseif ($currentUserRole === 'admin') {
+                                                // Admin biasa bisa edit pengguna lain KECUALI superadmin
+                                                if (!$targetIsSuperAdmin) {
+                                                    $allowEdit = true;
+                                                }
+                                            }
+                                        ?>
+
+                                        <?php if ($allowEdit): ?>
+                                            <button class="btn btn-sm btn-outline-warning btn-edit-user me-1" 
+                                                title="Edit Akun" 
+                                                data-id="<?= $user['id'] ?>" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#editPenggunaModal">
+                                                <i class="fas fa-user-edit"></i>
+                                            </button>
+                                        <?php endif; ?>
+
+                                        <!-- 2. TOMBOL HAPUS -->
+                                        <?php 
+                                            $allowDelete = false;
+                                            // Tidak ada yang bisa menghapus dirinya sendiri
+                                            if (!$isSelfUser) {
+                                                if ($currentUserRole === 'superadmin') {
+                                                    // Superadmin bisa menghapus semua orang KECUALI dirinya sendiri
+                                                    $allowDelete = true;
+                                                } elseif ($currentUserRole === 'admin' && !$targetIsSuperAdmin) {
+                                                    // Admin biasa bisa menghapus pengguna lain KECUALI superadmin
+                                                    $allowDelete = true;
+                                                }
+                                            }
+                                        ?>
+
+                                        <?php if ($allowDelete): ?>
+                                            <a href="<?= base_url('admin/user/delete/' . $user['id']) ?>" 
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus akun ini?');" 
+                                                class="btn btn-sm btn-outline-danger" title="Hapus Akun">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        <?php endif; ?>
+
+                                        <!-- 3. TAMPILAN JIKA TIDAK BISA MELAKUKAN AKSI APA PUN -->
+                                        <?php if (!$allowEdit && !$allowDelete): ?>
+                                            <span class="badge bg-secondary">Tidak ada aksi</span>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

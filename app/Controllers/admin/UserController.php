@@ -180,6 +180,17 @@ class UserController extends BaseController
      */
     public function delete($id = null)
     {
+        // Cek apakah user mencoba menghapus dirinya sendiri
+        if (session()->get('user_id') == $id) {
+            return redirect()->to(base_url('admin/user'))->with('error', 'Anda tidak bisa menghapus akun Anda sendiri!');
+        }
+
+        // Cek apakah user yang akan dihapus adalah superadmin
+        $userToDelete = $this->userModel->find($id);
+        if ($userToDelete && $userToDelete['role'] === 'superadmin') {
+            return redirect()->to(base_url('admin/user'))->with('error', 'Admin tidak bisa menghapus superadmin!');
+        }
+
         if ($this->userModel->delete($id)) {
             return redirect()->to(base_url('admin/user'))->with('success', 'Akun pengguna berhasil dihapus.');
         } else {
