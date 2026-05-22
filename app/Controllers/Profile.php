@@ -1,4 +1,4 @@
-<?php namespace App\Controllers\Member;
+<?php namespace App\Controllers;
 
 use App\Models\ProfileModel;
 use CodeIgniter\Controller;
@@ -12,8 +12,6 @@ class Profile extends BaseController
     {
         $this->profileModel = new ProfileModel();
     }
-
-    // Tampilkan form edit profil
     // Tampilkan form edit profil
     public function edit()
     {
@@ -30,10 +28,12 @@ class Profile extends BaseController
                 'no_telepon'   => ''
             ];
         }
-        $data['content']    = 'member/profile/edit';
+        $role = session()->get('role');
+        $data['content']    = 'profile/edit';
         $data['title']      = 'Edit Profil'; 
         $data['halaman']    = 'Edit Profil';
         $data['profile'] = $profile;
+        $data['role'] = $role;
         $data['validation'] = \Config\Services::validation();
 
         return view('template/wrapper', $data);
@@ -87,7 +87,10 @@ class Profile extends BaseController
                 'no_telepon'   => $updatedProfile['no_telepon'],
             ]);
 
-            return redirect()->to('/member/dashboard')->with('success', 'Profil berhasil diperbarui!');
+            // Redirect berdasarkan role
+            $role = session()->get('role');
+            $redirectUrl = ($role === 'admin' || $role === 'superadmin') ? '/admin/dashboard' : '/member/dashboard';
+            return redirect()->to($redirectUrl)->with('success', 'Profil berhasil diperbarui!');
         } else {
             return redirect()->back()->withInput()->with('error', 'Gagal memperbarui profil.');
         }

@@ -15,7 +15,7 @@
                         <!-- Nama Kabinet & Periode -->
                         <div class="col-md-8 mb-3">
                             <label class="form-label fw-bold">Nama Kabinet</label>
-                            <input type="text" name="nama_kabinet" class="form-control" placeholder="Contoh: Kabinet Inspirasi" required>
+                            <input type="text" name="nama_kabinet" class="form-control" placeholder="Contoh: Kabinet Harmoni Karya" required>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label fw-bold">Periode</label>

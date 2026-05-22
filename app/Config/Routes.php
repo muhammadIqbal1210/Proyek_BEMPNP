@@ -80,6 +80,8 @@ $routes->group('member', ['filter' => 'member', 'namespace' => 'App\Controllers\
 });
 $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Admin'], function($routes) {
     $routes->get('dashboard', 'Dashboard::index');
+    $routes->get('profile/edit', 'Profile::edit');
+    $routes->post('profile/update', 'Profile::update');
     //User route
     $routes->get('user', 'UserController::index');
     $routes->post('user/store', 'UserController::store');
@@ -178,3 +180,4 @@ $routes->group('admin', ['filter' => 'admin','namespace' => 'App\Controllers\Adm
     $routes->post('kontak/update/(:num)', 'Kontak::update/$1');
     $routes->get('kontak/delete/(:num)', 'Kontak::delete/$1');
     });
+

@@ -324,8 +324,7 @@
                             // Ambil role dari session user yang sedang login
                             $userRole = session()->get('role'); 
                             ?>
-
-                            <a href="<?= base_url($userRole . '/profile/edit') ?>" class="dropdown-item">
+                            <a href="<?= base_url('/profile/edit') ?>" class="dropdown-item">
                                 <i class="fas fa-user"></i> Edit Profil
                             </a>
                         </li>

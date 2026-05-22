@@ -27,7 +27,7 @@
                         </div>
                     <?php endif; ?>
 
-                    <form action="<?= base_url('member/profile/update') ?>" method="POST">
+                    <form action="<?= base_url('profile/update') ?>" method="POST">
                         <?= csrf_field() ?>
 
                         <!-- Nama Lengkap -->
