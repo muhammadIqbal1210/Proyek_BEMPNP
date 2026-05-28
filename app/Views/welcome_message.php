@@ -558,34 +558,9 @@
 
                 <!-- Right: Contact Options -->
                 <div class="p-8 sm:p-12 flex flex-col justify-center" data-aos="fade-left">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-8">Hubungi Kami Via</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-8">Laporkan Keluhanmu disini</h3>
                     
                     <div class="space-y-4">
-                        <!-- WhatsApp -->
-                        <a href="https://wa.me/6282184556644?text=Assalamu%27alaikum%20BEM%20KM%20PNP.%20Saya%20ingin%20mengadukan%20tentang..." target="_blank" 
-                           class="flex items-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl hover:shadow-lg hover:border-green-400 transition-all duration-300 group">
-                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white text-xl mr-4 group-hover:scale-110 transition-transform">
-                                <i class="fab fa-whatsapp"></i>
-                            </div>
-                            <div>
-                                <p class="font-bold text-gray-900">WhatsApp Advokasi</p>
-                                <p class="text-sm text-gray-600">+62 821-8455-6644</p>
-                            </div>
-                            <i class="fas fa-arrow-right text-green-500 ml-auto group-hover:translate-x-2 transition-transform"></i>
-                        </a>
-
-                        <!-- Email -->
-                        <a href="mailto:advokasi@bem-km-pnp.org?subject=Pengaduan%20dan%20Advokasi&body=Assalamu%27alaikum%20BEM%20KM%20PNP%0A%0ASaya%20ingin%20mengadukan%20tentang..." 
-                           class="flex items-center p-4 bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-2xl hover:shadow-lg hover:border-blue-400 transition-all duration-300 group">
-                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl mr-4 group-hover:scale-110 transition-transform">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div>
-                                <p class="font-bold text-gray-900">Email Advokasi</p>
-                                <p class="text-sm text-gray-600">advokasi@bem-km-pnp.org</p>
-                            </div>
-                            <i class="fas fa-arrow-right text-blue-500 ml-auto group-hover:translate-x-2 transition-transform"></i>
-                        </a>
 
                         <!-- Form Pengaduan -->
                         <a href="<?= base_url('layanan/advokasi') ?>" 
@@ -599,6 +574,13 @@
                             </div>
                             <i class="fas fa-arrow-right text-purple-500 ml-auto group-hover:translate-x-2 transition-transform"></i>
                         </a>
+                    </div>
+                    <div class="bg-orange-50 p-6 rounded-2xl border border-orange-100 mt-8">
+                        <h4 class="font-bold text-orange-800 mb-2">Kenapa harus melapor?</h4>
+                        <p class="text-sm text-orange-700 leading-relaxed">
+                            Setiap suara mahasiswa sangat berarti untuk perbaikan kampus. BEM KM PNP siap menjadi jembatan
+                            antara mahasiswa dan institusi.
+                        </p>
                     </div>
 
                     <div class="mt-8 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg">
