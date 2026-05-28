@@ -502,7 +502,7 @@
                             Rp <?= number_format($item['harga'], 0, ',', '.') ?>
                         </p>
                         <!-- Link detail -->
-                        <a href="<?= base_url('katalog/detail/' . $item['id']) ?>" class="absolute inset-0 z-10"></a>
+                        <a href="<?= base_url('katalog') ?>" class="absolute inset-0 z-10"></a>
                     </div>
                     <?php endforeach; ?>
                     <?php else: ?>
