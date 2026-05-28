@@ -266,33 +266,70 @@
         <?= $this->renderSection('content') ?>
     </main>
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-300 py-10 mt-10">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 px-6">
-            <div>
-                <h3 class="font-bold text-xl text-white mb-3">BEM PNP</h3>
-                <p>Badan Eksekutif Mahasiswa Politeknik Negeri Padang.
-                    Mengabdi, Berkarya, dan Berinovasi untuk Negeri.</p>
+     <footer class="bg-gray-900 text-gray-400 py-12 mt-12 border-t-4 border-orange-500">
+        <!-- Kontainer Utama -->
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
+            
+            <!-- Kolom 1: Profil BEM -->
+            <div class="space-y-4">
+                <h3 class="font-bold text-2xl text-white tracking-wide border-b-2 border-orange-500 pb-2 inline-block">
+                    BEM PNP
+                </h3>
+                <p class="text-sm leading-relaxed">
+                    Badan Eksekutif Mahasiswa Politeknik Negeri Padang.<br>
+                    <span class="italic text-orange-400 font-medium">"Berdampak, bergerak, bermanfaat"</span>
+                </p>
             </div>
-            <div>
-                <h3 class="font-bold text-xl text-white mb-3">Navigasi</h3>
-                <ul>
-                    <li><a href="<?= base_url() ?>" class="hover:text-orange-400">Home</a></li>
-                    <li><a href="<?= base_url('pengumuman') ?>" class="hover:text-orange-400">Pengumuman</a></li>
-                    <li><a href="<?= base_url('berita') ?>" class="hover:text-orange-400">Berita</a></li>
-                    <li><a href="<?= base_url('kontak') ?>" class="hover:text-orange-400">Kontak</a></li>
+
+            <!-- Kolom 2: Navigasi -->
+            <div class="space-y-4">
+                <h3 class="font-bold text-xl text-white tracking-wide border-b-2 border-orange-500 pb-2 inline-block">
+                    Navigasi
+                </h3>
+                <ul class="grid grid-cols-2 gap-2 text-sm">
+                    <li><a href="<?= base_url() ?>" class="hover:text-orange-400 transition-colors duration-200">Home</a></li>
+                    <li><a href="<?= base_url('pengumuman') ?>" class="hover:text-orange-400 transition-colors duration-200">Pengumuman</a></li>
+                    <li><a href="<?= base_url('profil') ?>" class="hover:text-orange-400 transition-colors duration-200">Profil</a></li>
+                    <li><a href="<?= base_url('layanan') ?>" class="hover:text-orange-400 transition-colors duration-200">Layanan</a></li>
+                    <li><a href="<?= base_url('berita') ?>" class="hover:text-orange-400 transition-colors duration-200">Berita</a></li>
+                    <li><a href="<?= base_url('kontak') ?>" class="hover:text-orange-400 transition-colors duration-200">Kontak</a></li>
                 </ul>
             </div>
-            <div>
-                <h3 class="font-bold text-xl text-white mb-3">Kontak</h3>
-                <p>Jl. Limau Manis, Kec. Pauh, Padang</p>
-                <p>Email: bem@pnp.ac.id</p>
-                <p>Instagram: @bem_pnp</p>
+
+            <!-- Kolom 3: Kontak -->
+            <div class="space-y-4">
+                <h3 class="font-bold text-xl text-white tracking-wide border-b-2 border-orange-500 pb-2 inline-block">
+                    Kontak
+                </h3>
+                <p class="text-sm leading-relaxed">
+                    Belakang Gedung PKM Lt 2 Kampus Politeknik Negeri Padang, Limau Manis, Kecamatan Pauh, Kota Padang, 25164, Provinsi Sumatera Barat
+                </p>
+                <div class="pt-2 text-sm space-y-1 text-gray-300">
+                    <p><span class="text-orange-400 font-semibold">Email:</span> bem@pnp.ac.id</p>
+                    <p><span class="text-orange-400 font-semibold">Instagram:</span> @bemkmpnp</p>
+                </div>
             </div>
         </div>
-        <div class="text-center mt-8 text-gray-500 text-sm">
+
+        <!-- Area Google Maps (Responsif) -->
+        <div class="max-w-6xl mx-auto px-6 mt-10">
+            <div class="w-full overflow-hidden rounded-xl shadow-lg border border-gray-800">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1109.8832084808494!2d100.46593682922463!3d-0.9130307421905041!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2fd4b7bebfb55129%3A0xb6bd64e88c833b4a!2sGedung%20D%20%2F%20Gedung%20PKM%20Politeknik%20Negeri%20Padang!5e1!3m2!1sid!2sid!4v1779976411237!5m2!1sid!2sid" 
+                    class="w-full h-64 border-0"
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe >
+            </div>
+        </div>
+
+        <!-- Garis Pembatas Atas Copyright -->
+        <div class="max-w-6xl mx-auto px-6 mt-10 pt-6 border-t border-gray-800 text-center text-gray-500 text-xs tracking-wider">
             © 2025 BEM POLITEKNIK NEGERI PADANG. All Rights Reserved.
         </div>
     </footer>
+
     <script>
         AOS.init({
             duration: 800,
