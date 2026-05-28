@@ -346,7 +346,7 @@
         <!-- Grid Container -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Layanan 1: Advokasi -->
-            <a href="<?= base_url('advokasi') ?>"
+            <a href="<?= base_url('layanan/advokasi') ?>"
                 class="group p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-orange-600 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
                 <div
                     class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
@@ -358,7 +358,7 @@
             </a>
 
             <!-- Layanan 2: Surat Menyurat -->
-            <a href="#"
+            <a href="<?= base_url('layanan/') ?>"
                 class="group p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-green-600 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="400">
                 <div
                     class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
@@ -370,7 +370,7 @@
             </a>
 
             <!-- Layanan 3: Beasiswa -->
-            <a href="#"
+            <a href="<?= base_url('beasiswa/') ?>"
                 class="group p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-blue-600 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="600">
                 <div
                     class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
@@ -381,7 +381,7 @@
                     pendidikan dan prestasi terbaru.</p>
             </a>
             <!-- Layanan 4: Peminjaman Ruangan -->
-            <a href="#"
+            <a href="<?= base_url('kontak/') ?>"
                 class="group p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-purple-600 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="800">
                 <div
                     class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
