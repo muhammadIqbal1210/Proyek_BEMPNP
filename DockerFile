@@ -1,0 +1,29 @@
+# Menggunakan image PHP resmi dengan Apache
+FROM php:8.2-apache
+
+# Instal ekstensi PHP yang dibutuhkan oleh CodeIgniter 4
+RUN apt-get update && apt-get install -y \
+    libicu-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) intl gd mysqli pdo pdo_mysql
+
+# Aktifkan modul mod_rewrite Apache untuk keperluan Routing CI4
+RUN a2enmod rewrite
+
+# Ubah Document Root Apache agar mengarah ke folder public milik CI4
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# Salin seluruh file proyek ke dalam container
+COPY . /var/www/html/
+
+# Berikan izin akses (permission) ke folder writable agar CI4 bisa menulis log/session
+RUN chown -R www-data:www-data /var/www/html/writable \
+    && chmod -R 777 /var/www/html/writable
+
+# Jalankan Apache di port 80
+EXPOSE 80
