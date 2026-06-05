@@ -14,7 +14,7 @@ $routes->get('register', 'Register::index'); // Untuk menampilkan form
 $routes->post('register', 'Register::store');
 $routes->get('logout', 'Auth::logout'); 
 $routes->get('pengumuman', 'Home::pengumuman');
-$routes->get('pengumuman/detail/(:num)', 'Home::detailpengumuman/$1');
+$routes->get('pengumuman/detail/(:any)', 'Home::detailpengumuman/$1');
 $routes->get('layanan', 'Home::layanan');
 $routes->get('profil', 'Home::profil');
 $routes->get('struktur', 'Home::struktur');

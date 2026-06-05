@@ -312,7 +312,7 @@
                     </p>
 
                     <div class="pt-4 border-t border-gray-100 mt-auto">
-                        <a href="<?= base_url('pengumuman/detail/' . $pengumuman['id']) ?>"
+                        <a href="<?= base_url('pengumuman/detail/' . base64_encode($pengumuman['id'])) ?>"
                             class="text-orange-600 hover:text-orange-700 font-bold text-sm inline-flex items-center group">
                             Baca Pengumuman
                             <i
