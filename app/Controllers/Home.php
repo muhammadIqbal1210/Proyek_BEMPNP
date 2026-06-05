@@ -580,6 +580,7 @@ class Home extends BaseController
     }
     public function detailberita($id)
     {
+        $id = base64_decode($id);
         // 1. Ambil data berita yang dipilih
         $berita = $this->beritaModel->where('status_pengajuan', 'approved')->find($id);
 
