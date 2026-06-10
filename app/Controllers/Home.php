@@ -156,6 +156,7 @@ class Home extends BaseController
      */
     public function detailpengumuman($id = null): string
     {
+        $id = base64_decode($id);
         if (!$id) {
              // Lempar exception jika ID tidak valid
              throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Pengumuman tidak ditemukan.');

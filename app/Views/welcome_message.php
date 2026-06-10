@@ -312,7 +312,7 @@
                     </p>
 
                     <div class="pt-4 border-t border-gray-100 mt-auto">
-                        <a href="<?= base_url('pengumuman/detail/' . base64_encode($pengumuman['id'])) ?>"
+                        <a href="<?= base_url('pengumuman/detail/' . rtrim(base64_encode($pengumuman['id']), '=')) ?>"
                             class="text-orange-600 hover:text-orange-700 font-bold text-sm inline-flex items-center group">
                             Baca Pengumuman
                             <i
@@ -439,7 +439,7 @@
                     <p class="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-6">
                         <?= strip_tags($news['isiberita']) ?>
                     </p>
-                    <a href="<?= base_url('berita/detail/' .base64_encode( $news['id'])) ?>"
+                    <a href="<?= base_url('berita/detail/' . rtrim(base64_encode($news['id']), '=')) ?>"
                         class="text-sm font-black text-gray-900 group-hover:text-orange-600 flex items-center transition-colors">
                         BACA SELENGKAPNYA <div
                             class="w-8 h-[2px] bg-gray-200 ml-3 group-hover:bg-orange-600 transition-colors"></div>
